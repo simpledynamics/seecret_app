@@ -1,0 +1,1187 @@
+/** reset css **/
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+/** end reset css **/
+
+
+
+img {
+	max-width:100%;
+	height:auto;
+}
+
+
+
+body {
+	font-family: arial, sans serif;	
+	font-size: 100%;
+	/*background:url(../images/clouds.png) no-repeat center -250px fixed;*/
+	-webkit-background-size: cover;
+  	-moz-background-size: cover;
+  	-o-background-size: cover;
+  	background-size: cover;
+  	color:#2f1a10;
+}
+input, textarea, select {
+}
+
+
+/*************** new stuff index-web **************/
+
+	body {background: #F0F0F0}
+	div.viewHeader { margin: 0 0 10px 0}
+	div.viewHeader div{ margin: 0 0 5px 0}
+	.tworseIdentifier {color:green}
+	.container {
+		padding:10px;
+		margin: 0 0 10px 0;
+		border:1px solid #ccc;
+		background:#fff;
+		-webkit-border-radius: 5px;
+		-moz-border-radius: 5px;
+		border-radius: 5px;		
+	}
+	thead.headerRow th {font-weight:bold; text-align:left; padding: 5px}
+	table { width:95%; margin: 0 auto; margin: 5px auto;} 
+	td.updateCell{
+		width:50%;
+		vertical-align:top;
+	}
+	
+	input[type=text], textarea {
+		font: normal 1em arial;
+		-webkit-border-radius: 5px;
+		-moz-border-radius: 5px;
+		border-radius: 5px;
+		border:1px solid #ccc;
+		width: 90%;
+		padding: 3px;
+	}
+	input[type=text] {
+		width:80%
+	}
+	.message .user {
+		background-color:#CCC;
+		padding:20px;
+		
+	}
+	.tworseIdentifier {
+		color:green;
+		font-weight:bold;
+	}
+
+    h1, h2 { margin: 0; padding: 0}
+    p { }
+    #page { width: 90%; margin: 0 auto;}
+
+	
+/*** left panel ****/
+	
+    .panel {
+      width: 14em;
+	  height:100vh;
+      padding: 10px 0;
+      background-color: #333;
+      color: #fff;
+      box-shadow: inset 0 0 5px 5px #222;
+	  position: fixed;
+	  left:-14em;
+	  top:0;
+	  z-index: 100;
+    -webkit-transition: all 500ms;
+    -moz-transition: all 500ms;
+    -o-transition: all 500ms;
+    transition: all 500ms;	  
+	  
+    }
+	
+	
+	.panel a {
+		color:#fff;
+	}
+	
+	#panelControl {
+		cursor:pointer; 
+		font-size:1.5em; 
+		position: fixed;
+		left: 1px;
+		top: 10px;
+	}	
+	.panelControlOpen {
+		left: 10.75em;
+		top: 10px;
+	}
+	.panelControlClosed{
+	}
+	
+.closePanelControl {
+	display:inline-block;
+	float:right;
+	padding: 0 10px 0 0;
+	margin:0 0 5px 0;
+	cursor: pointer;
+}
+	
+#scaffoldsContainer div {
+	margin: 0 0 3px 0;
+}	
+#scaffoldsContainer div span {
+	font-size: 0.75em;
+}
+
+#scaffoldingStatus {
+	font-size:1em;
+}
+	
+#home {	
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+}
+.header {
+	padding: 0.3em;
+	background: #fff;
+	margin: 0 0 20px 0;
+  border-top: 3px solid #a1cb2f;
+  background: #fff;
+  -moz-box-shadow: 0 2px 3px 0px rgba(0, 0, 0, 0.16);
+  -webkit-box-shadow: 0 2px 3px 0px rgba(0, 0, 0, 0.16);
+  box-shadow: 0 2px 3px 0px rgba(0, 0, 0, 0.16);
+  
+  white-space:nowrap;
+}
+
+.header::after {
+	content: ' ';
+    float:none;
+    display: block;
+    clear: both;
+}
+
+.header #headerTitle {
+	display:block;
+	float:left;
+}
+.header #headerTitle div{
+	height: 4.15em;	
+	width: 15em;
+	background: url('../img/seecret_logo_575px.png');
+      -webkit-background-size: cover;
+      -moz-background-size: cover;
+      -o-background-size: cover;
+      background-size: cover; 
+}
+
+.header .loginContainer   {
+	display:inline-block;
+	float:right;
+}
+
+.header .loginContainer img {
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;	
+	border:1px solid #333;
+	vertical-align: top;
+}
+
+.header .loginContainer .user {
+	display: inline;
+	margin: 0 10px 0 0;
+	vertical-align: top;
+	font-weight: bold;
+}
+
+#loginButton div {
+	width:9.9em;
+	height:1.75em;
+	background:url(../img/sign-in-with-twitter-gray.png);	
+      -webkit-background-size: cover;
+      -moz-background-size: cover;
+      -o-background-size: cover;
+      background-size: cover; 	
+}
+#loginButton2 div {
+	width:9.9em;
+	height:1.75em;
+	background:url(../img/sign-in-with-twitter-gray.png);	
+      -webkit-background-size: cover;
+      -moz-background-size: cover;
+      -o-background-size: cover;
+      background-size: cover; 	
+}
+
+#donateLink,
+#userLabel {
+	font-size: 0.75em;
+}
+#donateLink {
+	text-decoration:underline;
+	cursor:pointer;
+}
+
+
+.messageContainer {
+	display:inline-block;
+	width: 49%;
+	vertical-align:top;
+}
+
+.messageContainer div:first-child {
+	font-weight:bold;
+	font-size: 1em;
+}
+
+	
+#submitButtonContainer {
+	width:95%;
+	margin: 10px auto 0 auto;
+	text-align:center;
+}
+
+
+input.button,
+#submitButtonContainer button,
+.addMoreButton {
+	padding: 5px;
+	border:1px solid #E39E9A;
+	background: #E39E9A;
+	color:#fff;
+	
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	font: normal 0.8em arial;	
+	cursor:pointer;
+}	
+
+input.button:hover,
+#submitButtonContainer button:hover,
+.addMoreButton:hover {
+	background:#fff;
+	color:#333;
+}
+	
+.removeButton {
+	font-size: 1.1em;
+	cursor:pointer;
+	display:inline-block;
+	padding: 0 0 0 5px;
+}
+
+.menuLinks::before {
+    content: ' ';
+    float:none;
+    display: block;
+    clear: both;
+}
+
+.menuLink {
+	display:block;
+	padding: 1em 0 1em 2.5em;
+	text-decoration:none;
+}
+
+.menuLink:hover {
+	background:#e3e3e3;
+	color:#333;
+}
+
+
+	
+#twitterContent {
+}	
+
+h2.timeLine,
+.settings h2{
+	font-size:1.2em;
+	font-weight:bold;
+	margin: 0 0 5px 0;
+}
+
+.settings,
+.status-list {
+	background:#fff;
+	padding: 10px 5px;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;	
+	color:#333;
+	border:1px solid #ccc;
+}
+.basicTweet {
+	padding: 10px 5px;
+	border-bottom:1px solid #333;
+}
+.directMessageContainer .user,
+.basicTweet .leftCol {
+	margin: 0 0 3px 0;
+}
+.directMessageContainer .at,
+.directMessageContainer .user{
+}
+
+
+
+.basicTweet .leftCol,
+.basicTweet .rightCol {
+	display:inline-block;
+	vertical-align:top;
+	
+}
+.basicTweet .leftCol {
+	max-width:10%;
+	margin: 0 5px 0 0;
+}
+
+.basicTweet .leftCol img {
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;	
+	border:1px solid #333;
+}
+
+.basicTweet .rightCol {
+	width:80%;
+}
+
+.basicTweet .rightCol .profileInfo {
+	margin: 0 0 5px 0;
+}
+
+.basicTweet .rightCol .profileInfo div{
+	display:inline-block;
+}
+.basicTweet .rightCol .profileInfo .user {
+	font-weight:bold;
+}
+.basicTweet .rightCol .profileInfo .tweetDate,
+.basicTweet .rightCol .profileInfo .userLink a{
+	color:#bababa;
+}
+.basicTweet .rightCol .profileInfo .tweetDate,
+.basicTweet .rightCol .profileInfo .userLink a{
+	text-decoration:none;
+	font-size: 0.8em;
+}
+
+.basicTweet .message {
+	margin: 0 0 8px 0;
+}
+
+.basicTweet .message .tworse {
+}
+.basicTweet .message .tworse  div{
+	display:inline-block;
+	vertical-align:top;
+}
+
+.basicTweet .message .tworse  .seecretLogo .icon{
+	min-width:1em;
+	height:1em;
+	background: url(../img/seecret_logo_15px.png) no-repeat center center;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover; 
+}
+
+
+.dmIcon{
+		height:1em;
+		min-width:1em;
+}
+.signedIcon {
+	min-width:1em;
+	height:1em;
+	background: url(../img/signed.jpg) no-repeat center center;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover; 	
+}
+
+.encryptedIcon  {
+	min-width:1em;
+	height:1em;
+	background: url(../img/encrypted.png) no-repeat center center;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover; 	
+}
+
+.basicTweet .message .tworse  div:nth-child(2){
+	width: 85%;
+}
+
+.originalMessage {
+	margin:10px 0 0 0;
+}
+.originalMessage .messages  div {
+	display:inline-block;
+	vertical-align:top;
+}
+
+.originalMessage .messages .tweetLogo {
+	width:1em;
+	height:1em;
+	background:url('../img/Twitter_logo_blue_32.png') no-repeat center center;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover; 
+}
+.originalMessage .messages  div:nth-child(2) {
+	width: 85%;
+}
+
+.basicTweet .footer {
+}
+
+.basicTweet .footer .tweetActions ul {
+	padding:0 0 0 0;
+	margin: 0 0 0 0;
+}
+.basicTweet .footer .tweetActions ul li {
+	display:inline-block;
+	padding:0 0 0 0;
+	margin: 0 40px 0 0;
+	list-style-type: none;
+}
+.basicTweet .footer .tweetActions ul li div {
+	display:inline-block;
+	cursor:pointer;
+}
+
+.basicTweet .footer .tweetActions ul li.dm {
+	margin: 0 0 0 0;
+}
+
+
+.basicTweet .footer .tweetActions ul li.reply div{
+	width:16px;
+	height:16px;
+	background:url(../img/reply-sprite.png) 0 0;
+}
+
+.basicTweet .footer .tweetActions ul li.reply div:hover {
+	background-position: -16px 0;
+}
+
+.basicTweet .footer .tweetActions ul li.retweet div{
+	width:19px;
+	height:16px;
+	background:url(../img/retweet-sprite.png) 0 0;
+}
+
+.basicTweet .footer .tweetActions ul li.retweetOn div{
+	width:19px;
+	height:16px;
+	background:url(../img/retweet-sprite.png) -38px 0;
+}
+
+.basicTweet .footer .tweetActions ul li.retweet div:hover {
+	background-position: -19px 0;
+}
+
+.basicTweet .footer .tweetActions ul li.favorite div{
+	width:16px;
+	height:16px;
+	background:url(../img/favorite-sprite.png) 0 0;
+}
+.basicTweet .footer .tweetActions ul li.favoriteOn div{
+	width:16px;
+	height:16px;
+	background:url(../img/favorite-sprite.png) -32px 0;
+}
+
+.basicTweet .footer .tweetActions ul li.favorite div:hover {
+	background-position: -16px 0;
+}
+
+
+
+.dm_button input {
+    padding: 5px;
+    border: 1px solid #E39E9A;
+    background: #E39E9A;
+    color: #fff;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+	margin: 0 0 5px 0;
+}
+
+.dm_button2 {
+	margin: 0 0 5px 0;
+	padding: 0 0 0 0;
+	font-size:1.25em;
+	cursor:pointer;
+}
+
+.dm_button3 {
+	margin: 0 0 0 0;
+	padding: 0 0 0 0;
+	font-size:1em;
+	display:inline-block;
+	cursor:pointer;
+}
+
+
+/**** disabled tweet actions ****/
+.basicTweet .footer .tweetActionsDisabled ul {
+	padding:0 0 0 0;
+	margin: 0 0 0 0;
+}
+.basicTweet .footer .tweetActionsDisabled ul li {
+	display:inline-block;
+	padding:0 0 0 0;
+	margin: 0 40px 0 0;
+	list-style-type: none;
+}
+.basicTweet .footer .tweetActionsDisabled ul li div {
+	display:inline-block;
+	cursor:default;
+}
+
+/** not for DM button **/
+.basicTweet .footer .tweetActionsDisabled ul li.dm div {
+	display:inline-block;
+	cursor:pointer;
+}
+
+.basicTweet .footer .tweetActionsDisabled ul li.reply div{
+	width:16px;
+	height:16px;
+	background:url(../img/reply-sprite.png) 0 0;
+}
+
+
+.basicTweet .footer .tweetActionsDisabled ul li.retweet div{
+	width:19px;
+	height:16px;
+	background:url(../img/retweet-sprite.png) 0 0;
+}
+
+.basicTweet .footer .tweetActionsDisabled ul li.retweetOn div{
+	width:19px;
+	height:16px;
+	background:url(../img/retweet-sprite.png) -38px 0;
+}
+
+
+.basicTweet .footer .tweetActionsDisabled ul li.favorite div{
+	width:16px;
+	height:16px;
+	background:url(../img/favorite-sprite.png) 0 0;
+}
+.basicTweet .footer .tweetActionsDisabled ul li.favoriteOn div{
+	width:16px;
+	height:16px;
+	background:url(../img/favorite-sprite.png) -32px 0;
+}
+
+
+
+	
+	#privateMessages a {
+		color:#336699;
+	}
+	.directMessageContainer {
+
+	}
+	.directMessage{
+	}
+	
+	.breadCrumbSeparator {
+		display:inline-block;
+		padding: 0 5px;
+	}
+	
+
+
+
+  .bubbleLeft {
+	display:inline-block;
+	vertical-align:top;
+    position: relative;
+    width: 100%;
+    background: #EDD0D0;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+	padding: 0px;
+}
+
+  .bubbleLeft:after {
+    content: "";
+    position: absolute;
+    top: 15px;
+    left: -19px;
+    border-style: solid;
+    border-width: 8px 19px 8px 0;
+    border-color: transparent #EDD0D0;
+    display: block;
+    width: 0;
+    z-index: 1;
+}
+
+.bubbleLeft div {
+	padding: 15px;
+}
+
+
+.bubbleImageLeft {
+	display:inline-block;
+	vertical-align:top;
+	margin:0 17px 0 0;
+	
+}
+.bubbleImageLeft img {
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;	
+}
+
+
+  .bubbleRight {
+	display:inline-block;
+	vertical-align:top;
+    position: relative;
+    width: 90%;
+    padding: 0px;
+    background: #A9A3FF;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+}
+
+  .bubbleRight:after {
+    content: "";
+    position: absolute;
+    top: 15px;
+    right: -19px;
+    border-style: solid;
+    border-width: 8px 0 8px 19px;
+    border-color: transparent #A9A3FF;
+    display: block;
+    width: 0;
+    z-index: 1;
+}
+
+.bubbleRight div {
+	padding: 15px;
+}
+.bubbleImageRight {
+	display:inline-block;
+	vertical-align:top;
+}
+
+
+
+.settings h2 a {
+	font-size:0.75em;
+	font-weight:normal;
+	color: #E39E9A;
+}
+
+.settings .opt {
+	padding: 5px;
+	margin: 10px;
+	border:1px solid #ccc;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;	
+	position:relative;
+}
+
+.settings .opt .optTitle  span{
+	font-weight:bold;
+}
+
+.settings .opt:after {
+	content: ' ';
+    float:none;
+    display: block;
+    clear: both;
+}
+
+
+.settings .opt .formRow {
+	display:block;
+	margin: 5px 0;
+}
+
+
+
+.settings .opt .formRow div {
+	padding: 5px 5px 0 5px;
+	vertical-align:top;
+}
+
+.settings .opt .formRow div:first-child {
+	width: 100px;
+}
+.settings .opt .formRow div:nth-child(2) {
+}
+ 
+.settings .opt input[type=checkbox]{
+	width:1.25em;
+	height:1.25em;
+	margin: 0 0 0 0;
+	padding: 0 0 0 0;
+}
+
+.settings .opt .control{
+	position:absolute;
+	top:5px;
+	right:5px;
+}
+
+.settings .opt .note {
+	font-size:0.75em;
+}
+.settings .opt .control .button {
+	color:# E39E9A;
+	cursor:pointer;
+}
+.settings .opt .showKeyContainer #privateKeyCopyarea {
+	display:block;
+}
+
+
+#faq  h2 {
+	margin: 0 0 40px 0;
+	font-size:2em;
+}
+#faq .row {
+	margin: 0 0 30px 0;
+}
+
+#faq .row .question {
+	font-weight:bold;
+	margin: 0 0 5px 0;
+}
+.badgesViewMobile,
+.badgesView {
+	width:26em;
+	margin: 0 auto;
+}
+
+.badgesViewMobile h3,
+.badgesView h3,
+.badgesView .thanks {
+	font-weight:bold;
+	font-size:1.25em;
+	margin: 0 0 3px 0;
+}
+
+.badgesViewMobile h3,
+.badgesView h3,
+.badgesView .thanks {
+	font-weight:bold;
+	font-size:1.25em;
+	margin: 0 0 3px 0;
+}
+
+.badgesViewMobile > div,
+.badgesView > div {
+	margin: 0 0 3em 0;
+}
+
+.badgesViewMobile > div > div,
+.badgesView > div > div {
+	display:inline-block;
+	vertical-align:top;
+}
+.badgesViewMobile > div > div{
+	margin: 0 5px 0 0;
+}
+
+.badgesView > div > form {
+	display:inline-block;
+	vertical-align:top;
+	margin:0 10px 0 0;
+}
+.badgesViewMobile  > div > form {
+	display:block;
+}
+
+.badgesViewMobile .badgesButton {
+	display:block;
+	text-align:center;
+	padding: 1em;
+	margin: 0 0 5px 0;
+	border:1px solid #ccc;
+	background: #E39E9A;
+	color:#fff;
+	
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	cursor:pointer;	
+}
+
+#overlay,#overlay2 {
+	width: 100vw;
+	height: 100vh;
+	background:#fff;
+	opacity: 0.25;
+	z-index:50;
+	position:fixed;
+	top:0;
+	left:0;
+}
+
+#overlay div {
+	width: 3em;
+	height: 3em;
+	background:url('../img/ajax-loader.gif') no-repeat;
+      -webkit-background-size: cover;
+      -moz-background-size: cover;
+      -o-background-size: cover;
+      background-size: cover; 
+	  position:relative;
+	top: 50%;
+	left:50%;
+}
+#overlay2 div {
+	width: 13em;
+	height: 13em;
+	background-color:#000;
+	background:url('../img/seecret_icon_wait.gif') no-repeat;
+      -webkit-background-size: cover;
+      -moz-background-size: cover;
+      -o-background-size: cover;
+      background-size: cover; 
+	  position:relative;
+	top: 50%;
+	left:50%;
+}
+
+/********************************************************/
+
+
+
+#footer {
+	background:#9dc049;
+	text-align:center;
+	padding: 1.25em 0;
+	width:100%;
+	position:fixed;
+	bottom:0;
+	left:0;
+
+}
+
+#footer .footerLogo {
+	display:inline-block;
+	width:14em;
+	margin:0 1.25em 0 0;
+	vertical-align:middle;
+}
+
+#footer .footerCopy {
+	display:inline-block;
+	vertical-align:middle;
+}
+#footer .footerCopy a {
+	color:#fff;
+	text-decoration:none;
+	margin:0 0.625em 0 0;
+}
+#footer .footerCopy a:hover {
+	text-decoration:underline;
+}
+
+
+
+
+
+/** 
+**
+** media queries 
+**
+**/
+
+@media only screen and (max-width: 840px) {
+
+	body {
+		background-position:center 0;
+	}	
+	
+
+
+}
+
+
+
+
+@media only screen and (max-width: 768px) {
+
+
+
+}
+
+
+@media only screen and (max-width: 600px) {
+	#page {
+		width: 85%;
+	}
+	.badgesViewMobile,
+	.badgesView {
+		font-size:0.9em;
+	}
+
+.header #headerTitle div{
+	height: 3.25em;	
+	width: 12em;
+}	
+/*** left panel ****/
+	
+	
+    .panel {
+      width: 10em;
+      padding: 5px 0;
+    }
+	
+	#panelControl {
+		cursor:pointer; 
+		font-size:1.5em; 
+		position: fixed;
+	}
+	.panelControlOpen {
+		left: 6.75em;
+		top: 10px;
+	}
+	.panelControlClosed{
+		left: 1px;
+		top: 10px;
+	}
+
+	.menuLinks {
+		margin: 25px 0 0 0;
+	}
+	.menuLink {
+		display:block;
+		padding: 10px 0 10px 5px;
+		text-decoration:none;
+		font-size:0.9em;
+	}
+
+	.menuLink:hover {
+		background:#e3e3e3;
+		color:#333;
+	}	
+
+	.messageContainer div:first-child {
+		font-size: 0.85em;
+	}
+	#scaffoldsContainer input {
+		font-size: 1.5em;
+	}
+	
+	#scaffoldsContainer div span {
+		font-size: 1.10em;
+	}
+	#scaffoldingStatus {
+		font-size:0.75em;
+	}
+	
+	#footer .footerLogo {
+		width:11em;
+	}
+	.addMoreButton {
+		font-size: 1em;
+	}
+
+	#footer .footerCopy a {
+		font-size:0.85em;
+	}
+
+}
+
+@media only screen and (max-width: 460px) {
+	#loginButton div{
+		width:8.9em;
+		height:1.55em;
+	}	
+	
+}	
+
+@media only screen and (max-width: 430px) {
+.header #headerTitle div{
+	height: 2.75em;	
+	width: 10em;
+}	
+
+.settings .opt .optTitle  span{
+	font-size: 0.85em;
+}
+
+/*** left panel ****/
+	
+    .panel {
+      width: 8em;
+      padding: 5px 0;
+    }
+	
+	#panelControl {
+		cursor:pointer; 
+		font-size:1.5em; 
+		position: fixed;
+	}
+	.panelControlOpen {
+		left: 5em;
+		top: 10px;
+	}
+	.panelControlClosed{
+		left: 1px;
+		top: 10px;
+	}
+
+	.menuLinks {
+		margin: 25px 0 0 0;
+	}
+	.menuLink {
+		padding: 1.5em 0 1.5em 5px;
+		font-size:0.75em;
+	}
+
+	.menuLink:hover {
+		background:#e3e3e3;
+		color:#333;
+	}	
+	.messageContainer {
+		display:block;
+		width: 100%;
+		vertical-align:top;
+	}	
+	
+	.messageContainer div:first-child {
+		font-size: 0.85em;
+	}	
+	
+	
+}	
+
+@media only screen and (max-width: 406px) {
+	#loginButton div{
+		width:7.9em;
+		height:1.4em;
+	}	
+		
+	.basicTweet .footer .tweetActionsDisabled ul li {
+		margin: 0 20px 0 0;
+	}		
+		
+	
+	.badgesViewMobile {
+		width: auto;
+	}
+	.badgesViewMobile,
+	.badgesView {
+		font-size:0.61em;
+	}
+}	
+
+@media only screen and (max-width: 321px) {
+	.header #headerTitle img {
+		width: 10em;
+		height: 3em;
+	}
+	.messageContainer div:first-child {
+		font-size: 0.75em;
+	}	
+	#scaffoldsContainer div span {
+		font-size: 1.5em;
+	}	
+	#footer .footerLogo {
+		width:8.5em;
+	}
+
+
+	#footer .footerCopy a {
+		font-size:0.725em;
+	}
+
+
+	#footer .footerCopy a {
+		margin:0 0.313em 0 0;
+	}
+	
+	div.keyDisplay{
+		padding:5px;
+		background-color:#EFEFEF;
+		
+	}
+	div.keyDisplayContainer{
+		margin-bottom:10px;
+		background-color:#FFF;
+		
+	}
+	
+	div.startingState {
+		display:none;
+	}
+	span.emphasized {
+		font-style:italic;
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+

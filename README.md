@@ -38,13 +38,13 @@ The SHA1 hashes for version 1.0 of the Seecret app are:
 - js/seecret-1.0.min.js  SHA1 Hash : 42ba4410828ff6b75a5f2ea91cc085bea6807777
 - js/seecret_compression-1.0.min.js SHA1 Hash : f0e62aaabf156dec6e28fe9b74bf4aa17ac94e79
 - js/covertexts SHA1 Hash : 0646b3106348e0727a0178c3c346f623eeef7955
-- js/seecret_templates-1.0.min.js SHA1 Hash : 0895541ce50c7a62b5085ea77b2b227370ab6b8c
+- js/seecret_templates-1.0.min.js SHA1 Hash : 7d4ef463c1e708dd7c5f26627d50c48d6fbde159
 - lib/shoco/shoco_jquery_safe.js SHA1 Hash : c2875c8a32e98efaa6a52cb388be7f62ddcd7239
 - lib/smaz/smaz.js SHA1 Hash : 4b863eeb83ec5018c24488137855fda2af3698ad
 - lib/moment-twitter.js SHA1 Hash : 9a3e30a078de9fb7b37300f1c6a22a023d6af7cd
 - css/seecret_app.css  SHA1 Hash : 6347c14a6dcd7ad4e40182a410c28ada9308b966 
 - css/font-awesome-4.3.0/css/font-awesome.min.css SHA1 hash 3e435d5167460aaf367836e1973e90a47039faea
-- js/seecret_hashes.js SHA1 Hash : fd6b920f223f9b09f56b52413792c6f196e52a0e
+- js/seecret_hashes.js SHA1 Hash : 44af2c26b8d55e05f30338040f6f620580e2cd2d
 
 The hashes are also published at the following locations (sometimes as hidden Seecrets):
 - [https://www.seecret.net/mirror.html](http://www.seecret.net/mirror.html)

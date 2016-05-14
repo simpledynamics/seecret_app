@@ -212,7 +212,7 @@ templates['public-key-template.hbs'] = template({"compiler":[7,">= 4.0.0"],"main
     + alias4(((helper = (helper = helpers.receiver_id || (depth0 != null ? depth0.receiver_id : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"receiver_id","hash":{},"data":data}) : helper)))
     + ")\"/>.  \r\n					<br/> "
     + alias4(((helper = (helper = helpers.receiver_name || (depth0 != null ? depth0.receiver_name : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"receiver_name","hash":{},"data":data}) : helper)))
-    + " will receive an invite and a Seecret key that will allow you to send and receive encrypted messages.  Read more in the <a href=\"javascript:app.setView(app.FAQ_VIEW)\">FAQ</a>\r\n				</div>\r\n";
+    + " will receive an invite and a Seecret key that will allow you to send and receive encrypted messages.  Read more in the <a href=\"https://www.seecret.net/faq.html\" target=\"_new\">FAQ</a>\r\n				</div>\r\n";
 },"useData":true});
 })();(function() {
   var template = Handlebars.template, templates = Handlebars.templates = Handlebars.templates || {};

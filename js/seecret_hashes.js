@@ -5,7 +5,7 @@ seecret_hashes =
 {filename:"js/seecret-1.0.min.js",hash:"42ba4410828ff6b75a5f2ea91cc085bea6807777"},
 {filename:"js/seecret_compression-1.0.min.js",hash:"f0e62aaabf156dec6e28fe9b74bf4aa17ac94e79"},
 {filename:"js/covertexts.js",hash:"0646b3106348e0727a0178c3c346f623eeef7955"},
-{filename:"js/seecret_templates-1.0.min.js",hash:"0895541ce50c7a62b5085ea77b2b227370ab6b8c"},
+{filename:"js/seecret_templates-1.0.min.js",hash:"7d4ef463c1e708dd7c5f26627d50c48d6fbde159"},
 {filename:"lib/shoco/shoco_jquery_safe.js",hash:"c2875c8a32e98efaa6a52cb388be7f62ddcd7239"},
 {filename:"lib/smaz/smaz.js",hash:"4b863eeb83ec5018c24488137855fda2af3698ad"},
 {filename:"lib/moment-twitter.js",hash:"9a3e30a078de9fb7b37300f1c6a22a023d6af7cd"},

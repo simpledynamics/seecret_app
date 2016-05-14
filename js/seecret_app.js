@@ -8,7 +8,7 @@ var app = {
 	DIRECT_MESSAGES_VIEW:"privateMessages",
 	PUBLIC_KEYS_VIEW:"publicKeys",
 	STATUS_MESSAGE_VIEW:"statusMessage",
-	GUEST_VIEW:"guest",
+	ABOUT_VIEW:"about",
 	HASHES_VIEW:"hashes",
 	oauthResult:null,
 	doScroll:true,
@@ -60,25 +60,24 @@ var app = {
     	});
     },
     logoutFromTwitter: function() {
-    	app.oauthResult=null;
-		app.lastProcessedStatusId=null;
-		app.lastProcessedMessageId=null;
-		app.dmMaxId=null;
-		app.postedDirectMessageId=null;
-		app.directMessagesToPost=null;
-		app.directMessageCount=null;
-		app.maxId=null;
-		app.activeUser={};
-		app.lastId=null;
-		app.password=null;
-		app.postCompleteCount=0;
-		app.postCompleteTarget=0;
-		app.deleteSavedItem("user");
-    	localStorage.removeItem('oauth_token');
-    	localStorage.removeItem('oauth_token_secret');
-		app.hideAllViews();
-		app.unauthenticatedUI();
-		
+			app.oauthResult=null;
+			app.lastProcessedStatusId=null;
+			app.lastProcessedMessageId=null;
+			app.dmMaxId=null;
+			app.postedDirectMessageId=null;
+			app.directMessagesToPost=null;
+			app.directMessageCount=null;
+			app.maxId=null;
+			app.activeUser={};
+			app.lastId=null;
+			app.password=null;
+			app.postCompleteCount=0;
+			app.postCompleteTarget=0;
+			app.deleteSavedItem("user");
+			localStorage.removeItem('oauth_token');
+			localStorage.removeItem('oauth_token_secret');
+			app.hideAllViews();
+			app.unauthenticatedUI();
 	},
     initOauth: function() {
     	if(app.oauthResult == null) {
@@ -183,8 +182,7 @@ var app = {
 	},
 	updateDirectMessagesUI:function(messages) {
 		$("#getMessagesButton2").remove();
-        var dmHandler = Handlebars.compile($("#direct-messages-template").html());
-        $('#directMessages').append(dmHandler(messages));        
+        $('#directMessages').append(Handlebars.templates["direct-messages-template.hbs"](messages));        
 		$("#olderDirectMessagesButtonContainer").show();
 	},
 	publicKeyStartRegex:/^\s*-----BEGIN PGP PUBLIC KEY BLOCK-----\s/,
@@ -208,7 +206,6 @@ var app = {
 	},
 	timelineContainsEncryptedMessages:function(timeline){
 		for(var t in timeline){
-			//var val = timeline[t].seecret?timeline[t].seecret:timeline[t].text;
 			var val = timeline[t].seecret;
 			if(app.isPGPMessage(val)) {
 				return true;
@@ -307,7 +304,6 @@ var app = {
 		}
 	},
 	verifyMessagesDecrypted:function(messages,pkey) {
-		//openpgp.config.debug=true;
 		var index = null;
 		for(var x in messages)
 		{
@@ -386,20 +382,14 @@ var app = {
 	},
 	undecryptedMessageContentHandler:null,
 	generateUndecryptedMessageContent:function(message){
-		if(!app.undecryptedMessageContentHandler){
-			app.undecryptedMessageContentHandler = Handlebars.compile($("#undecrypted-message-content-template").html());
-		}
-		var html = app.undecryptedMessageContentHandler(message);
-		return html;
+		return Handlebars.templates["undecrypted-message-content-template.hbs"](message);
 	},
 	showPublicKeyManager:function(receiverId, receiverName){
 		app.doScroll=false;
 		var data = {};
 		data.receiver_name = receiverName;
 		data.receiver_id = receiverId;
-        var pkHandler = Handlebars.compile($("#public-key-template").html());
-		var html = pkHandler(data);
-        $('#directMessagesActionsContainer').html(html);        
+        $('#directMessagesActionsContainer').html(Handlebars.templates["public-key-template.hbs"](data));        
 	},
 	showWaitingForPublicKeyView:function(receiverId, receiverName){
 		app.doScroll=false;
@@ -407,15 +397,12 @@ var app = {
 		data.receiver_name = receiverName;
 		data.receiver_id = receiverId;
 		data.invite_date = moment(app.activeUser.sentPublicKeys[receiverId]).format('MMMM Do YYYY, h:mm:ss a');
-        var pkHandler = Handlebars.compile($("#public-key-pending-template").html());
-		var html = pkHandler(data);
-        $('#directMessagesActionsContainer').html(html);        
+        $('#directMessagesActionsContainer').html(Handlebars.templates["public-key-pending-template.hbs"](data));        
 	},
 	showDirectMessageForm:function(receiverId,receiverName){
 		app.doScroll=false;
 		var data ={receiverId:receiverId,receiverName:receiverName};
-        var dmFormHandler = Handlebars.compile($("#direct-message-template").html());
-        $('#directMessagesActionsContainer').html(dmFormHandler(data));        
+        $('#directMessagesActionsContainer').html(Handlebars.templates["direct-message-template.hbs"](data));        
 		app.doScroll=false;
 	},
 	makeKeyOptionsForUser:function(user) {
@@ -539,7 +526,7 @@ var app = {
 		var userData = {};
 		userData.name = receiverName;
 		userData.id_str=receiverId;
-		var receivedKeys = app.activeUser.publicKeys;//getObject("publicKeys-"+user.id_str);
+		var receivedKeys = app.activeUser.publicKeys;
 		for(var x in receivedKeys){
 			if(receivedKeys[x].id_str == receiverId){
 				userData.publicKey=receivedKeys[x];
@@ -558,8 +545,7 @@ var app = {
 		
 	},
 	updateDirectMesssagesBreadcrumbs:function(user){
-        var breadCrumbHandler = Handlebars.compile($("#direct-message-breadcrumb-template").html());
-        $('#directMessagesBreadCrumbContainer').html(breadCrumbHandler(user));        
+        $('#directMessagesBreadCrumbContainer').html(Handlebars.templates["direct-message-breadcrumb-template.hbs"](user));        
 	},
 	//REVISIT
 	initiateDirectMessages:function(receiverId,bSkipWelcome) {
@@ -569,7 +555,7 @@ var app = {
 					messages.push({receiverId:receiverId,text:pkMessages[pk]});
 				}
 				if(!bSkipWelcome) {
-					messages.push({text:app.joinMessage2,receiverId:receiverId});
+					messages.push({text:app.joinMessage,receiverId:receiverId});
 				}
 				app.postDirectMessages(messages, function(){
 					var sentKeys = {};
@@ -581,7 +567,7 @@ var app = {
 					}
 				});
 	},
-	joinMessage2:
+	joinMessage:
 	"I'm using Seecret to send encrypted direct messages over Twitter. Try it with me! Just go to https://www.seecret.net",
 	prepareDirectMessage:function(receiverId) {
 		var directMessage = $("#directMessage").val();
@@ -630,7 +616,6 @@ var app = {
 					var msg = app.hideAndCompress(response.data);
 					app.seecret_engine.config.RANDOM_COVERTEXTS = true;
 					app.seecret_engine.config.MAX_CHAIN_SEGMENT_LENGTH=10000;
-					//console.log(JSON.stringify(app.seecret_engine.config));
 					var chain = app.seecret_engine.chainify(msg,covertexts);
 					app.seecret_engine.config.RANDOM_COVERTEXTS = false;
 					app.seecret_engine.config.MAX_CHAIN_SEGMENT_LENGTH=140;
@@ -717,18 +702,11 @@ var app = {
 			return;
 		}
 		var publicKeys = app.activeUser.publicKeys;
-/*		if(publicKeys == null) {
-			app.showPublicKeyManager(receiverId,receiverName);
-			return;
-		}
-*/		
 		var sentPublicKeys = app.activeUser.sentPublicKeys;
 		if(sentPublicKeys != null && sentPublicKeys[receiverId] != null && !(publicKeys != null && publicKeys[receiverId])) { 
-		//if(sentPublicKeys != null && sentPublicKeys[receiverId] != null && !publicKeys[receiverId]) { 
 			app.showWaitingForPublicKeyView(receiverId,receiverName);
 		}
 		else if(publicKeys == null || (publicKeys != null && !publicKeys[receiverId])){
-		//else if(!publicKeys[receiverId]){
 			app.showPublicKeyManager(receiverId,receiverName);
 		}
 		else {
@@ -806,7 +784,6 @@ var app = {
 		var fData = {};
 		fData.data = {};
 		fData.data.user_id = followersList.join();
-		//console.log("getting all follower data: " + JSON.stringify(fData));
 		app.oauthResult.get('1.1/friendships/lookup.json', fData)
 		.done(function (response) {
 			var followers = {};
@@ -832,7 +809,6 @@ var app = {
 		for(var x in timeline){
 			if(timeline[x].seecret_envelope){
 				var envelope = timeline[x].seecret_envelope;
-				//console.log("Found a message with a seecret! a" + envelope + "b in covertext " + timeline[x].text);
 				var seecretMessage = app.seecret_engine.getSeecretFromEnvelope(envelope);
 				var contentType = app.seecret_engine.getContentTypeFromEnvelope(envelope);
 				var message = app.seecret_engine.unhide(seecretMessage,contentType);
@@ -843,8 +819,6 @@ var app = {
 					}
 					catch(error){
 						timeline[x].seecret = "Could not decompress the Seecret";
-						//TODO:  remove this error stringify
-						//timeline[x].seecret = JSON.stringify(error);
 						timeline[x].seecret_error = error;
 					}
 				}
@@ -940,8 +914,7 @@ var app = {
 	},
 	processTimelineWithFollowerInfo:function(timeline){
 		var timeline = app.processTimelineMessages(timeline,app.getUniqueTweeters);
-        var statusListHandler = Handlebars.compile($("#status-template").html());
-        $('#status-list').append(statusListHandler(timeline)); 
+        $('#status-list').append(Handlebars.templates["status-template.hbs"](timeline)); 
 		$('.basicTweet').fadeIn();
 		app.updatingTimeline = false;
 		if(app.userTimelineId){
@@ -949,7 +922,6 @@ var app = {
 		}
 		else {
 			$("#timelineName").html("");
-			
 		}
 	},
 	renderUserTimelineHeader:function(screenName){
@@ -1171,8 +1143,7 @@ var app = {
 			$("#scaffoldingStatus").empty();
 			$('#textarea-statusUpdate').val('');
 			$('#textarea-statusUpdate').val('');
-			var scaffoldHandler = Handlebars.compile($("#scaffolds-template").html());
-			$('#scaffoldsContainer').html(scaffoldHandler());        
+			$('#scaffoldsContainer').html(Handlebars.templates["scaffolds-template.hbs"]());        
 			$('#scaffoldingContainer > div > div > input').val('');
 			app.maxId = null;
 			this.currentMessageChain = Array();
@@ -1205,7 +1176,7 @@ var app = {
 			$("#privateMessageButton").hide();
 			$("#timelineButton").hide();
 			app.unauthenticatedMenu();
-			app.setView(app.GUEST_VIEW);
+			app.setView(app.ABOUT_VIEW);
 	},
 	authenticatedMenu:function(){
 			$("#privateMessageButton").show();
@@ -1214,6 +1185,8 @@ var app = {
 			$("#logoutButton").show();
 			$("#hashesButton").show();
 			$("#publicKeysButton").show();
+			$("#aboutButton").show();
+			
 	},
 	unauthenticatedMenu:function(){
 			$("#privateMessageButton").hide();
@@ -1223,12 +1196,12 @@ var app = {
 			$("#publicKeysButton").hide();
 	},
 	authenticatedHeader: function () {
-		var authHandler =  Handlebars.compile($("#authenticated-header-template").html());
-		$('#loginContainer').html(authHandler(app.activeUser.user));     
+		//var authHandler =  Handlebars.compile($("#authenticated-header-template").html());
+		$('#loginContainer').html(Handlebars.templates["authenticated-header-template.hbs"](app.activeUser.user));     
 	},
 	unauthenticatedHeader: function () {
-		var unAuthHandler = Handlebars.compile($("#unauthenticated-header-template").html());
-		$('#loginContainer').html(unAuthHandler());    
+		//var unAuthHandler = Handlebars.compile($("#unauthenticated-header-template").html());
+		$('#loginContainer').html(Handlebars.templates["unauthenticated-header-template.hbs"]());    
 	},
 	hideAllViews:function(){
 		$('#timeline').hide();
@@ -1236,7 +1209,7 @@ var app = {
 		$("#privateMessages").hide();
 		$("#settings").hide();
 		$("#publicKeys").hide();
-		$("#guest").hide();
+		$("#about").hide();
 		$("#hashes").hide();
 	},
 	setMenuState:function(button){
@@ -1255,7 +1228,7 @@ var app = {
 		app.setMenuState(viewName + "Button");
 	},
 	renderPublicKeys:function (){
-		var keysHandler =  Handlebars.compile($("#public-keys-template").html());
+		//var keysHandler =  Handlebars.compile($("#public-keys-template").html());
 		var sentPublicKeys = app.activeUser.publicKeys;
 		var keys = Array();
 		var keysCount =0;
@@ -1265,7 +1238,7 @@ var app = {
 			keysCount++;
 		}
 		if(keysCount > 0){
-			var html = keysHandler({keys:keys});
+			var html = Handlebars.templates["public-keys-template.hbs"]({keys:keys});
 			$("#publicKeysDisplayArea").html(html);
 		}
 		else {
@@ -1284,8 +1257,8 @@ var app = {
 	},
 	showPrivateKeyManager:function(){
 		app.doScroll = false;
-        var pkHandler = Handlebars.compile($("#private-key-template").html());
-        $('#directMessagesActionsContainer').html(pkHandler());        
+        //var pkHandler = Handlebars.compile($("#private-key-template").html());
+        $('#directMessagesActionsContainer').html(Handlebars.templates["private-key-template.hbs"]());        
 		$("#directMessagesActionsContainer").show();
 	},	
 	openClosePanel: function(direction){
@@ -1381,27 +1354,27 @@ var app = {
 			var id= num;
 			var scaffoldCount = num+1;
 			var data = {scaffoldId:id,val:val,scaffoldCount:scaffoldCount};
-			var scaffoldHandler =  Handlebars.compile($("#scaffold-template").html());
-			$('#scaffoldsContainer').append(scaffoldHandler(data));        
+			//var scaffoldHandler =  Handlebars.compile($("#scaffold-template").html());
+			$('#scaffoldsContainer').append(Handlebars.templates["scaffold-template.hbs"](data));        
 	},
 	makeUpdateFormReady:function(availableCharacters) {
 		$("#submitButtonContainer").show();
-		var scaffoldStatusHandler =  Handlebars.compile($("#scaffold-status-good-template").html());
+		//var scaffoldStatusHandler =  Handlebars.compile($("#scaffold-status-good-template").html());
 		var data  = {};
 		data.availableCharacters = availableCharacters;
-		$('#scaffoldingStatus').html(scaffoldStatusHandler(data));        
+		$('#scaffoldingStatus').html(Handlebars.templates["scaffold-status-good-template.hbs"](data));
 	},
 	makeUpdateFormNotReady:function(neededCharacters) {
 		$("#submitButtonContainer").hide();
-		var scaffoldStatusHandler =  Handlebars.compile($("#scaffold-status-spillover-template").html());
+		//var scaffoldStatusHandler =  Handlebars.compile($("#scaffold-status-spillover-template").html());
 		var data  = {};
 		data.spillover = neededCharacters;
-		$('#scaffoldingStatus').html(scaffoldStatusHandler(data));        
+		$('#scaffoldingStatus').html(Handlebars.templates["scaffold-status-spillover-template.hbs"](data));        
 	},
 	makeUpdateFormPending:function() {
 		$("#submitButtonContainer").hide();
-		var scaffoldStatusHandler =  Handlebars.compile($("#scaffold-status-incomplete-template").html());
-		$('#scaffoldingStatus').html(scaffoldStatusHandler());        
+		//var scaffoldStatusHandler =  Handlebars.compile($("#scaffold-status-incomplete-template").html());
+		$('#scaffoldingStatus').html(Handlebars.templates["scaffold-status-incomplete-template.hbs"]());        
 	},
 	removeScaffold:function(index){
 			var scaffolds = app.getScaffolds();
@@ -1487,8 +1460,8 @@ var app = {
 			keysData.privateKey.dateCreatedDisplay = new moment(keysData.privateKey.dateCreated).format('MMMM Do YYYY, h:mm:ss a');
 			keysData.publicKey = publicKey;
 			keysData.keyOptions = keyOptions;
-			var handler = Handlebars.compile($("#user-keys-template").html());
-    		var html = handler(keysData);
+			//var handler = Handlebars.compile($("#user-keys-template").html());
+    		var html = Handlebars.templates["user-keys-template.hbs"](keysData);
 			$("#privateKeyCopyarea").html(html);
 			$("#privateKeyCopyarea").fadeIn();
 	},
@@ -1691,9 +1664,7 @@ $( document ).ready(function() {
 		app.processScaffoldField(0);
 		app.processScaffolding()
 	});
-	var hashesHandler =  Handlebars.compile($("#hashes-template").html());
-	var content = hashesHandler(seecret_hashes);
-	$('#hashesContent').html(content);        
+	$('#hashesContent').html(Handlebars.templates["hashes-template.hbs"](seecret_hashes));;
 	
 
 });
@@ -1702,15 +1673,7 @@ Handlebars.registerHelper('tweetShortDate', function(tweetDate) {
 	if(!dtext.match(/\//)) {dtext +=" ago";}
 	return dtext;
 });
-window.onhashchange = function() {
-	var uri = new URI(location.href);
-	var fragment = uri.fragment();
-	if(!fragment){
-		document.location.reload(true);
-	}
-	app.setView(fragment);
-}
- function executeCopy(text){
+function executeCopy(text){
     var copyDiv = document.createElement('div');
     copyDiv.contentEditable = true;
     document.body.appendChild(copyDiv);

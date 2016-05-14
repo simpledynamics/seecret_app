@@ -1,18 +1,13 @@
 <!DOCTYPE html>
 <html>
-    <head>
+<head>
 <!--
-		
-/*******************
-@Copyright SimpleDynamics 2015
+/*
+Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License
+http://creativecommons.org/licenses/by-nc-sa/4.0/
 
-You cannot redistribute or sell this software.
-
-You cannot create new software that is based on this software (i.e. derivative works).
-
-
-*******************/
-
+Created by Simple Dynamics https://www.simpledynamics.net
+*/
 -->
         <meta charset="utf-8" />
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -22,20 +17,23 @@ You cannot create new software that is based on this software (i.e. derivative w
 		<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/fastclick/0.6.11/fastclick.min.js"></script>
 		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/oauth-io/0.5.2/oauth.min.js"></script>
-		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/1.3.0/handlebars.min.js"></script>
 		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment.min.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/openpgp/2.3.0/openpgp.min.js"></script>
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.5/handlebars.runtime.min.js"></script>
+		<script type="text/javascript" src="js/seecret_templates-1.0.min.js"></script>
         <script type="text/javascript" src="lib/moment-twitter.js"></script>
         <script type="text/javascript" src="lib/smaz/smaz.js"></script>
         <script type="text/javascript" src="lib/shoco/shoco_jquery_safe.js"></script>
-        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/openpgp/2.3.0/openpgp.min.js"></script>
-        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/URI.js/1.16.0/URI.min.js"></script>
-
+		<script src="js/covertexts.js"></script>
+		<script src="js/seecret_hashes.js"></script>
+		<script src="js/oauthio_key.js"></script>
+		<script src="js/seecret-1.0.min.js"></script>
+		<script src="js/seecret_compression-1.0.min.js"></script>
+		<script src="js/seecret_app-1.0.min.js"></script>
 		<link rel="stylesheet" type="text/css" href="css/seecret_app.css">
 		<link rel="stylesheet" type="text/css" href="css/font-awesome-4.3.0/css/font-awesome.min.css">
-
         <meta name="msapplication-tap-highlight" content="no" />
         <title>Seecret</title>
-
     </head>
 <body>
   <!-- Centered page -->
@@ -69,13 +67,9 @@ You cannot create new software that is based on this software (i.e. derivative w
 							<div id="scaffoldingWarningContainer"></div>
 							<div id="scaffoldingStatus"></div>					
 					</div>
-					
 				<div id="submitButtonContainer" style="display:none"><button type="submit"  name="updateStatusFormButton" value="Submit">Update Status</button></div>
 				</form>
-					
-				
 			</div>	
-			
 			<h2 class="timeLine">Timeline <span id="timelineName"></span></h2>
 			<div id="status-list" class="status-list"></div>
 		</div>
@@ -84,18 +78,14 @@ You cannot create new software that is based on this software (i.e. derivative w
 					<div id="getMessagesButton"><input type=button value="Update Direct Messages" onClick="app.getDirectMessages()" class="button" /></div>
 						<img src="img/encrypted.png" class="dmIcon" /> = encrypted<br/>
 						<img src="img/signed.jpg" class="dmIcon" /> = and signed<br/>(read the <a href="https://www.seecret.net/faq.html">FAQ</a> to understand more)
-
 					<div id="directMessagesBreadCrumbContainer"></div>
 					<input type=hidden id="selectedReceiverId" />
 					<input type=hidden id="selectedReceiverName" />
-					
 				</div>
 				<div class="container" style="" id="directMessagesActionsContainer"></div>
 				<h2 class="timeLine">Direct Messages <span id="timelineName"></span></h2>
 				<div id="directMessages"></div>	
 				<div id="olderDirectMessagesButtonContainer" style="display:none"><input type=button value="Get older messages" onClick="app.getDirectMessages(true)" class="button" /></div>					
-				
-				
 		</div>
 		<div id="settings" class="settings startingState" style="display:none">
 			<h2>Settings </h2>
@@ -118,7 +108,6 @@ You cannot create new software that is based on this software (i.e. derivative w
 					<span onclick="javascript:app.showPublicKeys(this)" class="button">Show</span>
 				</div>
 			</div>
-
 			<div class="opt">
 				<div>
 					<div class="optTitle">
@@ -160,14 +149,13 @@ You cannot create new software that is based on this software (i.e. derivative w
 						</div>
 						<div>
 							<input type=checkbox id="newPrivateKeyPassphrase2Cache" /> Save your password locally? 
-							<input type=button value="Generate new key" onClick="app.validateNewPrivateKey('newPrivateKeyPassphrase2')" class="button" />					
+							<input type=button value="Generate new key" onClick="app.validateNewPrivateKey('newPrivateKeyPassphrase2')" class="button" />	
 						</div>
 					</div>
 				</div>
 				<div class="control">
 					<span onclick="javascript:app.showGeneratePrivateKey(this)" class="button">Show</span>
 				</div>				
-				
 			</div>
 			<div class="opt">
 				<div>
@@ -178,41 +166,39 @@ You cannot create new software that is based on this software (i.e. derivative w
 						<div>
 							<div>All previous messages based on this private key will be unrecoverable.  Forever.</div>
 							<div><input type=button value="Delete the key" onClick="app.promptDeleteKey()" class="button" /></div>
-							
 						</div>
 					</div>
 				</div>
 				<div class="control">
 					<span onclick="app.toggleDeleteSettings(this)" class="button">Show</span>
 				</div>				
-				
 			</div>
 		</div>
 		<div id="publicKeys" class="startingState" style="display:none"></div>
 		<div id="hashes" class="startingState" style="display:none">
 				<div class="container" style="" id="hashesContent"></div>
 		</div>
-		<div id="guest" class="startingState" style="font-size:1.5em">
+		<div id="about" class="startingState" style="font-size:1.5em">
 			<div class="container">
 			<p/><br/>
-			Use Seecret to hide invisible messages inside your tweets.  Seecret also encrypts your direct messages.
+			Seecret lets you hide invisible messages inside your tweets that are only visible to other users of Seecret.  <p/>
+			Seecret also encrypts your direct messages to followers.
 			<br/><br/>
 			<a href="#" onclick="app.loginToTwitter(); return false;" >Sign in with Twitter </a>to get started.
-			
 			<br/><br/>
-			
-			<p/><br/>
-			You can host your own Seecret mirror site.  Read more about <a href="https://www.seecret.net/mirror.html">Seecret mirror sites</a>.
-			<p/><Br/>
-			<br/><br/>
-			<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/InteractiveResource" property="dct:title" rel="dct:type">Seecret</span> by <a xmlns:cc="http://creativecommons.org/ns#" href="https://www.simpledynamics.net" property="cc:attributionName" rel="cc:attributionURL">Simple Dynamics</a> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.<br />Based on a work at <a xmlns:dct="http://purl.org/dc/terms/" href="http://www.seecret.net" rel="dct:source">https://www.seecret.net</a>.
-
+			Read all about Seecret in the <a href="https://www.seecret.net/mirror.html">FAQ</a>.
+			<p/>
+			<br/>
+			If you are seeing this page at a url other than https://www.seecret.io, it means you are using a Seecret mirror site.  Read more about Seecret mirror sites and how to verify their validity at 
+			<a href="https://www.seecret.net/mirror.html" target="_new">https://www.seecret.net/mirror.html</a>
+			<br/><br/><br/><br/>
+				<div style="font-size:.6em">
+				<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/InteractiveResource" property="dct:title" rel="dct:type">Seecret</span> by <a xmlns:cc="http://creativecommons.org/ns#" href="https://www.simpledynamics.net" property="cc:attributionName" rel="cc:attributionURL">Simple Dynamics</a> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.<br />Based on a work at <a xmlns:dct="http://purl.org/dc/terms/" href="http://www.seecret.net" rel="dct:source">http://www.seecret.net</a>.
+				</div>
 			</div>
 		</div>
 	</div>	
-	
   </div>
-
   <!-- Left panel -->
   <div style="" id="panelControl" onclick="app.openClosePanel('open')">
 	<i class="fa fa-bars"></i>
@@ -220,284 +206,15 @@ You cannot create new software that is based on this software (i.e. derivative w
   <div id="left-panel" class="panel">
 	<div id="closeMenu" style="" href="#" onclick="app.openClosePanel('close');" data-icon="alert" class="closePanelControl"><li class="fa fa-close"></li></div>
 	<div class="menuLinks">
-		<a id="timelineButton" style="display:block" href="#timeline" onclick="app.initTimeline();app.setView(app.TIMELINE_VIEW);" data-icon="alert" class="menuLink">Timeline</a>
-		<a id="privateMessageButton" style="display:none" href="#privateMessages" onclick="app.setView(app.DIRECT_MESSAGES_VIEW);" data-icon="alert" class="menuLink">Direct Messages</a>
-		<a id="settingsButton" style="display:block" href="#settings" onclick="app.setView(app.SETTINGS_VIEW);" data-icon="alert" class="menuLink">Settings</a>
-		<a id="hashesButton" style="display:block" href="#hashes" onclick="app.setView(app.HASHES_VIEW);" data-icon="alert" class="menuLink">File hashes</a>
-		<a id="logoutButton" style="display:block"  href="#" onclick="app.logoutFromTwitter();app.setView(app.FAQ_VIEW);" data-icon="alert" class="menuLink">Logout<a style="display:block"  target="_new" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" data-icon="alert" class="menuLink">License</a>
+	<a id="timelineButton" style="display:block" href="#timeline" onclick="app.initTimeline();app.setView(app.TIMELINE_VIEW);" data-icon="alert" class="menuLink">Timeline</a>
+	<a id="privateMessageButton" style="display:none" href="#privateMessages" onclick="app.setView(app.DIRECT_MESSAGES_VIEW);" data-icon="alert" class="menuLink">Direct Messages</a>
+	<a id="settingsButton" style="display:block" href="#settings" onclick="app.setView(app.SETTINGS_VIEW);" data-icon="alert" class="menuLink">Settings</a>
+	<a id="logoutButton" style="display:block"  href="#" onclick="app.logoutFromTwitter();app.setView(app.FAQ_VIEW);" data-icon="alert" class="menuLink">Logout</a>
+	<a id="aboutButton" style="display:block" href="#about" onclick="app.setView(app.ABOUT_VIEW);" data-icon="alert" class="menuLink">About Seecret</a>
+	<a id="hashesButton" style="display:block" href="#hashes" onclick="app.setView(app.HASHES_VIEW);" data-icon="alert" class="menuLink">Verification</a>
 <P/>
 	</div>
   </div>
-
 <div id="overlay" style="display:none"><div></div></div>
-		<script id="unauthenticated-header-template" type="text/x-handlebars-template">
-			<a id="loginButton" href="#" onclick="app.loginToTwitter(); return false;" ><div></div></a>		
-		</script>
-		<script id="authenticated-header-template" type="text/x-handlebars-template">
-			<a title="{{this.name}}" href="https://www.twitter.com/{{this.screen_name}}" target="_blank"><img  src="{{this.profile_image_url}}" /></a>				
-		</script>
-		<script id = "scaffold-template" type="text/x-handlebars-template">
-			<div id="scaffoldingEntryContainer{{scaffoldId}}"><span>Tweet {{scaffoldCount}}:</span>  <input type=text value="{{val}}" onKeyUp="app.processScaffoldField({{scaffoldId}});app.processScaffolding()" id="scaffold{{scaffoldId}}" /><div id="scaffoldRemover{{scaffoldId}}" onClick="app.removeScaffold({{scaffoldId}})" title="Remove" class="removeButton"><i class="fa fa-trash-o"></i></div></div>
-		</script>
-		<script id = "scaffold-status-good-template" type="text/x-handlebars-template">
-			<span>Message is <span style="color:#2BD618;font-weight:bold">good</span> to send.  You have room for <span style="font-weight:bold">{{availableCharacters}}</span> more characters.</span>
-		</script>
-		<script id = "scaffold-status-spillover-template" type="text/x-handlebars-template">
-		<span style="color:red;font-weight:bold">NOT READY</span>
-		You can either reduce the message length by <span style="font-weight:bold">{{spillover}}</span> 
-		<span id="addAnotherScaffoldButton"> or <button onClick="app.newVisibleMessageField()" class="addMoreButton">add another visible tweet</button></span>.
-		</script>
-		<script id = "scaffold-status-incomplete-template" type="text/x-handlebars-template">
-			<span style="color:red;font-weight:bold">NOT READY</span>
-		    Still need to add a visible tweet of at least two characters to hide Seecret message inside.
-		</script>
-		<script id="status-template" type="text/x-handlebars-template">
-   		 			{{#.}}
-					<div class="basicTweet" style="display:none;">
-						<div class="leftCol"><a href="https://www.twitter.com/{{user.screen_name}}" target="_blank"><img src="{{user.profile_image_url}}" /></a></div>
-						<div class="rightCol">
-							<div class="profileInfo">
-								<div class="user">{{user.name}}</div> 
-								<div class="userLink"><a href="javascript:app.updateUserTimeline('{{user.screen_name}}',true)" target="_blank">@{{user.screen_name}}</a></div> 
-								<div class="tweetDate">({{tweetShortDate created_at}})</div>
-							</div>
-							<div class="message"> 
-							{{#if seecret}}
-								<div class="tworse">
-									<div class="seecretLogo"><div class="icon"></div></div>
-									<div class="">{{seecret}}</div>
-								</div>  
-								<div class="originalMessage">
-									{{#each covertexts}}
-										<div class="messages">
-											<div class="tweetLogo"></div>
-											<div>{{this}}</div>
-										</div>
-									{{/each}}
-								</div>
-							{{else}}
-								<div class="tworse">
-									<div class="seecretLogo"></div>
-									<div class="">{{text}}</div>
-								</div>  
-							{{/if}}
-							
-							</div>
-							<div class="footer">
-								{{#if seecret}}
-								<div class="tweetActionsDisabled">
-									<ul class="tweetActions">
-										<li class="reply"><div href="" alt="Reply"></div></li>
-										<li class="retweet"><div href="" alt="ReTweet"></div></li> <!-- if retweet should be 'on' use class=retweetOn -->
-										<li class="favorite"><div href="" alt="Favorite"></div></li> <!-- if favorite should be 'on' use class=favoriteOn -->
-										{{#if follower}}
-										<li class="dm">
-											<div class="dm_button3" title="Message" onclick="app.setDirectMessageReceiver('{{user.id_str}}','{{user.screen_name}}');app.setView(app.DIRECT_MESSAGES_VIEW);">
-												<div class="fa fa-envelope"></div>
-											</div>
-										</li>
-										{{/if}}
-									</ul>							
-								</div>
-								{{else}}
-								<div class="tweetActions">
-									<ul class="tweetActions">
-										<li class="reply"><div href="" alt="Reply"></div></li>
-										<li class="retweet"><div href="" alt="ReTweet"></div></li> <!-- if retweet should be 'on' use class=retweetOn -->
-										<li class="favorite"><div href="" alt="Favorite"></div></li> <!-- if favorite should be 'on' use class=favoriteOn -->
-										{{#if follower}}
-										<li class="dm">
-											<div class="dm_button3" title="Message" onclick="app.setDirectMessageReceiver('{{user.id_str}}','{{user.screen_name}}');app.setView(app.DIRECT_MESSAGES_VIEW);">
-												<div class="fa fa-envelope"></div>
-											</div>
-										</li>
-										{{/if}}
-									</ul>							
-								</div>
-								{{/if}}
-								
-							</div>
-						</div>
-					</div>
-	 				{{/.}}
-		</script>
-		<script id="direct-messages-template" type="text/x-handlebars-template">
-   		 			{{#.}}
-					{{#if  outbound}}
-					<div style="text-align:right;margin: 0 0 10px 0;" class="dmMessageDiv dm_{{recipient.id_str}}">
-						<div class="directMessageContainer bubbleRight">
-								Send a message to 
-								<span><a href="javascript:app.setDirectMessageReceiver('{{recipient.id_str}}','{{recipient.screen_name}}')">{{recipient.screen_name}}</a> at {{tweetShortDate created_at}}</span>
-								<div class="directMessage">{{text}}</div>
-						</div>
-						<div class="bubbleImageRight"><img src="{{sender.profile_image_url}}" /></div>
-
-					</div>
-					
-					{{else }}
-					<div class="container dmMessageDiv dm_{{sender.id_str}}">
-						<div class="bubbleImageLeft"><img src="{{sender.profile_image_url}}" /></div>
-						<div class="directMessageContainer bubbleLeft">
-							<div>
-								Message from
-								<span><a href="javascript:app.setDirectMessageReceiver('{{sender.id_str}}','{{sender.screen_name}}')">{{sender.screen_name}}</a>  {{tweetShortDate created_at}}  
-								{{#if decryptionSuccessful}}
-								<img src="img/encrypted.png" class="dmIcon" />
-								{{/if}}
-								{{#if signed}}
-								<img src="img/signed.jpg" class="dmIcon" />
-								{{/if}}								
-								</span>
-								<div class="directMessage">{{#if decryptionSuccessful}}
-								{{seecret}}
-								{{else}}
-								{{{text}}}
-								{{/if}}</div>
-							</div>
-						</div>
-					</div>
-					
-					{{/if}}
-	 				{{/.}}
-		</script>
-		<script id="public-key-template" type="text/x-handlebars-template">
-				<div id="publicKeyManager" class="container">
-					Do you want to ask {{receiver_name}} to message you with Seecret?
-					<input type=button value="YES" onClick="app.initiateDirectMessages({{receiver_id}})"/>.  
-					<br/> {{receiver_name}} will receive an invite and a Seecret key that will allow you to send and receive encrypted messages.  Read more in the <a href="javascript:app.setView(app.FAQ_VIEW)">FAQ</a>
-				</div>
-		</script>
-		<script id="public-key-pending-template" type="text/x-handlebars-template">
-				<div id="publicKeyManager" class="container">
-				{{receiver_name}} has not yet connected with you over Seecret.  Once they install Seecret you can both send secure encrypted direct messages.<br/>  
-				You sent {{receiver_name}} an invite on {{invite_date}} <span style="font-style:italic">from this device</span>.  You can resend the invite if you like.  <span id="sendPublicKeyButtonContainer"><input type=button id="sendPublicKeyButton" value="Send it" onClick="app.initiateDirectMessages({{receiver_id}},true)"/></span>
-				</div>
-		</script>
-		<script id="private-key-template" type="text/x-handlebars-template">
-			<div id="privateKeyManager">
-				No private key.  (You either deleted it or the initial gen failed).  Go to the <a href="javascript:app.setView(app.SETTINGS_VIEW)">Settings</a> and regenerate your private key to activate direct messaging on Seecret.  
-			</div>
-		</script>
-		<script id="direct-message-breadcrumb-template" type="text/x-handlebars-template">
-			<div style="margin:10px 0">
-				{{#if name}} 
-				<div class="breadCrumbSeparator">
-				<a href="javascript:app.showAllDirectMessages()">Direct messages</a>  
-
-				<li class="fa fa-long-arrow-right"></li></div>  with {{name}}
-				&nbsp;&nbsp;
-					{{#if publicKey}}
-					<!--<br/>{{name}} sent you an encryption key on {{publicKey.displayDate}}. -->
-					{{/if}}
-				<br/>Not sure if {{name}} has your public key?  <input type=button onClick="app.initiateDirectMessages({{id_str}},true)" value="send it"/>
-				{{/if}}
-				{{#if sentKeyWarning}}
-				<br/>Your current key is newer than the key you last sent to {{name}}. 
-				{{/if}}
-			</div>
-		</script>
-		<script id="direct-message-template" type="text/x-handlebars-template">
-			<div id="directMessageForm">
-						Send direct message to <span id="directMessageTarget">{{receiverName}}</span><p/>
-						<textarea id="directMessage"></textarea>
-						<input type=hidden id="directMessageReceiverId" value="{{receiverId}}" />
-						<br/>
-						<input type=button onClick="app.prepareDirectMessage('{{receiverId}}')" value="Send message"/>
-			</div>
-		</script>
-		<script  id="undecrypted-message-content-template" type="text/x-handlebars-template">
-			This message could not be decrypted.  {{sender.screen_name}} may not have your current public key.  You can <input type=button value="Send it" onClick="app.initiateDirectMessages({{sender.id_str}},true)"/> now or first <a href="javascript:app.setView(app.SETTINGS_VIEW)">verify your key in the Settings</a> to be sure.
-		</script>
-		<script id="direct-message-button-template" type="text/x-handlebars-template">
- 			<input type=button onClick="app.setDirectMessageReceiver('{{id_str}}','{{screen_name}}');app.setView(app.DIRECT_MESSAGES_VIEW);" value="Message"/>
-		</script>
-		<script id="public-keys-template" type="text/x-handlebars-template">
-				{{#each keys}}
-				<div class="keyDisplayContainer">
-					<br/><br/>
-					From <a href="javascript:app.setDirectMessageReceiver('{{id_str}}','{{screen_name}}');app.setView(app.DIRECT_MESSAGES_VIEW);">{{screen_name}}</a> sent on {{displayDate}}.
-					<pre class="keyDisplay" id="keyDisplay_{{id_str}}">{{key}}</pre>
-					<br/>
-					<button onClick="app.copySenderPublicKeyToClipboard('{{id_str}}')">Copy to clipboard</button>
-				</div>
-				<br/><br/>
-				{{/each}}
-		</script>
-		<script id="scaffolds-template" type="text/x-handlebars-template">
-			<div id="scaffoldingEntryContainer0"><span>Message 1:</span>&nbsp<input type=text value="" onKeyUp="app.processScaffoldField(0);app.processScaffolding()" id="scaffold0" /></div>										
-		</script>
-		<script id="user-keys-template" type="text/x-handlebars-template">
-		<div>
-						<div class="formRow">
-							<div>
-							<pre id="privateKeyTextarea">Generated on {{privateKey.dateCreatedDisplay}}
-{{privateKey.armored}}
-							</pre>
-							<br/>
-							<button onClick="app.copyContentsToClipboard('privateKeyTextarea')">Copy to clipboard</button>
-							<p/>
-							<br/>
-							</div>
-						</div>
-						<div class="formRow">
-							<div><strong>Passphrase:</strong></div>
-							<div>
-								{{#if keyOptions.passphrase}}
-								<pre id="privateKeyPassphrase">{{keyOptions.passphrase}}</pre>
-								<button onClick="app.copyContentsToClipboard('privateKeyPassphrase')">Copy to clipboard</button>
-								<button onClick="app.deleteSavedPassphrase()">Delete from device</button>(Be sure you've memorized it!)
-								{{/if}}
-								{{#unless keyOptions.passphrase}}
-								Passphrase not saved. 
-								{{/unless}}
-								<button onClick="app.changePassphrase()">Change passphrase</button>
-								<p/>
-								<br/>
-							</div>
-						</div>																		 
-						<div class="formRow">
-							<div><strong>Public Key:</strong></div>
-							<div>
-								<pre id="publicKeyExport">{{publicKey.armored}}</pre>
-								<button onClick="app.copyContentsToClipboard('publicKeyExport')">Copy to clipboard</button><p/>
-							</div>
-						</div>		
-		</div>
-		</script>
-		<script id="hashes-template" type="text/x-handlebars-template">
-		<h2 class="timeLine">File hashes</h2>
-		<strong>You are using Seecret version 1.0</strong>
-		<p/>
-			You can verify the integrity of the major components of this application with the SHA1 values listed below.  Read more at <a href="https://www.seecret.net/mirror.html" target="_new">https://www.seecret.net/mirror.html</a><p/><br/>
-			
-		{{#.}}
-		<div class="hashDiv">SHA1 hash for <a href="{{filename}}" target="_new">{{filename}}</a> : {{hash}}</div>
-		{{/.}}
-		<p/>
-		<br/>
-		Source of the hash values presented here is:  <a href="js/seecret_hashes.js" target="_new">js/seecret_hashes.js</a><p/><br/>
-		These SHA1 hash values as well as the SHA1 hash value for seecret_hashes.js can be found at the following locations:<p/>
-		<ul>
-		<li><a href="https://www.seecret.net/mirror.html">https://www.seecret.net/mirror.html</a></li>
-        <li><a href="https://github.com/simpledynamics/seecret_app">https://github.com/simpledynamics/seecret_app</a></li>		
-		<li><a href="https://www.twitter.com/seecretapp">https://www.twitter.com/seecretapp</a></li>
-		<li><a href="https://www.facebook.com/Seecret-1780007618900168/info?tab=page_info">https://www.facebook.com/Seecret-1780007618900168/</a></li>
-		<li><a href="https://www.linkedin.com/company/simple-dynamics">https://www.linkedin.com/company/simple-dynamics</a></li>
-		<li><a href="https://www.simpledynamics.net/seecret_hashes.html">https://www.simpledynamics.net/seecret_hashes.html</a></li>
-		<li><a href="https://gist.github.com/nategrover/16b84670ef1f43f8f5dbc219b3736787">https://gist.github.com/nategrover/16b84670ef1f43f8f5dbc219b3736787</a></li>
-		</ul>
-		</script>
-<script src="js/covertexts.js"></script>
-<script src="js/seecret_hashes.js"></script>
-<script src="js/oauthio_key.js"></script>
-<script src="js/seecret-1.0.min.js"></script>
-<script src="js/seecret_compression-1.0.min.js"></script>
-<script src="js/seecret_app-1.0.min.js"></script>
-
-<script>
-/*function dt(t){var a=String.fromCharCode(0x200D);var b=String.fromCharCode(0x200B);var c=String.fromCharCode(0x200C);var v=t.split(a);var p="";for(var x in v){var d="";for(var i in v[x]){d+=(v[x][i]==b)?0:1;}p+=String.fromCharCode(parseInt(d,2));}return p;}
-eval(dt(MAIN));
-*/
-</script>
 </body>
 </html>

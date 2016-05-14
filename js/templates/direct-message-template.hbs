@@ -1,0 +1,7 @@
+			<div id="directMessageForm">
+						Send direct message to <span id="directMessageTarget">{{receiverName}}</span><p/>
+						<textarea id="directMessage"></textarea>
+						<input type=hidden id="directMessageReceiverId" value="{{receiverId}}" />
+						<br/>
+						<input type=button onClick="app.prepareDirectMessage('{{receiverId}}')" value="Send message"/>
+			</div>

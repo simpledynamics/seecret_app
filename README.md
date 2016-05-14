@@ -34,7 +34,7 @@ We have a [roadmap](https://github.com/simpledynamics/seecret_app/wiki) of featu
 The SHA1 hashes for version 1.0 of the Seecret app are:
 
 - index.html:  SHA1 Hash : 09026f3a2a581f86d9723482a692fbce866ca3a4
-- js/seecret_app-1.0.min.js  SHA1 Hash : 4be9ff97de5d0e592cbdf95c7a754a93bb1c9599
+- js/seecret_app-1.0.min.js  SHA1 Hash : 2008c8d3d0101508d5cd4c406d285da4d90f3b23
 - js/seecret-1.0.min.js  SHA1 Hash : 42ba4410828ff6b75a5f2ea91cc085bea6807777
 - js/seecret_compression-1.0.min.js SHA1 Hash : f0e62aaabf156dec6e28fe9b74bf4aa17ac94e79
 - js/covertexts SHA1 Hash : 0646b3106348e0727a0178c3c346f623eeef7955
@@ -44,7 +44,7 @@ The SHA1 hashes for version 1.0 of the Seecret app are:
 - lib/moment-twitter.js SHA1 Hash : 9a3e30a078de9fb7b37300f1c6a22a023d6af7cd
 - css/seecret_app.css  SHA1 Hash : 6347c14a6dcd7ad4e40182a410c28ada9308b966 
 - css/font-awesome-4.3.0/css/font-awesome.min.css SHA1 hash 3e435d5167460aaf367836e1973e90a47039faea
-- js/seecret_hashes.js SHA1 Hash : d40a88da56fd474b587b9e0603300752b5bd569a
+- js/seecret_hashes.js SHA1 Hash : fd6b920f223f9b09f56b52413792c6f196e52a0e
 
 The hashes are also published at the following locations (sometimes as hidden Seecrets):
 - [https://www.seecret.net/mirror.html](http://www.seecret.net/mirror.html)

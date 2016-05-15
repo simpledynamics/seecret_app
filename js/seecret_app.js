@@ -1680,8 +1680,6 @@ $( document ).ready(function() {
 		e.preventDefault();
 		app.updateStatus();
 	});
-	
-
 });
 Handlebars.registerHelper('tweetShortDate', function(tweetDate) {
 	var dtext =  moment(tweetDate, 'dd MMM DD HH:mm:ss ZZ YYYY', 'en').twitter();

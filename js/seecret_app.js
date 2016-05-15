@@ -766,8 +766,18 @@ var app = {
 			app.handleEmptyTimelineResponse(response);
 		}
 	},
-	handleGetTimelineError:function(){
-		alert("There was an error retrieving your timeline.")
+	handleGetTimelineError:function(err){
+		if(err.status == 429){
+			alert("Twitter rate limit exceeded.  You must wait 15 minutes to make more requests from this app.")
+		}
+		else if(err.status == 404){
+			alert("Twitter says that screen name does not exist.")
+		}
+		else {
+			alert("There was an error retrieving the timeline.")
+			
+		}
+		console.log("Error:" + JSON.stringify(err));
 		$('#overlay').css('display','none');
 	},
 	handleEmptyTimelineResponse:function(response){

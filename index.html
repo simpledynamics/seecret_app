@@ -47,6 +47,7 @@ Created by Simple Dynamics https://www.simpledynamics.net
 		<div id="timeline"  class="startingState" style="display:none">
 			<div class="container">
 				<form id="updateStatusForm">
+					<h2>Tweet a Seecret</h2>
 					<div class="messageContainer updateCell">
 						<div>Seecret Message</div>
 						<div>
@@ -67,11 +68,20 @@ Created by Simple Dynamics https://www.simpledynamics.net
 							<div id="scaffoldingWarningContainer"></div>
 							<div id="scaffoldingStatus"></div>					
 					</div>
-				<div id="submitButtonContainer" style="display:none"><button type="submit"  name="updateStatusFormButton" value="Submit">Update Status</button></div>
 				</form>
+				<div id="submitButtonContainer" style="display:none"><button type="submit"  name="updateStatusFormButton" value="Submit">Update Status</button></div>
 			</div>	
+			<div class="container">
+			
+			Enter a username to view their timeline: <input style="width:150px;" type=text name="twitterUser" id="twitterUser"/> <input type="button" onclick="app.updateUserTimeline($('#twitterUser').val(),true)" value="View timeline"/>
+							
+							
+
+			</div>
+			<P/>
 			<h2 class="timeLine">Timeline <span id="timelineName"></span></h2>
 			<div id="status-list" class="status-list"></div>
+			<div id="updateHomeTimelineButtonContianer"><input type=button value="Get older messages" onClick="app.updateHomeTimeline()" class="button" /></div>					
 		</div>
 		<div id="privateMessages"  class="startingState" style="display:none">
 				<div class="viewHeader">

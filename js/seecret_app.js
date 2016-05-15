@@ -755,7 +755,12 @@ var app = {
 	},
 	handleTimelineResponse:function(response){
 		if(response.length > 0) {
-			app.processTimelineResponse(response);
+			if(response.length == 1 && response[0].id_str == app.maxId){
+				$("#status-list").append(Handlebars.templates["no-more-timeline-message-template.hbs"]());
+			}
+			else {
+				app.processTimelineResponse(response);
+			}
 		}
 		else {
 			app.handleEmptyTimelineResponse(response);

@@ -490,7 +490,7 @@ var app = {
 			}
 			if(user != null) {
 				var start = new Date();
-				//console.log("start generating key pair : " + start.getSeconds() + ":" + start.getMilliseconds());
+				console.log("start generating key pair : " + start.getSeconds() + ":" + start.getMilliseconds());
 				openpgp.generateKey(keyOptions).then(function(key) {
 					var privkey = key.privateKeyArmored; // '-----BEGIN PGP PRIVATE KEY BLOCK ... '
 					var pubkey = key.publicKeyArmored;   // '-----BEGIN PGP PUBLIC KEY BLOCK ... '
@@ -500,7 +500,7 @@ var app = {
 	},
 	generatePrivateKeyPairSuccess:function(response, keyOptions, save, callback){
 					var end = new Date()
-					//console.log("done generating key pair: " + end.getSeconds() + ":"+ end.getMilliseconds());
+					console.log("done generating key pair: " + end.getSeconds() + ":"+ end.getMilliseconds());
 					if(!save){
 						delete keyOptions.passphrase;
 					}
@@ -1094,7 +1094,7 @@ var app = {
 		//we set this to true because certain UI triggers such as scroll handler are deprecated while updating Timeline
 		app.updatingTimeline = true;
 		var postData = app.generateTimelinePostVals();
-		if(!postData.maxId){
+		if(!postData.data.max_id){
 			//if max id null we are getting the list for the first time
 			$("#status-list").empty();
 			app.lastProcessedStatusId= null;
@@ -1224,7 +1224,7 @@ var app = {
 	setView:function(viewName){
 		app.doScroll=false;
 		app.hideAllViews();
-		$('#' + viewName).fadeIn(function(){app.doScroll=true;});
+		$('#' + viewName).fadeIn(function(){app.doScroll=true;}).css("display","block");
 		app.setMenuState(viewName + "Button");
 	},
 	renderPublicKeys:function (){
@@ -1620,21 +1620,17 @@ var app = {
 	}
 
 }
-$('#updateStatusForm').submit(function(e) { 
-    e.preventDefault();
-    app.updateStatus();
-});
 $( document ).ready(function() {
 	openpgp.config.show_comment=false;
 	openpgp.config.show_version=false;
 	app.initialize();  
 	app.seecret_engine = new SEECRET_ENGINE();
 	$(window).scroll(function() {
-		//console.log("app.doScroll ==  "  + app.doScroll);
 		if(app.doScroll){
 			var scrollTop = $(window).scrollTop();
 			var winHeight = $(window).height();
 			var docHeight = $(document).height()
+			var v = scrollTop + winHeight;
 			if(scrollTop + winHeight == docHeight) {
 			   if(document.getElementById("timeline").style.display=="block" && !app.updatingTimeline){
 					if(app.homeTimeline){
@@ -1665,6 +1661,10 @@ $( document ).ready(function() {
 		app.processScaffolding()
 	});
 	$('#hashesContent').html(Handlebars.templates["hashes-template.hbs"](seecret_hashes));;
+	$('#updateStatusForm').submit(function(e) { 
+		e.preventDefault();
+		app.updateStatus();
+	});
 	
 
 });

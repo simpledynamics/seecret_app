@@ -161,7 +161,7 @@ var app = {
 		if(app.dmMaxId && bScrolling){
 			data.max_id = app.dmMaxId;
 		}
-		$('#overlay').css('display','block');
+		app.overlay();
     	app.oauthResult.get('1.1/direct_messages.json', {
             data: data
         })
@@ -169,18 +169,18 @@ var app = {
 				if(response.length > 0){
 					var messages = app.processDirectMessagesResponse(response);
 					app.updateDirectMesssagesBreadcrumbs(null);
-					$('#overlay').css('display','none');
 				}
 				else {
-					$('#overlay').css('display','none');
-					$("#directMessages").html("No direct messages via Seecret");
+					app.hideOverlays();
+					$("#directMessages").html("No direct messages.");
 				}
 		})
         .fail(function (err) {
-			$('#overlay').css('display','none');
+			app.hideOverlays();
         })
 	},
 	updateDirectMessagesUI:function(messages) {
+		app.hideOverlays();
 		$("#getMessagesButton2").remove();
         $('#directMessages').append(Handlebars.templates["direct-messages-template.hbs"](messages));        
 		$("#olderDirectMessagesButtonContainer").show();
@@ -258,18 +258,20 @@ var app = {
 	},
 	processDirectMessagesResponse:function(directMessages) {
 		var messages = app.processDirectMessages(directMessages,app.getUniqueDMSenders);
-		for(var m in messages){
+		//for(var m in messages){
 			if(app.timelineContainsKeys(messages)) {
 				app.savePublicKeys(app.getPublicKeyMessagesFromDMList(messages));
 			}
 			if(app.timelineContainsEncryptedMessages(messages)) {
 				app.markEncryptedDirectMessages(messages);
+				//The animated image freezes when jumping into promise land
+				console.log("decrypting direct messages!");
 				app.decryptDirectMessages(messages);
 			}
 			else {
 				app.updateDirectMessagesUI(messages);
 			}
-		}
+		//}
 	},
 	markEncryptedDirectMessages:function(messages){
 		for(var m in messages){
@@ -736,21 +738,21 @@ var app = {
 		else {
 			$("#status-list").empty();
 		}
-		$('#overlay').css('display','block');
+		app.hideOverlays();
 		app.getUserTimeline(postData,app.handleTimelineResponse);
 	},
 	getTimeline:function(postVals,callback){
 		app.oauthResult.get('1.1/statuses/home_timeline.json', postVals)
 		.done(function (response) {
 			callback(response);
-			$('#overlay').css('display','none');
+			app.hideOverlays();
 		}).fail(app.handleGetTimelineError);
 	},
 	getUserTimeline:function(postVals,callback){
 		app.oauthResult.get('1.1/statuses/user_timeline.json', postVals)
 		.done(function (response) {
 			callback(response);
-			$('#overlay').css('display','none');
+			app.hideOverlays();
 		}).fail(app.handleGetTimelineError);
 	},
 	handleTimelineResponse:function(response){
@@ -778,10 +780,10 @@ var app = {
 			
 		}
 		console.log("Error:" + JSON.stringify(err));
-		$('#overlay').css('display','none');
+		app.hideOverlays();
 	},
 	handleEmptyTimelineResponse:function(response){
-		$('#overlay').css('display','none');		
+		app.hideOverlays();
 	},
 	processTimelineResponse:function(response){
 		app.addFollowerTagToTweets(response,app.processTimelineWithFollowerInfo);
@@ -1114,7 +1116,7 @@ var app = {
 			$("#status-list").empty();
 			app.lastProcessedStatusId= null;
 		}
-		$('#overlay').css('display','block');
+		app.overlay()
 		app.getTimeline(postData,app.handleTimelineResponse);
     },
 	postCompleteCount:0,
@@ -1632,6 +1634,14 @@ var app = {
 	privateKeyTest:function() {
 		var privateKey = openpgp.key.readArmored(app.activeUser.privateKey.armored).keys[0];
 		alert(app.decryptPrivateKey(privateKey));
+	},
+	overlay:function(id){
+		if(!id) id="overlay";;
+		$('#' + id).css('display','block');
+	},
+	hideOverlays:function(){
+		$('#overlay').css('display','none');
+		$('#static-overlay').css('display','none');
 	}
 
 }

@@ -158,8 +158,18 @@ templates['hashes-template.hbs'] = template({"1":function(container,depth0,helpe
 },"useData":true});
 })();(function() {
   var template = Handlebars.template, templates = Handlebars.templates = Handlebars.templates || {};
+templates['no-more-direct-messages-template.hbs'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    return "<div style=\"font-weight:bold\">You have reached the very first direct message to you.  There are no more.</div>";
+},"useData":true});
+})();(function() {
+  var template = Handlebars.template, templates = Handlebars.templates = Handlebars.templates || {};
 templates['no-more-timeline-message-template.hbs'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     return "<div style=\"font-weight:bold\">You have reached the very first message of this timeline.  There are no more.</div>";
+},"useData":true});
+})();(function() {
+  var template = Handlebars.template, templates = Handlebars.templates = Handlebars.templates || {};
+templates['no-seecrets-in-timeline-segment-template.hbs'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    return "<div style=\"font-weight:bold\">There were no Seecrets found in the last 200 tweets in the timeline.</div>";
 },"useData":true});
 })();(function() {
   var template = Handlebars.template, templates = Handlebars.templates = Handlebars.templates || {};

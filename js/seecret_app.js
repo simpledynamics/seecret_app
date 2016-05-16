@@ -841,6 +841,7 @@ var app = {
 						timeline[x].seecret = message;
 					}
 					catch(error){
+						console.log("error decompressing a seecret message: " + JSON.stringify(error));
 						timeline[x].seecret = "Could not decompress the Seecret";
 						timeline[x].seecret_error = error;
 					}

@@ -39,13 +39,17 @@ var seecret_compression = {
 		return returnVal;
 	},
 	decompress:function(vals){
+		console.log("decompressing a seecret");
 		if(!seecret_compression.validateCompressedArray(vals)) {
+			console.log("invalid compressed array! " + JSON.stringify(array));
 			throw seecret_compression.INVALID_COMPRESSED_ARRAY_VALUES_ERROR;
 		}
 		if(vals[0] == seecret_compression.SMAZ_TYPE){
+			console.log("desmazifying");
 			return seecret_compression.desmazify(vals.slice(1));
 		}
 		else if (vals[0] == seecret_compression.SHOCO_TYPE){
+			console.log("deshocotizing");
 			return seecret_compression.deshocotize(vals.slice(1));
 		}
 	},
@@ -78,3 +82,11 @@ var seecret_compression = {
 		toString:function(){return this.name + " : " + this.message;}
 	}
 }
+/*
+Polyfill for isInteger as latest versions of IE do not support it.
+*/
+Number.isInteger = Number.isInteger || function(value) {
+    return typeof value === "number" && 
+           isFinite(value) && 
+           Math.floor(value) === value;
+};

@@ -50,11 +50,13 @@ var app = {
             }
         })
     	.done(function(result) {
+			console.log("oauth done!");
     		app.oauthResult = result;
     		app.saveOauth();
 			app.updateOauthUserInfo();
     	})
     	.fail(function (err) {
+			console.log(JSON.stringify(err));
 			alert("Error logging into Twitter.  Please try again");
 			app.unauthenticatedUI();
     	});
@@ -257,8 +259,11 @@ var app = {
 		}
 	},
 	processDirectMessagesResponse:function(directMessages) {
-		var messages = app.processDirectMessages(directMessages,app.getUniqueDMSenders);
-		//for(var m in messages){
+		if(directMessages.length == 1 && directMessages[0].id_str == app.dmMaxId){
+			$("#directMessages").append(Handlebars.templates["no-more-direct-messges-template.hbs"]());
+		}
+		else {
+			var messages = app.processDirectMessages(directMessages,app.getUniqueDMSenders);
 			if(app.timelineContainsKeys(messages)) {
 				app.savePublicKeys(app.getPublicKeyMessagesFromDMList(messages));
 			}
@@ -271,7 +276,7 @@ var app = {
 			else {
 				app.updateDirectMessagesUI(messages);
 			}
-		//}
+		}
 	},
 	markEncryptedDirectMessages:function(messages){
 		for(var m in messages){
@@ -650,6 +655,7 @@ var app = {
 				app.postDirectMessage(text,receiverId,callback);
 			}
 			else {
+				alert("Sent!");
 				if(callback){
 					callback();
 				}
@@ -821,7 +827,7 @@ var app = {
 			callback(timeline);
 		});
 	},
-	unhideAndDecompressTimelineSeecrets:function(timeline,bShowAll=false){
+	unhideAndDecompressTimelineSeecrets:function(timeline,bShowAll){
 		var filteredTimeline = [];
 		for(var x in timeline){
 			if(timeline[x].seecret_envelope){
@@ -926,12 +932,17 @@ var app = {
 		if(firstIncompleteStart > 0){
 			app.maxId = timeline[firstIncompleteStart].id_str;
 		}
-		timeline = app.unhideAndDecompressTimelineSeecrets(timeline);
+		timeline = app.unhideAndDecompressTimelineSeecrets(timeline,!document.getElementById("showOnlySeecrets").checked);
 		return timeline;
 	},
 	processTimelineWithFollowerInfo:function(timeline){
 		var timeline = app.processTimelineMessages(timeline,app.getUniqueTweeters);
-        $('#status-list').append(Handlebars.templates["status-template.hbs"](timeline)); 
+		if(timeline.length > 0){
+			$('#status-list').append(Handlebars.templates["status-template.hbs"](timeline)); 
+		}
+		else if($("#showOnlySeecrets")){
+			$("#status-list").append(Handlebars.templates["no-seecrets-in-timeline-segment-template.hbs"]());
+		}
 		$('.basicTweet').fadeIn();
 		app.updatingTimeline = false;
 		if(app.userTimelineId){
@@ -1105,7 +1116,8 @@ var app = {
 		app.userTimelineId = null;
 		app.updateHomeTimeline();
 	},
-    updateHomeTimeline: function() {
+    updateHomeTimeline: function(bFromTheTop) {
+		if(bFromTheTop) app.maxId = null;
 		app.homeTimeline=true;
 		$("#timelineName").empty();
 		//we set this to true because certain UI triggers such as scroll handler are deprecated while updating Timeline

@@ -922,6 +922,7 @@ var app = {
 			app.dmMaxId = timeline[firstIncompleteStart].id_str;
 		}
 		timeline = app.unhideAndDecompressTimelineSeecrets(timeline,true);
+		timeline = app.imgUrlsToHttps(timeline,"sender");
 		return timeline;
 	},
 	processTimelineMessages:function(timeline,filterGenerator){
@@ -934,7 +935,17 @@ var app = {
 			app.maxId = timeline[firstIncompleteStart].id_str;
 		}
 		timeline = app.unhideAndDecompressTimelineSeecrets(timeline,!document.getElementById("showOnlySeecrets").checked);
+		timeline = app.imgUrlsToHttps(timeline,"user");
 		return timeline;
+	},
+	httpsReplaceRegex:/^http:/,
+	imgUrlsToHttps:function(list,memberObject){
+		for(var l in list){
+			if(list[l][memberObject] && list[l][memberObject].profile_image_url){
+				list[l][memberObject].profile_image_url = list[l][memberObject].profile_image_url.replace(app.httpsReplaceRegex,"https:");
+			}
+		}
+		return list;
 	},
 	processTimelineWithFollowerInfo:function(timeline){
 		var timeline = app.processTimelineMessages(timeline,app.getUniqueTweeters);

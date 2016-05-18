@@ -270,7 +270,6 @@ var app = {
 			if(app.timelineContainsEncryptedMessages(messages)) {
 				app.markEncryptedDirectMessages(messages);
 				//The animated image freezes when jumping into promise land
-				console.log("decrypting direct messages!");
 				app.decryptDirectMessages(messages);
 			}
 			else {

@@ -218,7 +218,7 @@ Created by Simple Dynamics https://www.simpledynamics.net
 	<div id="closeMenu" style="" href="#" onclick="app.openClosePanel('close');" data-icon="alert" class="closePanelControl"><li class="fa fa-close"></li></div>
 	<div class="menuLinks">
 	<a id="timelineButton" style="display:block" href="#timeline" onclick="app.initTimeline();app.setView(app.TIMELINE_VIEW);" data-icon="alert" class="menuLink">Timeline</a>
-	<a id="privateMessageButton" style="display:none" href="#privateMessages" onclick="app.setView(app.DIRECT_MESSAGES_VIEW);" data-icon="alert" class="menuLink">Direct Messages</a>
+	<a id="privateMessageButton" style="display:none" href="#privateMessages" onclick="app.setView(app.DIRECT_MESSAGES_VIEW);app.getDirectMessages();" data-icon="alert" class="menuLink">Direct Messages</a>
 	<a id="settingsButton" style="display:block" href="#settings" onclick="app.setView(app.SETTINGS_VIEW);" data-icon="alert" class="menuLink">Settings</a>
 	<a id="logoutButton" style="display:block"  href="#" onclick="app.logoutFromTwitter();app.setView(app.FAQ_VIEW);" data-icon="alert" class="menuLink">Logout</a>
 	<a id="aboutButton" style="display:block" href="#about" onclick="app.setView(app.ABOUT_VIEW);" data-icon="alert" class="menuLink">About Seecret</a>

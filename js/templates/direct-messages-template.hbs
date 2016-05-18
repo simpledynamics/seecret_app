@@ -1,16 +1,4 @@
    		 			{{#.}}
-					{{#if  outbound}}
-					<div style="text-align:right;margin: 0 0 10px 0;" class="dmMessageDiv dm_{{recipient.id_str}}">
-						<div class="directMessageContainer bubbleRight">
-								Send a message to 
-								<span><a href="javascript:app.setDirectMessageReceiver('{{recipient.id_str}}','{{recipient.screen_name}}')">{{recipient.screen_name}}</a> at {{tweetShortDate created_at}}</span>
-								<div class="directMessage">{{text}}</div>
-						</div>
-						<div class="bubbleImageRight"><img src="{{sender.profile_image_url}}" /></div>
-
-					</div>
-					
-					{{else }}
 					<div class="container dmMessageDiv dm_{{sender.id_str}}">
 						<div class="bubbleImageLeft"><img src="{{sender.profile_image_url}}" /></div>
 						<div class="directMessageContainer bubbleLeft">
@@ -32,6 +20,4 @@
 							</div>
 						</div>
 					</div>
-					
-					{{/if}}
 	 				{{/.}}

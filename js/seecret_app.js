@@ -261,6 +261,7 @@ var app = {
 	processDirectMessagesResponse:function(directMessages) {
 		if(directMessages.length == 1 && directMessages[0].id_str == app.dmMaxId){
 			$("#directMessages").append(Handlebars.templates["no-more-direct-messages-template.hbs"]());
+			app.hideOverlays();
 		}
 		else {
 			var messages = app.processDirectMessages(directMessages,app.getUniqueDMSenders);

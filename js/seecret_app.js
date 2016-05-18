@@ -155,6 +155,7 @@ var app = {
 		$("#directMessagesBreadCrumbContainer").empty();
 		if(!bScrolling){
 			$("#directMessages").empty();
+			app.dmMaxId=null;
 		}
 		var data ={
                 count: 200,
@@ -569,9 +570,6 @@ var app = {
 					sentKeys[receiverId] = true;
 					app.trackSentPublicKeys(sentKeys);
 					app.checkDirectMessageStatus();					
-					if(bSkipWelcome){
-						alert("Sent!")
-					}
 				});
 	},
 	joinMessage:

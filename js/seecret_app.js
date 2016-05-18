@@ -153,6 +153,7 @@ var app = {
     getDirectMessages:function(bScrolling) {
 		$("#directMessagesActionsContainer").empty();
 		$("#directMessagesBreadCrumbContainer").empty();
+		$("#friendName").empty();
 		if(!bScrolling){
 			$("#directMessages").empty();
 			app.dmMaxId=null;
@@ -541,16 +542,11 @@ var app = {
 				userData.publicKey.displayDate = new moment(userData.publicKey.receiveDate).format('MMMM Do YYYY, h:mm:ss a');;
 			}
 		}
-		app.updateDirectMesssagesBreadcrumbs(userData);
+		//app.updateDirectMesssagesBreadcrumbs(userData);
+		$("#friendName").html(Handlebars.templates["direct-message-friend-name.hbs"](userData));
 		app.checkDirectMessageStatus();
 		$( ".dmMessageDiv" ).hide();
 		$( ".dm_" + receiverId).fadeIn();
-	},
-	showAllDirectMessages:function() {
-		$( ".dmMessageDiv").show();
-		app.updateDirectMesssagesBreadcrumbs();
-        $('#directMessagesActionsContainer').html("");        
-		
 	},
 	updateDirectMesssagesBreadcrumbs:function(user){
         $('#directMessagesBreadCrumbContainer').html(Handlebars.templates["direct-message-breadcrumb-template.hbs"](user));        

@@ -9,10 +9,6 @@
 							</div>
 							<div class="message"> 
 							{{#if seecret}}
-								<div class="tworse">
-									<div class="seecretLogo"><div class="icon"></div></div>
-									<div class="">{{seecret}}</div>
-								</div>  
 								<div class="originalMessage">
 									{{#each covertexts}}
 										<div class="messages">
@@ -21,6 +17,10 @@
 										</div>
 									{{/each}}
 								</div>
+								<div class="tworse">
+									<div class="seecretLogo"><div class="icon"></div></div>
+									<div class="">{{seecret}}</div>
+								</div>  
 							{{else}}
 								<div class="tworse">
 									<div class="seecretLogo"></div>

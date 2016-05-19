@@ -151,6 +151,7 @@ var app = {
     },
     dmMaxId:null,
     getDirectMessages:function(bScrolling) {
+		app.updatingDirectMessages=true;
 		$("#directMessagesActionsContainer").empty();
 		$("#directMessagesBreadCrumbContainer").empty();
 		$("#friendName").empty();
@@ -188,6 +189,7 @@ var app = {
 		$("#getMessagesButton2").remove();
         $('#directMessages').append(Handlebars.templates["direct-messages-template.hbs"](messages));        
 		$("#olderDirectMessagesButtonContainer").show();
+		app.updatingDirectMessages=false;
 	},
 	publicKeyStartRegex:/^\s*-----BEGIN PGP PUBLIC KEY BLOCK-----\s/,
 	publicKeyEndRegex:/\s-----END PGP PUBLIC KEY BLOCK-----\s*$/,
@@ -264,6 +266,12 @@ var app = {
 		if(directMessages.length == 1 && directMessages[0].id_str == app.dmMaxId){
 			$("#directMessages").append(Handlebars.templates["no-more-direct-messages-template.hbs"]());
 			app.hideOverlays();
+			app.updatingDirectMessages=false;
+		}
+		else if(directMessages.lenth == 0 && app.dmMaxId){
+			$("#directMessages").append(Handlebars.templates["no-seecrets-in-direct-messages-template.hbs"]());
+			app.hideOverlays();
+			app.updatingDirectMessages=false;
 		}
 		else {
 			var messages = app.processDirectMessages(directMessages,app.getUniqueDMSenders);

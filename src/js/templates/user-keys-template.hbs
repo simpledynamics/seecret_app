@@ -1,0 +1,36 @@
+		<div>
+						<div class="formRow">
+							<div>
+							<pre id="privateKeyTextarea">Generated on {{privateKey.dateCreatedDisplay}}
+{{privateKey.armored}}
+							</pre>
+							<br/>
+							<button onClick="app.copyContentsToClipboard('privateKeyTextarea')">Copy to clipboard</button>
+							<p/>
+							<br/>
+							</div>
+						</div>
+						<div class="formRow">
+							<div><strong>Passphrase:</strong></div>
+							<div>
+								{{#if keyOptions.passphrase}}
+								<pre id="privateKeyPassphrase">{{keyOptions.passphrase}}</pre>
+								<button onClick="app.copyContentsToClipboard('privateKeyPassphrase')">Copy to clipboard</button>
+								<button onClick="app.deleteSavedPassphrase()">Delete from device</button>(Be sure you've memorized it!)
+								{{/if}}
+								{{#unless keyOptions.passphrase}}
+								Passphrase not saved. 
+								{{/unless}}
+								<button onClick="app.changePassphrase()">Change passphrase</button>
+								<p/>
+								<br/>
+							</div>
+						</div>																		 
+						<div class="formRow">
+							<div><strong>Public Key:</strong></div>
+							<div>
+								<pre id="publicKeyExport">{{publicKey.armored}}</pre>
+								<button onClick="app.copyContentsToClipboard('publicKeyExport')">Copy to clipboard</button><p/>
+							</div>
+						</div>		
+		</div>

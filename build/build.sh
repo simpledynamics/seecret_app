@@ -1,5 +1,11 @@
 cd ../src/js/templates;
-rm *.js;
+JSFILES=*.js;
+for f in $FILES;
+do
+	echo "deleting - $f";
+	delete $f;
+done
+
 FILES=*.hbs;
 for f in $FILES;
 do
@@ -7,16 +13,20 @@ do
 	handlebars $f -f $f.js;
 done
 echo "creating seecret_templates.js";
-cat *.js > seecret_templates.js;
+cat *.js > seecret_templates.temp;
+mv seecret_templates.temp seecret_templates.js;
 echo "removing all *.hbs.js files";
 rm *.hbs.js;
 cd ..
-echo "minimizing templates/seecret_templates.js";
+echo "minimizing templates/seecret_templates.js into seecret_templates-1.0.min.js";
 java -jar ../../build/compiler.jar --js templates/seecret_templates.js --js_output_file seecret_templates-1.0.min.js;
-echo "minimizing seecret_app.js";
+echo "deleting templates/seecret_templates.js";
+rm templates/seecret_templates.js;
+echo "minimizing seecret_app.js into seecret_app-1.0.min.js";
 java -jar ../../build/compiler.jar --js seecret_app.js --js_output_file seecret_app-1.0.min.js;
-echo "minimizing seecret_compression.js";
+echo "minimizing seecret_compression.js into seecret_compression-1.0.min.js";
 java -jar ../../build/compiler.jar --js seecret_compression.js --js_output_file seecret_compression-1.0.min.js;
+
 
 cd ..;
 rm hashes.txt;

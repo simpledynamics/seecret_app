@@ -1757,6 +1757,7 @@ $( document ).ready(function() {
 		$('#hashesContent').html(Handlebars.templates["hashes-not-found-template.hbs"]());;
 		app.setView(app.HASHES_VIEW);
 		app.unauthenticatedMenu();
+		$("#aboutButton").hide();
 	});
 	
 	

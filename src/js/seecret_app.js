@@ -230,37 +230,35 @@ var app = {
 		
 	},
 	savePublicKeys:function(keys){
-		for(var k in keys){
-			var user = app.activeUser.user;
-			var sentPublicKeys = app.activeUser.sentPublicKeys;
-			var publicKeys = app.activeUser.publicKeys;
-			if(publicKeys == null) publicKeys = {};
-			var newPublicKeys = {};
-			if(sentPublicKeys == null) sentPublicKeys = {};
-			var outbound = Array();
-			var keysToSend = {};
-			for(var each in keys){
-				if(keys[each].sender.id_str == app.activeUser.user.id){
-					//this is the user's own key in an outbound DM;
-					continue;
-				}
-				//last sent key should be found first and the older ones ignored
-				if(!newPublicKeys[keys[each].sender.id_str]){
-					newPublicKeys[keys[each].sender.id_str] =  {
-						key:keys[each].seecret,
-						screen_name:keys[each].sender.screen_name,
-						id_str:keys[each].sender.id_str,
-						receiveDate:keys[each].created_at
-					}
-					
-				}
+		var user = app.activeUser.user;
+		var sentPublicKeys = app.activeUser.sentPublicKeys;
+		var publicKeys = app.activeUser.publicKeys;
+		if(publicKeys == null) publicKeys = {};
+		var newPublicKeys = {};
+		if(sentPublicKeys == null) sentPublicKeys = {};
+		var outbound = Array();
+		for(var each in keys){
+			if(keys[each].sender.id_str == app.activeUser.user.id){
+				//this is the user's own key in an outbound DM;
+				continue;
 			}
-			for(var x in newPublicKeys){
-				publicKeys[x] = newPublicKeys[x];
+			//last sent key should be found first and the older ones ignored
+			if(!newPublicKeys[keys[each].sender.id_str]){
+				console.log("Got a key from " + keys[each].sender.screen_name + " dated " + keys[each].created_at);
+				newPublicKeys[keys[each].sender.id_str] =  {
+					key:keys[each].seecret,
+					screen_name:keys[each].sender.screen_name,
+					id_str:keys[each].sender.id_str,
+					receiveDate:keys[each].created_at
+				}
+				
 			}
-			app.saveObject("publicKeys-"+app.activeUser.user.id_str,publicKeys);
-			app.activeUser.publicKeys = publicKeys;
 		}
+		for(var x in newPublicKeys){
+			publicKeys[x] = newPublicKeys[x];
+		}
+		app.saveObject("publicKeys-"+app.activeUser.user.id_str,publicKeys);
+		app.activeUser.publicKeys = publicKeys;
 	},
 	processDirectMessagesResponse:function(directMessages) {
 		if(directMessages.length == 1 && directMessages[0].id_str == app.dmMaxId){
@@ -268,13 +266,16 @@ var app = {
 			app.hideOverlays();
 			app.updatingDirectMessages=false;
 		}
-		else if(directMessages.lenth == 0 && app.dmMaxId){
+		else if(directMessages.length == 0){
 			$("#directMessages").append(Handlebars.templates["no-seecrets-in-direct-messages-template.hbs"]());
 			app.hideOverlays();
 			app.updatingDirectMessages=false;
 		}
 		else {
 			var messages = app.processDirectMessages(directMessages,app.getUniqueDMSenders);
+			for(var m in messages){
+				//console.log("direct message dated: " + messages[m].created_at);
+			}
 			if(app.timelineContainsKeys(messages)) {
 				app.savePublicKeys(app.getPublicKeyMessagesFromDMList(messages));
 			}
@@ -419,6 +420,7 @@ var app = {
 	showDirectMessageForm:function(receiverId,receiverName){
 		app.doScroll=false;
 		var data ={receiverId:receiverId,receiverName:receiverName};
+		//TODO:  get the user's public key and decide if to show the last date 
         $('#directMessagesActionsContainer').html(Handlebars.templates["direct-message-template.hbs"](data));        
 		app.doScroll=false;
 	},
@@ -720,6 +722,7 @@ var app = {
 			app.showPublicKeyManager(receiverId,receiverName);
 		}
 		else {
+			
 			app.showDirectMessageForm(receiverId,receiverName);
 		}
 		app.doScroll=true;

@@ -244,7 +244,6 @@ var app = {
 			}
 			//last sent key should be found first and the older ones ignored
 			if(!newPublicKeys[keys[each].sender.id_str]){
-				console.log("Got a key from " + keys[each].sender.screen_name + " dated " + keys[each].created_at);
 				newPublicKeys[keys[each].sender.id_str] =  {
 					key:keys[each].seecret,
 					screen_name:keys[each].sender.screen_name,
@@ -273,9 +272,6 @@ var app = {
 		}
 		else {
 			var messages = app.processDirectMessages(directMessages,app.getUniqueDMSenders);
-			for(var m in messages){
-				//console.log("direct message dated: " + messages[m].created_at);
-			}
 			if(app.timelineContainsKeys(messages)) {
 				app.savePublicKeys(app.getPublicKeyMessagesFromDMList(messages));
 			}

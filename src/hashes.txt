@@ -1,8 +1,8 @@
-SHA1(index.html)= 2c0d2d2f2d4d3b291c124b95b2ee34ffbb5d9d76
+SHA1(index.html)= e1f75daa0e3442f9af2d3b8c2b6b028cc9dc6c35
 SHA1(js/seecret-1.0.min.js)= 356da74bd1f6365fd7eb75610d2b0d92296f78af
-SHA1(js/seecret_app-1.0.min.js)= cd3226bccf6a2b2c64c6c8b29c52b768427af486
+SHA1(js/seecret_app-1.0.min.js)= 7eaee1afa162e40b15a0d3c1a89b82a466951839
 SHA1(js/seecret_compression-1.0.min.js)= f56b189298782861ef83b1df274e52ce7c4bf6a9
-SHA1(js/seecret_templates-1.0.min.js)= bae1efd111e9813b31820c3e2e0b5b28123efd5e
+SHA1(js/seecret_templates-1.0.min.js)= 977037f38714fb31252dd60638d429c62db6a971
 SHA1(js/covertexts.js)= 0646b3106348e0727a0178c3c346f623eeef7955
 SHA1(lib/shoco/shoco_jquery_safe.js)= c2875c8a32e98efaa6a52cb388be7f62ddcd7239
 SHA1(lib/smaz/smaz.js)= 4b863eeb83ec5018c24488137855fda2af3698ad

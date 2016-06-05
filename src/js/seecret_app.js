@@ -110,7 +110,6 @@ var app = {
     	app.oauthResult = OAuth.create('twitter', tokens);
     },
 	updateOathUserInfoComplete:function(data) {
-		app.authenticatedHeader();
 		if(app.activeUser != null  && app.activeUser.user != null && app.activeUser.user.id_str != null  && app.activeUser.privateKey == null){
 			app.hideAllViews();
 			//don't use normal setView because the 'fadeIn()' function creates UI thrashing while generating the key
@@ -314,6 +313,13 @@ var app = {
 			app.verifyMessagesDecrypted(messages,privateKey);
 		}
 		else {
+			alert("Could not verify your passphrase.  Showing messages undecrypted.")
+			for(var m in messages){
+				if(messages[m].encrypted){
+					messages[m].text = messages[m].text + " (could not decrypt)";
+				}
+			}
+			
 			app.updateDirectMessagesUI(messages);
 		}
 	},
@@ -334,9 +340,9 @@ var app = {
 				app.verifyMessagesDecrypted(messages,pkey);
 			}
 			else {
-				messages[x].decrypted=true;
-				messages[x].decryptionSuccessful=false;
-				messages[x].originaltext = messages[x].text;
+				messages[index].decrypted=true;
+				messages[index].decryptionSuccessful=false;
+				messages[index].originaltext = messages[index].text;
 				try{
 					var pgpmsg = openpgp.message.readArmored(messages[index].seecret);
 					var opts = {
@@ -422,8 +428,11 @@ var app = {
 	},
 	makeKeyOptionsForUser:function(user) {
 		var phrase = app.generatePassword();
+		var bits  = 1024;
+		//taken directly from openpgp test 
+		if (openpgp.util.getWebCryptoAll()) { bits = 2048; } // webkit webcrypto accepts minimum 2048 bit
 		var keyOptions = {
-					numBits:1024,
+					numBits:bits,
 					//openpgpjs requires a valid email format for the userid, FOR SOME REASON
 					userIds:[{name:user.name,email:user.screen_name+"@seecretApp.seecret"}],
 					passphrase:phrase
@@ -433,15 +442,19 @@ var app = {
 	generatePassword:function(){
 		var str = "";
 		for(var i =0; i<50;i++){
-			var charCode = Math.floor(Math.random() * (126 - 31 + 1)) + 31;
-			if(charCode == 92 || charCode == 34 || charCode == 39 || charCode == 36) {
-				i--;
-			}
-			else {
-				str += String.fromCharCode(charCode);
-			}
+			str += app.getValidPasswordCharacter();
 		}
 		return str;
+	},
+	getValidPasswordCharacter:function() {
+		var bContinue = true;
+		while(bContinue){
+			var charCode = Math.floor(Math.random() * 206) + 48;
+			if(charCode==173 || charCode == 92 || (charCode >= 58 && charCode <= 64) || (charCode >= 127 && charCode<= 160) ){
+				continue;
+			}
+			return String.fromCharCode(charCode);
+		}
 	},
 	validateNewPrivateKey:function(fieldId){
 		var val = $("#" + fieldId).val();
@@ -459,11 +472,12 @@ var app = {
 				$("#" + app.STATUS_MESSAGE_VIEW).show();
 				app.generatePrivateKeyPair(passphrase, save, function(){
 					$("#" + fieldId).val("");
-					app.setView(app.DIRECT_MESSAGES_VIEW);
 					if(confirm("Send your new key to the contacts who have the old one?")) {
 						app.resendPublicKeys();
 					}
 					$("#directMessagesActionsContainer").empty();
+					app.renderPrivateKeySettings();
+					app.setView(app.SETTINGS_VIEW);
 				});
 				
 			}
@@ -506,16 +520,22 @@ var app = {
 			if(user != null) {
 				var start = new Date();
 				console.log("start generating key pair : " + start.getSeconds() + ":" + start.getMilliseconds());
+				openpgp.config.debug=true;
 				openpgp.generateKey(keyOptions).then(function(key) {
-					var privkey = key.privateKeyArmored; // '-----BEGIN PGP PRIVATE KEY BLOCK ... '
-					var pubkey = key.publicKeyArmored;   // '-----BEGIN PGP PUBLIC KEY BLOCK ... '
+					var end = new Date();
+					console.log("done generating key pair : " + end.getSeconds() + ":" + end.getMilliseconds());
+					var privkey = key.privateKeyArmored; 
+					var pubkey = key.publicKeyArmored;
 					app.generatePrivateKeyPairSuccess(key, keyOptions, save, callback);
+				}).
+				catch(function(err){
+					console.log("Caught an error generatinga key pair");
+					console.log(JSON.stringify(err));
+					
 				});
 			}
 	},
 	generatePrivateKeyPairSuccess:function(response, keyOptions, save, callback){
-					var end = new Date()
-					console.log("done generating key pair: " + end.getSeconds() + ":"+ end.getMilliseconds());
 					if(!save){
 						delete keyOptions.passphrase;
 					}
@@ -592,7 +612,13 @@ var app = {
 		if(!keyOptions.passphrase && app.passphrase == null){
 			app.passphrase = pass = prompt("Enter your passphrase");;
 		}
-		return key.decrypt(pass);
+		if(key.decrypt(pass)) {
+			return true;
+		}
+		else {
+			app.passphrase = null;
+			return false;
+		}
 	},
 	encryptDirectMessage:function(directMessage,receiverId){
 		var user = app.activeUser.user;
@@ -1238,7 +1264,13 @@ var app = {
 	},
 	authenticatedHeader: function () {
 		//var authHandler =  Handlebars.compile($("#authenticated-header-template").html());
-		$('#loginContainer').html(Handlebars.templates["authenticated-header-template.hbs"](app.activeUser.user));     
+		
+		//console.log(app.activeUser.user);
+		if(app.activeUser && app.activeUser.user){
+			app.activeUser.user.profile_image_url = app.activeUser.user.profile_image_url.replace(app.httpsReplaceRegex,"https:");
+			$('#loginContainer').html(Handlebars.templates["authenticated-header-template.hbs"](app.activeUser.user));     
+		}
+		
 	},
 	unauthenticatedHeader: function () {
 		//var unAuthHandler = Handlebars.compile($("#unauthenticated-header-template").html());
@@ -1497,11 +1529,12 @@ var app = {
 			var publicKey = app.activeUser.publicKey;
 			var keyOptions = app.activeUser.keyOptions;
 			var keysData = {};
-			keysData.privateKey = key;
-			keysData.privateKey.dateCreatedDisplay = new moment(keysData.privateKey.dateCreated).format('MMMM Do YYYY, h:mm:ss a');
-			keysData.publicKey = publicKey;
-			keysData.keyOptions = keyOptions;
-			//var handler = Handlebars.compile($("#user-keys-template").html());
+			if(app.activeUser && app.activeUser.privateKey){
+				keysData.privateKey = key;
+				keysData.privateKey.dateCreatedDisplay = new moment(keysData.privateKey.dateCreated).format('MMMM Do YYYY, h:mm:ss a');
+				keysData.publicKey = publicKey;
+				keysData.keyOptions = keyOptions;
+			}
     		var html = Handlebars.templates["user-keys-template.hbs"](keysData);
 			$("#privateKeyCopyarea").html(html);
 			$("#privateKeyCopyarea").fadeIn();
@@ -1655,10 +1688,6 @@ var app = {
 			}
 			app.renderPrivateKeySettings();
 	},
-	privateKeyTest:function() {
-		var privateKey = openpgp.key.readArmored(app.activeUser.privateKey.armored).keys[0];
-		alert(app.decryptPrivateKey(privateKey));
-	},
 	overlay:function(id){
 		if(!id) id="overlay";;
 		$('#' + id).css('display','block');
@@ -1680,8 +1709,11 @@ var app = {
 			);
 		}
 		return list;
+	},
+	isIOS:function() {
+		var iOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;		
+		return iOS;
 	}
-
 }
 $( document ).ready(function() {
 	openpgp.config.show_comment=false;

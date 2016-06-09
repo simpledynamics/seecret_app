@@ -1,0 +1,44 @@
+		<div>
+						{{#if privateKey}}
+						<div class="formRow">
+							Generated on {{privateKey.dateCreatedDisplay}}
+							<br/><br/>
+							Private Key:<br/>
+							<div>
+								<pre id="privateKeyTextarea">{{privateKey.armored}}</pre>
+								<button onClick="app.copyContentsToClipboard('privateKeyTextarea')">Copy to clipboard</button>
+							</div>
+						</div>
+						<div class="formRow">
+							<br/>
+							Passphrase:<br/>
+							<div>
+								{{#if keyOptions.passphrase}}
+								<pre id="privateKeyPassphrase" style="font-weight:bold">{{keyOptions.passphrase}}</pre><br/>
+								<button onClick="app.copyContentsToClipboard('privateKeyPassphrase')">Copy to clipboard</button><br/><br/>
+								<button onClick="app.deleteSavedPassphrase()">Delete from device</button> <br/>
+								<span class="note">(You'll be prompted for it each time.)</span>											
+								{{/if}}
+								{{#unless keyOptions.passphrase}}
+								Passphrase not saved. 
+								{{/unless}}
+								<br/><br/>
+								<button onClick="app.changePassphrase()">Change passphrase</button>
+								<p/>
+								<br/>
+							</div>
+						</div>																		 
+						<div class="formRow">
+							<br/>
+							Public Key:<br/>
+							<div>
+								<pre id="publicKeyExport">{{publicKey.armored}}</pre>
+								<button onClick="app.copyContentsToClipboard('publicKeyExport')">Copy to clipboard</button><p/>
+							</div>
+						</div>		
+						{{else}}
+						<div class="formRow">
+						<strong>No private key.  Generate a new one below</strong>
+						</div>
+						{{/if}}
+		</div>

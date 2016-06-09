@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html>
+<head>
+<!--
+/*
+Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License
+http://creativecommons.org/licenses/by-nc-sa/4.0/
+
+Created by Simple Dynamics https://www.simpledynamics.net
+*/
+-->
+        <meta charset="utf-8" />
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <meta name="format-detection" content="telephone=no" />
+        <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+		<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/fastclick/0.6.11/fastclick.min.js"></script>
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/oauth-io/0.5.2/oauth.min.js"></script>
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment.min.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/openpgp/2.3.0/openpgp.min.js"></script>
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.5/handlebars.runtime.min.js"></script>
+		<script type="text/javascript" src="js/seecret_templates-1.0.min.js"></script>
+        <script type="text/javascript" src="lib/moment-twitter.js"></script>
+        <script type="text/javascript" src="lib/smaz/smaz.js"></script>
+        <script type="text/javascript" src="lib/shoco/shoco_jquery_safe.js"></script>
+		<script src="js/covertexts.js"></script>
+		<script src="js/oauthio_key.js"></script>
+		<script src="js/seecret-1.0.min.js"></script>
+		<script src="js/seecret_compression-1.0.min.js"></script>
+		<script src="js/seecret_app-1.0.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="css/seecret_app.css">
+		<link rel="stylesheet" type="text/css" href="css/font-awesome-4.3.0/css/font-awesome.min.css">
+        <meta name="msapplication-tap-highlight" content="no" />
+        <title>Seecret</title>
+    </head>
+<body>
+  <!-- Centered page -->
+  <div id="page">
+	<div class="header">
+		<h1 id="headerTitle"><div></div></h1>
+		<div id="loginContainer" class="loginContainer"></div>
+	</div>
+    <div class="app" id="home">
+		<div id="statusMessage" class="startingState" style="display:none"><div class="container">Please wait....</div></div>
+		<div id="timeline"  class="startingState" style="display:none">
+			<div class="container">
+				<form id="updateStatusForm">
+					<h2>Tweet a Seecret</h2>
+					<div class="messageContainer updateCell">
+						<div>Seecret Message</div>
+						<div>
+									<textarea name="statusUpdate" id="textarea-statusUpdate"></textarea>							
+						</div>					
+					</div>
+					<div class="messageContainer updateCell" id='allscaffoldstuff'>
+						<div>Visible Tweet</div>
+						<div>
+								<div id="scaffoldingContainer">
+										<div id="scaffoldsContainer">
+												<div id="scaffoldingEntryContainer0"><span>Tweet 1:</span>&nbsp<input type=text value="" id="scaffold0" /></div>										
+										</div>
+								</div>
+						</div>					
+					</div>
+					<div style="text-align:center;">
+							<div id="scaffoldingWarningContainer"></div>
+							<div id="scaffoldingStatus"></div>					
+					</div>
+				<div id="submitButtonContainer" style="display:none"><button type="submit" name="updateStatusFormButton" value="Submit">Update Status</button></div>
+				</form>
+			</div>	
+			<div class="container">
+			
+			Enter a username to view their timeline: <input style="width:150px;" type=text name="twitterUser" id="twitterUser"/> <input type="button" onclick="app.updateUserTimeline($('#twitterUser').val(),true)" value="View timeline"/>
+							
+							
+
+			</div>
+			<P/>
+			<h2 class="timeLine">Timeline <span id="timelineName"></span></h2>
+			Show only Seecrets:  <input type=checkbox id="showOnlySeecrets" checked=true onChange="app.updateHomeTimeline(true)" />
+			<div id="status-list" class="status-list"></div>
+			<div id="updateHomeTimelineButtonContianer"><input type=button value="Get older messages" onClick="app.updateHomeTimeline()" class="button" /></div>					
+		</div>
+		<div id="privateMessages"  class="startingState" style="display:none">
+				<h2 class="timeLine">Direct Messages <span id="friendName"></span></h2>
+				<div class="viewHeader">
+					<div id="getMessagesButton"><input type=button value="Get newest messages" onClick="app.getDirectMessages()" class="button" /></div>
+					<input type=hidden id="selectedReceiverId" />
+					<input type=hidden id="selectedReceiverName" />
+				</div>
+				<img src="img/encrypted.png" class="dmIcon" /> = encrypted<br/>
+				<img src="img/signed.jpg" class="dmIcon" /> = and signed<br/>(read the <a href="https://www.seecret.net/faq.html" target="_new">FAQ</a> to understand more)
+				<br/><br/>
+				<div id="directMessagesBreadCrumbContainer"></div>
+				<div class="container" style="" id="directMessagesActionsContainer"></div>
+				<div id="directMessages"></div>	
+				<div id="olderDirectMessagesButtonContainer" style="display:none"><input type=button value="Get older messages" onClick="app.getDirectMessages(true)" class="button" /></div>					
+				
+		</div>
+		<div id="settings" class="settings startingState" style="display:none">
+			<h2>Settings </h2>
+			Not sure what these options are for?  Read the Seecret <a href="https://www.seecret.net/faq.html" target="_new">FAQ</a> for more information.
+			<div class="opt">
+				<div class="showKeyContainer">
+					<div class="optTitle"><span>My private key pair</span></div>
+					<div id="privateKeyCopyarea" style="display:none"></div>				
+				</div>
+				<div class="control">
+					<span onclick="javascript:app.showCopyPrivateKey(this)" class="button">Show</span>
+				</div>
+			</div>
+			<div class="opt">
+				<div class="showKeyContainer">
+					<div class="optTitle"><span>Public keys from contacts</span></div>
+					<div id="publicKeysDisplayArea" style="display:none"></div>				
+				</div>
+				<div class="control">
+					<span onclick="javascript:app.showPublicKeys(this)" class="button">Show</span>
+				</div>
+			</div>
+			<div class="opt">
+				<div>
+					<div class="optTitle">
+						<span>Import a private key</span>
+					</div>
+					<div id="importForm" style="display:none;">
+						<div>
+							<span class="note"></span>											
+						</div>
+						<div>
+							<div class="formRow">
+								<div>Paste key:</div>
+								<div><textarea id="importPrivateKeyText"></textarea></div>
+							</div>
+							<div class="formRow">
+								<div>Passphrase:</div>
+								<div><input type=text id="importPrivateKeyPassphrase" /></div>
+							</div>							
+						</div>
+						<div>
+							<input type=checkbox id="importPrivateKeyPassphraseCache" /> Save your passphrase locally? 
+							<input type=button value="Import" onClick=app.importPrivateKey() class="button" />
+						</div>					
+					</div>
+				</div>
+				<div class="control">
+					<span onclick="javascript:app.showImportPrivateKey(this)" class="button">Show</span>
+				</div>				
+			</div>
+			<div class="opt">
+				<div>
+					<div class="optTitle">
+						<span>Generate a new private key.</span>
+					</div>
+					<div id="generateForm" style="display:none">
+						<div class="formRow">
+							<div>Password:</div>
+							<div><input type=text id="newPrivateKeyPassphrase2"/> <span id="newPrivateKeyPassphrase2Error"></span></div>
+						</div>
+						<div>
+							<input type=checkbox id="newPrivateKeyPassphrase2Cache" /> Save your password locally? 
+							<input type=button value="Generate new key" onClick="app.validateNewPrivateKey('newPrivateKeyPassphrase2')" class="button" />	
+						</div>
+					</div>
+				</div>
+				<div class="control">
+					<span onclick="javascript:app.showGeneratePrivateKey(this)" class="button">Show</span>
+				</div>				
+			</div>
+			<div class="opt">
+				<div>
+					<div class="optTitle">
+						<span>Delete my private key.</span>
+					</div>
+					<div id="deleteKeyForm" style="display:none">
+						<div>
+							<div>All previous messages based on this private key will be unrecoverable.  Forever.</div>
+							<div><input type=button value="Delete the key" onClick="app.promptDeleteKey()" class="button" /></div>
+						</div>
+					</div>
+				</div>
+				<div class="control">
+					<span onclick="app.toggleDeleteSettings(this)" class="button">Show</span>
+				</div>				
+			</div>
+		</div>
+		<div id="publicKeys" class="startingState" style="display:none"></div>
+		<div id="hashes" class="startingState" style="display:none">
+				<div class="container" style="" id="hashesContent"></div>
+		</div>
+		<div id="about" class="startingState" style="font-size:1.5em">
+			<div class="container">
+			<p/><br/>
+			Seecret lets you hide invisible messages inside your tweets that are only visible to other users of Seecret.  <p/>
+			Seecret also encrypts your direct messages to followers.
+			<br/><br/>
+			<a href="#" onclick="app.loginToTwitter(); return false;" >Sign in with Twitter </a>to get started.
+			<br/><br/>
+			Read all about Seecret in the <a href="https://www.seecret.net/faq.html" target="_new">FAQ</a>.
+			<p/>
+			<br/>
+			If you are seeing this page at a url other than https://www.seecret.io, it means you are using a Seecret mirror site.  Read more about Seecret mirror sites and how to verify their validity at 
+			<a href="https://www.seecret.net/mirror.html" target="_new">https://www.seecret.net/mirror.html</a>
+			<br/><br/><br/><br/>
+				<div style="font-size:.6em">
+				<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_new"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/InteractiveResource" property="dct:title" rel="dct:type" target="_new">Seecret</span> by <a xmlns:cc="http://creativecommons.org/ns#" href="https://www.simpledynamics.net" target="_new" property="cc:attributionName" rel="cc:attributionURL">Simple Dynamics</a> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_new">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.<br />Based on a work at <a xmlns:dct="http://purl.org/dc/terms/" href="http://www.seecret.net" target="_new" rel="dct:source">http://www.seecret.net</a>.
+				</div>
+			</div>
+		</div>
+	</div>	
+  </div>
+  <!-- Left panel -->
+  <div style="" id="panelControl" onclick="app.openClosePanel('open')">
+	<i class="fa fa-bars"></i>
+  </div>
+  <div id="left-panel" class="panel">
+	<div id="closeMenu" style="" href="#" onclick="app.openClosePanel('close');" data-icon="alert" class="closePanelControl"><li class="fa fa-close"></li></div>
+	<div class="menuLinks">
+	<a id="timelineButton" style="display:block" href="#timeline" onclick="app.initTimeline();app.setView(app.TIMELINE_VIEW);" data-icon="alert" class="menuLink">Timeline</a>
+	<a id="privateMessageButton" style="display:none" href="#privateMessages" onclick="app.setView(app.DIRECT_MESSAGES_VIEW);app.getDirectMessages();" data-icon="alert" class="menuLink">Direct Messages</a>
+	<a id="settingsButton" style="display:block" href="#settings" onclick="app.setView(app.SETTINGS_VIEW);" data-icon="alert" class="menuLink">Settings</a>
+	<a id="logoutButton" style="display:block"  href="#" onclick="app.logoutFromTwitter();app.setView(app.FAQ_VIEW);" data-icon="alert" class="menuLink">Logout</a>
+	<a id="aboutButton" style="display:block" href="#about" onclick="app.setView(app.ABOUT_VIEW);" data-icon="alert" class="menuLink">About Seecret</a>
+	<a id="hashesButton" style="display:block" href="#hashes" onclick="app.setView(app.HASHES_VIEW);" data-icon="alert" class="menuLink">Verification</a>
+<P/>
+	</div>
+  </div>
+<div id="overlay" style="display:none"><div></div></div>
+</body>
+</html>

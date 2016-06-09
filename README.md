@@ -54,6 +54,7 @@ The hashes are also published at the following locations (sometimes as hidden Se
 - [https://www.simpledynamics.net/seecret_hashes.html](https://www.simpledynamics.net/seecret_hashes.html)
 - [https://gist.github.com/nategrover/16b84670ef1f43f8f5dbc219b3736787](https://gist.github.com/nategrover/16b84670ef1f43f8f5dbc219b3736787)
 
+hashes are generated with openssl sha1 [filename]
 
 more to come...
 

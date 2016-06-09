@@ -17,11 +17,13 @@ The repository is the contents of the Seecret app as described at [https://www.s
   - Fastclick.js for mobile click responsiveness - Fork or contribute at [https://github.com/ftlabs/fastclick](https://github.com/ftlabs/fastclick)
   
 ## Building
-There is no build.  Just copy the contents of the src folder and serve as is.  To read more about hosting Seecret yourself, go to [https://www.seecret.net/mirror.html](https://www.seecret.net/mirror.html)
+There is no build.  Just copy the contents of the src/main/resources/public folder and serve as is.  To read more about hosting Seecret yourself, go to [https://www.seecret.net/mirror.html](https://www.seecret.net/mirror.html)
 
 ## Deployment 
 The app authenticates the user to Twitter via Oauth.io.  Contact us to add your url to our Oauth.io account, or set up your own and put your key value in 
-js/oauthio_key.js.  You can run on localhost as well.
+src/main/resources/public/js/oauthio_key.js.  You can run on localhost as well.
+
+There is also a [Spring Boot](http://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#using-boot-running-your-application) deployment wrapper you can use to run the application locally. Just run `./gradlew bootRun` at load [http://localhost](http://localhost)
 
 ## Contributing
 We have a [roadmap](https://github.com/simpledynamics/seecret_app/wiki) of features and channel integrations.  Feel free to fork this repo and send us a pull request.

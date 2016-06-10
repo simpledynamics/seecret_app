@@ -1,0 +1,15 @@
+			<div id="directMessageForm">
+						Send direct message to <span id="directMessageTarget">{{receiverName}}</span><p/>
+						<textarea id="directMessage"></textarea>
+						<input type=hidden id="directMessageReceiverId" value="{{receiverId}}" />
+						<br/>
+						<input type=button onClick="app.prepareDirectMessage('{{receiverId}}')" value="Send message"/>
+						<p/>
+				<br/>Not sure if {{receiverName}} has your public key?  <input type=button onClick="app.initiateDirectMessages({{receiverId}},true)" value="send it"/>  ({{receiverName}} can't send you encryted messages until you have sent them your key)
+				{{#if publicKey}}
+				<br/>{{receiverName}} sent you an encryption key on {{publicKey.displayDate}}.
+				{{/if}}
+				{{#if sentKeyWarning}}
+				<br/>Your current public key is newer than the key you last sent to {{receiverName}}. 
+				{{/if}}
+			</div>

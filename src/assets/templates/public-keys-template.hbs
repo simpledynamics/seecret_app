@@ -1,0 +1,10 @@
+				{{#each keys}}
+				<div class="keyDisplayContainer">
+					<br/><br/>
+					From <a href="javascript:app.setDirectMessageReceiver('{{id_str}}','{{screen_name}}');app.setView(app.DIRECT_MESSAGES_VIEW);">{{screen_name}}</a> sent on {{displayDate}}.
+					<pre class="keyDisplay" id="keyDisplay_{{id_str}}">{{key}}</pre>
+					<br/>
+					<button onClick="app.copySenderPublicKeyToClipboard('{{id_str}}')">Copy to clipboard</button>
+				</div>
+				<br/><br/>
+				{{/each}}

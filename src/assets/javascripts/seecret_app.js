@@ -596,8 +596,18 @@ var app = {
 	},
 	joinMessage:
 	"I'm using Seecret to send encrypted direct messages over Twitter. Try it with me! Just go to https://www.seecret.net",
+	sendingDirectMessage:false,
 	prepareDirectMessage:function(receiverId) {
+		if(app.sendingDirectMessage){
+			alert("already sending direct message!")
+			return;
+		}
 		var directMessage = $("#directMessage").val();
+		if(directMessage.length ==0){
+			return;
+		}
+		app.sendingDirectMessage = true;
+		app.overlay();
 		app.encryptDirectMessage(directMessage,receiverId);
 	},
 	decryptPrivateKey:function(key){
@@ -662,8 +672,17 @@ var app = {
 				})
 				.catch(function (err) {
 					console.log("Error generating the messages:" + JSON.stringify(err));
+					app.hideOverlays();
+					app.sendingDirectMessage=false;
 				} );
 		}
+		else {
+			app.sendingDirectMessage=false;
+			app.hideOverlays();
+			alert("You do not have that users public key.");
+			
+		}
+		
 	},
 	postedDirectMessageId:null,
 	directMessagesToPost:null,
@@ -681,7 +700,9 @@ var app = {
 				app.postDirectMessage(text,receiverId,callback);
 			}
 			else {
+				app.hideOverlays();
 				alert("Sent!");
+				app.sendingDirectMessage=false;
 				if(callback){
 					callback();
 				}
@@ -782,6 +803,7 @@ var app = {
 		}).fail(app.handleGetTimelineError);
 	},
 	getUserTimeline:function(postVals,callback){
+		$("#twitterUser").val("");
 		app.oauthResult.get('1.1/statuses/user_timeline.json', postVals)
 		.done(function (response) {
 			callback(response);
@@ -1156,6 +1178,7 @@ var app = {
 		app.updateHomeTimeline();
 	},
     updateHomeTimeline: function(bFromTheTop) {
+		$("#twitterUser").val("");
 		if(bFromTheTop) app.maxId = null;
 		app.homeTimeline=true;
 		$("#timelineName").empty();

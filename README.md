@@ -37,22 +37,7 @@ We have a [roadmap](https://github.com/simpledynamics/seecret_app/wiki) of featu
  - [Scott McFarlane](https://github.com/keola4)
 
 ## Hashes
-The SHA1 hashes for version 1.0 of the Seecret app are:
-
- - SHA1(index.html)= e1f75daa0e3442f9af2d3b8c2b6b028cc9dc6c35
- - SHA1(js/seecret-1.0.min.js)= 356da74bd1f6365fd7eb75610d2b0d92296f78af
- - SHA1(js/seecret_app-1.0.min.js)= 7eaee1afa162e40b15a0d3c1a89b82a466951839
- - SHA1(js/seecret_compression-1.0.min.js)= f56b189298782861ef83b1df274e52ce7c4bf6a9
- - SHA1(js/seecret_templates-1.0.min.js)= 977037f38714fb31252dd60638d429c62db6a971
- - SHA1(js/covertexts.js)= 0646b3106348e0727a0178c3c346f623eeef7955
- - SHA1(lib/shoco/shoco_jquery_safe.js)= c2875c8a32e98efaa6a52cb388be7f62ddcd7239
- - SHA1(lib/smaz/smaz.js)= 4b863eeb83ec5018c24488137855fda2af3698ad
- - SHA1(lib/moment-twitter.js)= 9a3e30a078de9fb7b37300f1c6a22a023d6af7cd
- - SHA1(css/seecret_app.css)= 6347c14a6dcd7ad4e40182a410c28ada9308b966
- - SHA1(css/font-awesome-4.3.0/css/font-awesome.min.css)= 3e435d5167460aaf367836e1973e90a47039faea
- - SHA1(js/hashes.txt)= 7997dc81babcbc1eac6ab27ffaf60c15489be1e7
-
-
+The SHA1 hashes for version 1.0 of the Seecret app are located in [hashes.txt](src/main/resources/public/hashes.txt)
 
 
 The hashes are also published at the following locations (sometimes as hidden Seecrets):

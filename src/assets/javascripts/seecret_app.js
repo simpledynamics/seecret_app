@@ -1762,7 +1762,7 @@ $( document ).ready(function() {
 		url:"hashes.txt"
 	}).done(function(response){
 		var hashlist = app.getNameValuePairsFromArgumentList(response,/\n/,"=");
-		if(hashlist == null || hashlist.length != 12){
+		if(hashlist == null){
 			$('#hashesContent').html(Handlebars.templates["hashes-not-found-template"]());;
 			app.setView(app.HASHES_VIEW);
 			app.unauthenticatedMenu();  

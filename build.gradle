@@ -33,11 +33,20 @@ repositories {
 dependencies {
 	compile("org.springframework.boot:spring-boot-devtools")
     compile("org.springframework.boot:spring-boot-starter-web")
+    compile("org.springframework.boot:spring-boot-starter-thymeleaf")
     
 }
 
 task wrapper (type: Wrapper) {
     gradleVersion = '2.13'
+}
+
+/* Local development configuration */
+
+sourceSets {
+    dev {
+        resources.srcDir file("src/assets")
+    }
 }
 
 bootRun {

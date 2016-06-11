@@ -10,7 +10,7 @@ Created by Simple Dynamics https://www.simpledynamics.net
 */
 -->
         <meta charset="utf-8" />
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
         <meta name="format-detection" content="telephone=no" />
         <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
         <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
@@ -19,16 +19,18 @@ Created by Simple Dynamics https://www.simpledynamics.net
 		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/oauth-io/0.5.2/oauth.min.js"></script>
 		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment.min.js"></script>
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/openpgp/2.3.0/openpgp.min.js"></script>
-		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.5/handlebars.runtime.min.js"></script>
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.5/handlebars.min.js"></script>
         <script type="text/javascript" src="lib/moment-twitter.js"></script>
         <script type="text/javascript" src="lib/smaz/smaz.js"></script>
         <script type="text/javascript" src="lib/shoco/shoco_jquery_safe.js"></script>
 		<script src="js/covertexts.js"></script>
 		<script src="js/oauthio_key.js"></script>
 		<script src="js/seecret-1.0.min.js"></script>
-		<script src="js/seecret_app-1.0.min.js"></script>
-		<link rel="stylesheet" type="text/css" href="css/seecret_app.css">
-		<link rel="stylesheet" type="text/css" href="css/font-awesome-4.3.0/css/font-awesome.min.css">
+		<!-- uncompressed data-th-src only loaded in dev server  -->
+		<script data-th-src="seecret_compression.js"></script>
+		<script data-th-src="seecret_app.js" src="js/seecret_app-1.0.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="css/seecret_app.css"/>
+		<link rel="stylesheet" type="text/css" href="css/font-awesome-4.3.0/css/font-awesome.min.css"/>
         <meta name="msapplication-tap-highlight" content="no" />
         <title>Seecret</title>
     </head>
@@ -56,7 +58,7 @@ Created by Simple Dynamics https://www.simpledynamics.net
 						<div>
 								<div id="scaffoldingContainer">
 										<div id="scaffoldsContainer">
-												<div id="scaffoldingEntryContainer0"><span>Tweet 1:</span>&nbsp<input type=text value="" id="scaffold0" /></div>										
+												<div id="scaffoldingEntryContainer0"><span>Tweet 1:</span>&nbsp;<input type="text" value="" id="scaffold0" /></div>										
 										</div>
 								</div>
 						</div>					
@@ -70,23 +72,23 @@ Created by Simple Dynamics https://www.simpledynamics.net
 			</div>	
 			<div class="container">
 			
-			Enter a username to view their timeline: <input style="width:150px;" type=text name="twitterUser" id="twitterUser"/> <input type="button" onclick="app.updateUserTimeline($('#twitterUser').val(),true)" value="View timeline"/>
+			Enter a username to view their timeline: <input style="width:150px;" type="text" name="twitterUser" id="twitterUser"/> <input type="button" onclick="app.updateUserTimeline($('#twitterUser').val(),true)" value="View timeline"/>
 							
 							
 
 			</div>
 			<P/>
 			<h2 class="timeLine">Timeline <span id="timelineName"></span></h2>
-			Show only Seecrets:  <input type=checkbox id="showOnlySeecrets" checked=true onChange="app.updateHomeTimeline(true)" />
+			Show only Seecrets:  <input type="checkbox" id="showOnlySeecrets" checked="true" onChange="app.updateHomeTimeline(true)" />
 			<div id="status-list" class="status-list"></div>
-			<div id="updateHomeTimelineButtonContianer"><input type=button value="Get older messages" onClick="app.updateHomeTimeline()" class="button" /></div>					
+			<div id="updateHomeTimelineButtonContianer"><input type="button" value="Get older messages" onClick="app.updateHomeTimeline()" class="button" /></div>					
 		</div>
 		<div id="privateMessages"  class="startingState" style="display:none">
 				<h2 class="timeLine">Direct Messages <span id="friendName"></span></h2>
 				<div class="viewHeader">
-					<div id="getMessagesButton"><input type=button value="Get newest messages" onClick="app.getDirectMessages()" class="button" /></div>
-					<input type=hidden id="selectedReceiverId" />
-					<input type=hidden id="selectedReceiverName" />
+					<div id="getMessagesButton"><input type="button" value="Get newest messages" onClick="app.getDirectMessages()" class="button" /></div>
+					<input type="hidden" id="selectedReceiverId" />
+					<input type="hidden" id="selectedReceiverName" />
 				</div>
 				<img src="img/encrypted.png" class="dmIcon" /> = encrypted<br/>
 				<img src="img/signed.jpg" class="dmIcon" /> = and signed<br/>(read the <a href="https://www.seecret.net/faq.html" target="_new">FAQ</a> to understand more)
@@ -94,7 +96,7 @@ Created by Simple Dynamics https://www.simpledynamics.net
 				<div id="directMessagesBreadCrumbContainer"></div>
 				<div class="container" style="" id="directMessagesActionsContainer"></div>
 				<div id="directMessages"></div>	
-				<div id="olderDirectMessagesButtonContainer" style="display:none"><input type=button value="Get older messages" onClick="app.getDirectMessages(true)" class="button" /></div>					
+				<div id="olderDirectMessagesButtonContainer" style="display:none"><input type="button" value="Get older messages" onClick="app.getDirectMessages(true)" class="button" /></div>					
 				
 		</div>
 		<div id="settings" class="settings startingState" style="display:none">
@@ -134,12 +136,12 @@ Created by Simple Dynamics https://www.simpledynamics.net
 							</div>
 							<div class="formRow">
 								<div>Passphrase:</div>
-								<div><input type=text id="importPrivateKeyPassphrase" /></div>
+								<div><input type="text" id="importPrivateKeyPassphrase" /></div>
 							</div>							
 						</div>
 						<div>
-							<input type=checkbox id="importPrivateKeyPassphraseCache" /> Save your passphrase locally? 
-							<input type=button value="Import" onClick=app.importPrivateKey() class="button" />
+							<input type="checkbox" id="importPrivateKeyPassphraseCache" /> Save your passphrase locally? 
+							<input type="button" value="Import" onClick="app.importPrivateKey()" class="button" />
 						</div>					
 					</div>
 				</div>
@@ -155,11 +157,11 @@ Created by Simple Dynamics https://www.simpledynamics.net
 					<div id="generateForm" style="display:none">
 						<div class="formRow">
 							<div>Password:</div>
-							<div><input type=text id="newPrivateKeyPassphrase2"/> <span id="newPrivateKeyPassphrase2Error"></span></div>
+							<div><input type="text" id="newPrivateKeyPassphrase2"/> <span id="newPrivateKeyPassphrase2Error"></span></div>
 						</div>
 						<div>
-							<input type=checkbox id="newPrivateKeyPassphrase2Cache" /> Save your password locally? 
-							<input type=button value="Generate new key" onClick="app.validateNewPrivateKey('newPrivateKeyPassphrase2')" class="button" />	
+							<input type="checkbox" id="newPrivateKeyPassphrase2Cache" /> Save your password locally? 
+							<input type="button" value="Generate new key" onClick="app.validateNewPrivateKey('newPrivateKeyPassphrase2')" class="button" />	
 						</div>
 					</div>
 				</div>
@@ -175,7 +177,7 @@ Created by Simple Dynamics https://www.simpledynamics.net
 					<div id="deleteKeyForm" style="display:none">
 						<div>
 							<div>All previous messages based on this private key will be unrecoverable.  Forever.</div>
-							<div><input type=button value="Delete the key" onClick="app.promptDeleteKey()" class="button" /></div>
+							<div><input type="button" value="Delete the key" onClick="app.promptDeleteKey()" class="button" /></div>
 						</div>
 					</div>
 				</div>

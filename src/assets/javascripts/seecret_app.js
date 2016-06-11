@@ -186,7 +186,7 @@ var app = {
 	updateDirectMessagesUI:function(messages) {
 		app.hideOverlays();
 		$("#getMessagesButton2").remove();
-        $('#directMessages').append(Handlebars.templates["direct-messages-template"](messages));        
+        $('#directMessages').append(Handlebars.getTemplate("direct-messages-template")(messages));        
 		$("#olderDirectMessagesButtonContainer").show();
 		app.updatingDirectMessages=false;
 	},
@@ -260,12 +260,12 @@ var app = {
 	},
 	processDirectMessagesResponse:function(directMessages) {
 		if(directMessages.length == 1 && directMessages[0].id_str == app.dmMaxId){
-			$("#directMessages").append(Handlebars.templates["no-more-direct-messages-template"]());
+			$("#directMessages").append(Handlebars.getTemplate("no-more-direct-messages-template")());
 			app.hideOverlays();
 			app.updatingDirectMessages=false;
 		}
 		else if(directMessages.length == 0){
-			$("#directMessages").append(Handlebars.templates["no-seecrets-in-direct-messages-template"]());
+			$("#directMessages").append(Handlebars.getTemplate("no-seecrets-in-direct-messages-template")());
 			app.hideOverlays();
 			app.updatingDirectMessages=false;
 		}
@@ -402,14 +402,14 @@ var app = {
 	},
 	undecryptedMessageContentHandler:null,
 	generateUndecryptedMessageContent:function(message){
-		return Handlebars.templates["undecrypted-message-content-template"](message);
+		return Handlebars.getTemplate("undecrypted-message-content-template")(message);
 	},
 	showPublicKeyManager:function(receiverId, receiverName){
 		app.doScroll=false;
 		var data = {};
 		data.receiver_name = receiverName;
 		data.receiver_id = receiverId;
-        $('#directMessagesActionsContainer').html(Handlebars.templates["public-key-template"](data));        
+        $('#directMessagesActionsContainer').html(Handlebars.getTemplate("public-key-template")(data));        
 	},
 	showWaitingForPublicKeyView:function(receiverId, receiverName){
 		app.doScroll=false;
@@ -417,13 +417,13 @@ var app = {
 		data.receiver_name = receiverName;
 		data.receiver_id = receiverId;
 		data.invite_date = moment(app.activeUser.sentPublicKeys[receiverId]).format('MMMM Do YYYY, h:mm:ss a');
-        $('#directMessagesActionsContainer').html(Handlebars.templates["public-key-pending-template"](data));        
+        $('#directMessagesActionsContainer').html(Handlebars.getTemplate("public-key-pending-template")(data));        
 	},
 	showDirectMessageForm:function(receiverId,receiverName){
 		app.doScroll=false;
 		var data ={receiverId:receiverId,receiverName:receiverName};
 		//TODO:  get the user's public key and decide if to show the last date 
-        $('#directMessagesActionsContainer').html(Handlebars.templates["direct-message-template"](data));        
+        $('#directMessagesActionsContainer').html(Handlebars.getTemplate("direct-message-template")(data));        
 		app.doScroll=false;
 	},
 	makeKeyOptionsForUser:function(user) {
@@ -569,13 +569,13 @@ var app = {
 			}
 		}
 		//app.updateDirectMesssagesBreadcrumbs(userData);
-		$("#friendName").html(Handlebars.templates["direct-message-friend-name"](userData));
+		$("#friendName").html(Handlebars.getTemplate("direct-message-friend-name")(userData));
 		app.checkDirectMessageStatus();
 		$( ".dmMessageDiv" ).hide();
 		$( ".dm_" + receiverId).fadeIn();
 	},
 	updateDirectMesssagesBreadcrumbs:function(user){
-        $('#directMessagesBreadCrumbContainer').html(Handlebars.templates["direct-message-breadcrumb-template"](user));        
+        $('#directMessagesBreadCrumbContainer').html(Handlebars.getTemplate("direct-message-breadcrumb-template")(user));        
 	},
 	//REVISIT
 	initiateDirectMessages:function(receiverId,bSkipWelcome) {
@@ -791,7 +791,7 @@ var app = {
 	handleTimelineResponse:function(response){
 		if(response.length > 0) {
 			if(response.length == 1 && response[0].id_str == app.maxId){
-				$("#status-list").append(Handlebars.templates["no-more-timeline-message-template"]());
+				$("#status-list").append(Handlebars.getTemplate("no-more-timeline-message-template")());
 			}
 			else {
 				app.processTimelineResponse(response);
@@ -977,10 +977,10 @@ var app = {
 	processTimelineWithFollowerInfo:function(timeline){
 		var timeline = app.processTimelineMessages(timeline,app.getUniqueTweeters);
 		if(timeline.length > 0){
-			$('#status-list').append(Handlebars.templates["status-template"](timeline)); 
+			$('#status-list').append(Handlebars.getTemplate("status-template")(timeline)); 
 		}
 		else if($("#showOnlySeecrets")){
-			$("#status-list").append(Handlebars.templates["no-seecrets-in-timeline-segment-template"]());
+			$("#status-list").append(Handlebars.getTemplate("no-seecrets-in-timeline-segment-template")());
 		}
 		$('.basicTweet').fadeIn();
 		app.updatingTimeline = false;
@@ -1211,7 +1211,7 @@ var app = {
 			$("#scaffoldingStatus").empty();
 			$('#textarea-statusUpdate').val('');
 			$('#textarea-statusUpdate').val('');
-			$('#scaffoldsContainer').html(Handlebars.templates["scaffolds-template"]());        
+			$('#scaffoldsContainer').html(Handlebars.getTemplate("scaffolds-template")());        
 			$('#scaffoldingContainer > div > div > input').val('');
 			app.maxId = null;
 			this.currentMessageChain = Array();
@@ -1263,18 +1263,15 @@ var app = {
 			$("#publicKeysButton").hide();
 	},
 	authenticatedHeader: function () {
-		//var authHandler =  Handlebars.compile($("#authenticated-header-template").html());
-		
 		//console.log(app.activeUser.user);
 		if(app.activeUser && app.activeUser.user){
 			app.activeUser.user.profile_image_url = app.activeUser.user.profile_image_url.replace(app.httpsReplaceRegex,"https:");
-			$('#loginContainer').html(Handlebars.templates["authenticated-header-template"](app.activeUser.user));     
+			$('#loginContainer').html(Handlebars.getTemplate("authenticated-header-template")(app.activeUser.user));     
 		}
 		
 	},
 	unauthenticatedHeader: function () {
-		//var unAuthHandler = Handlebars.compile($("#unauthenticated-header-template").html());
-		$('#loginContainer').html(Handlebars.templates["unauthenticated-header-template"]());    
+		$('#loginContainer').html(Handlebars.getTemplate("unauthenticated-header-template")());    
 	},
 	hideAllViews:function(){
 		$('#timeline').hide();
@@ -1301,7 +1298,6 @@ var app = {
 		app.setMenuState(viewName + "Button");
 	},
 	renderPublicKeys:function (){
-		//var keysHandler =  Handlebars.compile($("#public-keys-template").html());
 		var sentPublicKeys = app.activeUser.publicKeys;
 		var keys = Array();
 		var keysCount =0;
@@ -1311,7 +1307,7 @@ var app = {
 			keysCount++;
 		}
 		if(keysCount > 0){
-			var html = Handlebars.templates["public-keys-template"]({keys:keys});
+			var html = Handlebars.getTemplate("public-keys-template")({keys:keys});
 			$("#publicKeysDisplayArea").html(html);
 		}
 		else {
@@ -1331,7 +1327,7 @@ var app = {
 	showPrivateKeyManager:function(){
 		app.doScroll = false;
         //var pkHandler = Handlebars.compile($("#private-key-template").html());
-        $('#directMessagesActionsContainer').html(Handlebars.templates["private-key-template"]());        
+        $('#directMessagesActionsContainer').html(Handlebars.getTemplate("private-key-template")());        
 		$("#directMessagesActionsContainer").show();
 	},	
 	openClosePanel: function(direction){
@@ -1427,27 +1423,23 @@ var app = {
 			var id= num;
 			var scaffoldCount = num+1;
 			var data = {scaffoldId:id,val:val,scaffoldCount:scaffoldCount};
-			//var scaffoldHandler =  Handlebars.compile($("#scaffold-template").html());
-			$('#scaffoldsContainer').append(Handlebars.templates["scaffold-template"](data));        
+			$('#scaffoldsContainer').append(Handlebars.getTemplate("scaffold-template")(data));        
 	},
 	makeUpdateFormReady:function(availableCharacters) {
 		$("#submitButtonContainer").show();
-		//var scaffoldStatusHandler =  Handlebars.compile($("#scaffold-status-good-template").html());
 		var data  = {};
 		data.availableCharacters = availableCharacters;
-		$('#scaffoldingStatus').html(Handlebars.templates["scaffold-status-good-template"](data));
+		$('#scaffoldingStatus').html(Handlebars.getTemplate("scaffold-status-good-template")(data));
 	},
 	makeUpdateFormNotReady:function(neededCharacters) {
 		$("#submitButtonContainer").hide();
-		//var scaffoldStatusHandler =  Handlebars.compile($("#scaffold-status-spillover-template").html());
 		var data  = {};
 		data.spillover = neededCharacters;
-		$('#scaffoldingStatus').html(Handlebars.templates["scaffold-status-spillover-template"](data));        
+		$('#scaffoldingStatus').html(Handlebars.getTemplate("scaffold-status-spillover-template")(data));        
 	},
 	makeUpdateFormPending:function() {
 		$("#submitButtonContainer").hide();
-		//var scaffoldStatusHandler =  Handlebars.compile($("#scaffold-status-incomplete-template").html());
-		$('#scaffoldingStatus').html(Handlebars.templates["scaffold-status-incomplete-template"]());        
+		$('#scaffoldingStatus').html(Handlebars.getTemplate("scaffold-status-incomplete-template")());        
 	},
 	removeScaffold:function(index){
 			var scaffolds = app.getScaffolds();
@@ -1535,7 +1527,7 @@ var app = {
 				keysData.publicKey = publicKey;
 				keysData.keyOptions = keyOptions;
 			}
-    		var html = Handlebars.templates["user-keys-template"](keysData);
+    		var html = Handlebars.getTemplate("user-keys-template")(keysData);
 			$("#privateKeyCopyarea").html(html);
 			$("#privateKeyCopyarea").fadeIn();
 	},
@@ -1763,7 +1755,7 @@ $( document ).ready(function() {
 	}).done(function(response){
 		var hashlist = app.getNameValuePairsFromArgumentList(response,/\n/,"=");
 		if(hashlist == null){
-			$('#hashesContent').html(Handlebars.templates["hashes-not-found-template"]());;
+			$('#hashesContent').html(Handlebars.getTemplate("hashes-not-found-template")());;
 			app.setView(app.HASHES_VIEW);
 			app.unauthenticatedMenu();  
 		}
@@ -1777,12 +1769,12 @@ $( document ).ready(function() {
 					hashes.push(hashlist[h]);
 				}
 			}
-			$('#hashesContent').html(Handlebars.templates["hashes-template"](hashes));;
+			$('#hashesContent').html(Handlebars.getTemplate("hashes-template")(hashes));
 			app.initialize();  
 
 		}
 	}).fail(function(err){
-		$('#hashesContent').html(Handlebars.templates["hashes-not-found-template"]());;
+		$('#hashesContent').html(Handlebars.getTemplate("hashes-not-found-template")());;
 		app.setView(app.HASHES_VIEW);
 		app.unauthenticatedMenu();
 		$("#aboutButton").hide();
@@ -1795,6 +1787,23 @@ Handlebars.registerHelper('tweetShortDate', function(tweetDate) {
 	if(!dtext.match(/\//)) {dtext +=" ago";}
 	return dtext;
 });
+
+Handlebars.getTemplate = function(name) {
+	if (Handlebars.templates === undefined || Handlebars.templates[name] === undefined) {
+		$.ajax({
+			url : name + '.hbs',
+			success : function(data) {
+				if (Handlebars.templates === undefined) {
+					Handlebars.templates = {};
+				}
+				Handlebars.templates[name] = Handlebars.compile(data);
+			},
+			async : false
+		});
+	}
+	return Handlebars.templates[name];
+};
+
 function executeCopy(text){
     var copyDiv = document.createElement('div');
     copyDiv.contentEditable = true;

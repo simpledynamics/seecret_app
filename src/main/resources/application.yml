@@ -1,2 +1,5 @@
 server:
   port: 80
+spring:
+  resources.static-locations: classpath:/public/, classpath:/templates/,classpath:/javascripts/
+  thymeleaf.prefix: classpath:/public/

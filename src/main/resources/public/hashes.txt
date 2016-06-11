@@ -1,10 +1,10 @@
 SHA1(css\font-awesome-4.3.0\css\font-awesome.min.css)= 8c15c6bd82c71e9ef1bb11cf24e502fe07518ac5
 SHA1(css\seecret_app.css)= 4025639a5478f0f9406abc8f5770c89cb8154c1c
-SHA1(index.html)= 8d1302ce5c8d632a65355e6ce482f7f6995b4f9a
+SHA1(index.html)= fbfda67ab641a9e42aa53009c03199a27ca1e33d
 SHA1(js\covertexts.js)= 0646b3106348e0727a0178c3c346f623eeef7955
 SHA1(js\oauthio_key.js)= 620fffd468006be8ae92004849892018c60bd589
 SHA1(js\seecret-1.0.min.js)= 356da74bd1f6365fd7eb75610d2b0d92296f78af
-SHA1(js\seecret_app-1.0.min.js)= e857650b87d6860bf7371ba07d5033483303d993
+SHA1(js\seecret_app-1.0.min.js)= 993752f018bf5c6830d5af0a863ea78d1e019a87
 SHA1(lib\moment-twitter.js)= 9a4f6f3e4712da65e1f142101df640cde507ada9
 SHA1(lib\shoco\shoco_jquery_safe.js)= a99d580d27a032ec243b28a5bdaa92ef02e38092
 SHA1(lib\smaz\smaz.js)= 900679def4b130fafcc20475b87b4bdc99739c61

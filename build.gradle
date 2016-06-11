@@ -65,8 +65,27 @@ javascript.source {
     }
 }
 
+task "checksumPublicWebContent" { 
+	def path = "src/main/resources/public/"
+ 	def hashes = new StringBuilder()
+    def sourceTree = fileTree(dir: path , includes: ["**/*.html", "**/*.js", "**/*.css"])
+	sourceTree.each {File file ->
+	  String checksum;
+	  file.withInputStream { ins -> checksum =  org.apache.commons.codec.digest.DigestUtils.sha1Hex(ins) }
+	  def webPath = relativePath(file).substring(path.size())
+	  hashes.append("SHA1(").append(webPath).append(")= ").append(checksum).append("\n")
+	}
+	File hashesFile =file( new File("src/main/resources/public/hashes.txt"))
+	hashesFile.setText(hashes.toString())
+}
+checksumPublicWebContent.shouldRunAfter combineJs
+
 processResources {
   dependsOn combineJs
+}
+
+jar {
+  dependsOn checksumPublicWebContent
 }
 
 combineJs {
@@ -89,17 +108,4 @@ assets {
     ]
 }
 
-task "checksumPublicWebContent" {
-	def path = "src/main/resources/public/"
- 	def hashes = new StringBuilder()
-    def sourceTree = fileTree(dir: path , includes: ["**/*.html", "**/*.js", "**/*.css"])
-	sourceTree.each {File file ->
-	  String checksum;
-	  file.withInputStream { ins -> checksum =  org.apache.commons.codec.digest.DigestUtils.sha1Hex(ins) }
-	  def webPath = relativePath(file).substring(path.size())
-	  hashes.append("SHA1(").append(webPath).append(")= ").append(checksum).append("\n")
-	}
-	File hashesFile =file( new File("src/main/resources/public/hashes.txt"))
-	hashesFile.setText(hashes.toString())
-}
 

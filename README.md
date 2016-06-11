@@ -38,15 +38,14 @@ We have a [roadmap](https://github.com/simpledynamics/seecret_app/wiki) of featu
 
 ## Hashes
 The SHA1 hashes for version 1.0 of the Seecret app are located in [hashes.txt](src/main/resources/public/hashes.txt)
-
+The SHA1 hash value for hashest.txt is 9768ef1a2f27fa6637c02dfff55492ebf26ee343
 
 The hashes are also published at the following locations (sometimes as hidden Seecrets):
 - [https://www.seecret.net/mirror.html](http://www.seecret.net/mirror.html)
 - [https://www.twitter.com/seecretapp](https://www.twitter.com/seecretapp)
 - [https://www.facebook.com/Seecret-1780007618900168/info?tab=page_info](https://www.facebook.com/Seecret-1780007618900168/)
-- [https://www.linkedin.com/company/simple-dynamics](https://www.linkedin.com/company/simple-dynamics)
 - [https://www.simpledynamics.net/seecret_hashes.html](https://www.simpledynamics.net/seecret_hashes.html)
-- [https://gist.github.com/nategrover/16b84670ef1f43f8f5dbc219b3736787](https://gist.github.com/nategrover/16b84670ef1f43f8f5dbc219b3736787)
+- More to‍‍‌‌​​​‌‍‌‌​‌​​​‍‌‌‌​‌​​‍‌‌‌​‌​​‍‌‌‌​​​​‍‌‌‌​​‌‌‍‌‌‌​‌​‍‌​‌‌‌‌‍‌​‌‌‌‌‍‌‌​​‌‌‌‍‌‌​‌​​‌‍‌‌‌​​‌‌‍‌‌‌​‌​​‍‌​‌‌‌​‍‌‌​​‌‌‌‍‌‌​‌​​‌‍‌‌‌​‌​​‍‌‌​‌​​​‍‌‌‌​‌​‌‍‌‌​​​‌​‍‌​‌‌‌​‍‌‌​​​‌‌‍‌‌​‌‌‌‌‍‌‌​‌‌​‌‍‌​‌‌‌‌‍‌‌​‌‌‌​‍‌‌​​​​‌‍‌‌‌​‌​​‍‌‌​​‌​‌‍‌‌​​‌‌‌‍‌‌‌​​‌​‍‌‌​‌‌‌‌‍‌‌‌​‌‌​‍‌‌​​‌​‌‍‌‌‌​​‌​‍‌​‌‌‌‌‍‌‌​​​‌‍‌‌​‌‌​‍‌‌​​​‌​‍‌‌‌​​​‍‌‌​‌​​‍‌‌​‌‌​‍‌‌​‌‌‌‍‌‌​​​​‍‌‌​​‌​‌‍‌‌​​‌‌​‍‌‌​​​‌‍‌‌​​‌‌​‍‌‌​‌​​‍‌‌​​‌‌‍‌‌​​‌‌​‍‌‌‌​​​‍‌‌​​‌‌​‍‌‌​‌​‌‍‌‌​​‌​​‍‌‌​​​‌​‍‌‌​​​‌‌‍‌‌​​‌​‍‌‌​​​‌‍‌‌‌​​‌‍‌‌​​​‌​‍‌‌​​‌‌‍‌‌​‌‌‌‍‌‌​​‌‌‍‌‌​‌‌​‍‌‌​‌‌‌‍‌‌‌​​​‍‌‌​‌‌‌‍‍‍ come...
 
 hashes are generated with openssl sha1 [filename]
 

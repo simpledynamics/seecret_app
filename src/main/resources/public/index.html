@@ -79,7 +79,7 @@ Created by Simple Dynamics https://www.simpledynamics.net
 			</div>
 			<P/>
 			<h2 class="timeLine">Timeline <span id="timelineName"></span></h2>
-			Show only Seecrets:  <input type="checkbox" id="showOnlySeecrets" checked="true" onChange="app.updateHomeTimeline(true)" />
+			Show only Seecrets:  <input type="checkbox" id="showOnlySeecrets" checked="true" onChange="if(app.homeTimeline) {app.updateHomeTimeline(true);}else {app.updateUserTimeline(app.userTimelineId);}" />
 			<div id="status-list" class="status-list"></div>
 			<div id="updateHomeTimelineButtonContianer"><input type="button" value="Get older messages" onClick="app.updateHomeTimeline()" class="button" /></div>					
 		</div>
@@ -90,8 +90,7 @@ Created by Simple Dynamics https://www.simpledynamics.net
 					<input type="hidden" id="selectedReceiverId" />
 					<input type="hidden" id="selectedReceiverName" />
 				</div>
-				<img src="img/encrypted.png" class="dmIcon" /> = encrypted<br/>
-				<img src="img/signed.jpg" class="dmIcon" /> = and signed<br/>(read the <a href="https://www.seecret.net/faq.html" target="_new">FAQ</a> to understand more)
+				<img src="img/encrypted.png" class="dmIcon" /> = encrypted, <img src="img/signed.jpg" class="dmIcon" /> = signed<br/>(read the <a href="https://www.seecret.net/faq.html" target="_new">FAQ</a> to understand more)
 				<br/><br/>
 				<div id="directMessagesBreadCrumbContainer"></div>
 				<div class="container" style="" id="directMessagesActionsContainer"></div>

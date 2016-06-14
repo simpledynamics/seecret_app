@@ -1029,7 +1029,7 @@ var app = {
 			if(indexes[mi].length > 0){
 				var ordinal = 0;
 				for(var uid in indexes[mi]){
-					var dechained = app.seecret_engine.dechainifyWithCovertexts(timeline,{
+					var dechained = app.seecret_engine.dechainify(timeline,{
 						chainSegmentMatcher:function(segment){
 							if(segment && segment.text && typeof segment.text == "string" && segment.user && segment.user.id_str==mi){
 								return segment;
@@ -1040,7 +1040,8 @@ var app = {
 							}
 						},
 						chainSegmentContentFinder:this.chainSegmentContentFinder,
-						ordinal:ordinal
+						startIndex:indexes[mi][uid],
+						withCovertexts:true
 					})
 					if(dechained && dechained.seecret!="") {
 						timeline[indexes[mi][uid]].seecret_envelope = dechained.seecret;
@@ -1055,20 +1056,22 @@ var app = {
 	dechainifyDirectMessages:function(messages,indexes){
 		for(var mi in indexes){
 			if(indexes[mi].length > 0){
+				var matcher = function(segment){
+					if(segment && segment.text && typeof segment.text == "string" && segment.sender && segment.sender.id_str==mi){
+						return segment;
+					} 
+					else 
+					{
+						return null;
+					}
+				}
 				var ordinal = 0;
 				for(var uid in indexes[mi]){
-					var dechained = app.seecret_engine.dechainifyWithCovertexts(messages,{
-						chainSegmentMatcher:function(segment){
-							if(segment && segment.text && typeof segment.text == "string" && segment.sender && segment.sender.id_str==mi){
-								return segment;
-							} 
-							else 
-							{
-								return null;
-							}
-						},
+					var dechained = app.seecret_engine.dechainify(messages,{
+						chainSegmentMatcher:matcher,
 						chainSegmentContentFinder:this.chainSegmentContentFinder,
-						ordinal:ordinal
+						startIndex:indexes[mi][uid],
+						withCovertexts:true
 					})
 					if(dechained && dechained.seecret!="") {
 						messages[indexes[mi][uid]].seecret_envelope = dechained.seecret;
@@ -1736,6 +1739,19 @@ var app = {
 	isIOS:function() {
 		var iOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;		
 		return iOS;
+	},
+	timers:{},
+	timer:function(name) {
+		var time = moment();
+		if(app.timers[name]){
+			console.log(name + " took " + time.diff(app.timers[name]) + " milliseconds");
+			delete app.timers[name];
+		}
+		else {
+			app.timers[name] = time;
+			//console.log(name + " started at " + time.format(""));
+			
+		}
 	}
 }
 $( document ).ready(function() {
@@ -1764,7 +1780,7 @@ $( document ).ready(function() {
 		}
 	});
 	$("#textarea-statusUpdate").keyup(
-		function(eventObject){
+`		function(eventObject){
 			app.processScaffolding()
 		}
 	);
@@ -1822,7 +1838,7 @@ Handlebars.registerHelper('tweetShortDate', function(tweetDate) {
 Handlebars.getTemplate = function(name) {
 	if (Handlebars.templates === undefined || Handlebars.templates[name] === undefined) {
 		$.ajax({
-			url : name + '.hbs',
+			url : "templates/" + name + '.hbs',
 			success : function(data) {
 				if (Handlebars.templates === undefined) {
 					Handlebars.templates = {};

@@ -1780,7 +1780,7 @@ $( document ).ready(function() {
 		}
 	});
 	$("#textarea-statusUpdate").keyup(
-`		function(eventObject){
+		function(eventObject){
 			app.processScaffolding()
 		}
 	);
@@ -1838,7 +1838,7 @@ Handlebars.registerHelper('tweetShortDate', function(tweetDate) {
 Handlebars.getTemplate = function(name) {
 	if (Handlebars.templates === undefined || Handlebars.templates[name] === undefined) {
 		$.ajax({
-			url : "templates/" + name + '.hbs',
+			url : name + '.hbsx',
 			success : function(data) {
 				if (Handlebars.templates === undefined) {
 					Handlebars.templates = {};

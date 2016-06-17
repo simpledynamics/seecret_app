@@ -148,40 +148,87 @@ var app = {
 				app.unauthenticatedUI();
 			}
     },
+	dmPostData:{},
     dmMaxId:null,
-    getDirectMessages:function(bScrolling) {
+	dmSinceId:null,
+	initializeDirectMessagesView:function(){
+		app.setView(app.DIRECT_MESSAGES_VIEW);		
+		if($("#directMessages").html() == "") {
+			app.getAllDirectMessages();
+		}
+		else {
+			app.getNewestDirectMessages();
+		}
+	},
+	getNewestDirectMessages:function() {
+		app.setupDMPostData();
+		if(app.dmSinceId){
+			app.dmPostData.since_id=app.dmSinceId;
+		}
+		app.getDirectMessages();
+	},
+	getOlderDirectMessages:function() {
+		if(app.hasFirstDirectMessage){
+			return;
+		}
+		app.setupDMPostData();
+		app.dmPostData.max_id=app.dmMaxId;
+		app.getDirectMessages();
+	},
+	setupDMPostData:function() {
+		app.dmPostData = {
+			count: 100,
+			full_text:true,
+			include_entities:false,
+			skip_status:true
+		};
+	},
+	getAllDirectMessages:function(){
+		$("#directMessages").empty();
+		app.dmMaxId=null;
+		app.dmSinceId=null;
+		app.hasFirstDirectMessage = false;
+		app.setupDMPostData();
+		$("#olderDirectMessagesButtonContainer").hide();
+		app.getDirectMessages();
+	},
+    getDirectMessages:function() {
+		$("#friendName").html("");
+		$( ".dmMessageDiv" ).fadeIn();
 		app.updatingDirectMessages=true;
 		$("#directMessagesActionsContainer").empty();
 		$("#directMessagesBreadCrumbContainer").empty();
 		$("#friendName").empty();
-		if(bScrolling && app.hasFirstDirectMessage){
-			return;
-		}
-		if(!bScrolling){
-			$("#directMessages").empty();
-			app.dmMaxId=null;
-			app.hasFirstDirectMessage = false;
-		}
-		var data ={
-                count: 200,
-				full_text:true
-        };
-		if(app.dmMaxId && bScrolling){
-			data.max_id = app.dmMaxId;
-		}
 		app.overlay();
     	app.oauthResult.get('1.1/direct_messages.json', {
-            data: data
+            data: app.dmPostData
         })
         .done(function (response) {
-				if(response.length > 0){
-					var messages = app.processDirectMessagesResponse(response);
-					app.updateDirectMesssagesBreadcrumbs(null);
+			if(response.length > 0){
+				$("#olderDirectMessagesButtonContainer").show();
+				console.log("Done getting the messages, got " + response.length);
+				var startId = 0;
+				var endId = 0;
+				console.log("From " + response[0].id_str + " to " + response[response.length-1].id_str);
+				if(!app.dmSinceId){
+					console.log("setting the since id to " + response[0].id_str);
+					app.dmSinceId = response[0].id_str;
 				}
-				else {
-					app.hideOverlays();
-					$("#directMessages").html("No direct messages.");
+				var messages = app.processDirectMessagesResponse(response);
+				//app.updateDirectMesssagesBreadcrumbs(null);
+				
+				
+			}
+			else {
+				app.hideOverlays();
+				if(app.dmPostData.since_id){
+					alert("No new direct messages");
 				}
+				else if(!app.dmPostData.max_id){
+					$("#directMessages").html("You have no direct messages.");
+				}
+				
+			}
 		})
         .fail(function (err) {
 			app.hideOverlays();
@@ -189,9 +236,13 @@ var app = {
 	},
 	updateDirectMessagesUI:function(messages) {
 		app.hideOverlays();
-		$("#getMessagesButton2").remove();
-        $('#directMessages').append(Handlebars.getTemplate("direct-messages-template")(messages));        
-		$("#olderDirectMessagesButtonContainer").show();
+		if(app.dmPostData.since_id){
+			$('#directMessages').prepend(Handlebars.getTemplate("direct-messages-template")(messages));        
+		}
+		else {
+			$('#directMessages').append(Handlebars.getTemplate("direct-messages-template")(messages));        
+			
+		}
 		app.updatingDirectMessages=false;
 	},
 	publicKeyStartRegex:/^\s*-----BEGIN PGP PUBLIC KEY BLOCK-----\s/,
@@ -267,6 +318,7 @@ var app = {
 		if(directMessages.length == 1 && directMessages[0].id_str == app.dmMaxId){
 			if(!app.hasFirstDirectMessage) {
 					$("#directMessages").append(Handlebars.getTemplate("no-more-direct-messages-template")());
+					$("#olderDirectMessagesButtonContainer").hide();
 			}
 			app.hasFirstDirectMessage = true;
 			app.hideOverlays();
@@ -562,6 +614,11 @@ var app = {
 					app.refreshActiveUserTotal();
 					callback();
 	},
+    showAllDirectMessages:function(){
+		$("#friendName").html("");
+		$( ".dmMessageDiv" ).fadeIn();
+		$("#directMessagesActionsContainer").hide();
+	},	
 	setDirectMessageReceiver:function(receiverId, receiverName){
 		$("#selectedReceiverId").val(receiverId);
 		$("#selectedReceiverName").val(receiverName);
@@ -569,6 +626,7 @@ var app = {
 		var userData = {};
 		userData.name = receiverName;
 		userData.id_str=receiverId;
+		/*
 		var receivedKeys = app.activeUser.publicKeys;
 		for(var x in receivedKeys){
 			if(receivedKeys[x].id_str == receiverId){
@@ -576,15 +634,18 @@ var app = {
 				userData.publicKey.displayDate = new moment(userData.publicKey.receiveDate).format('MMMM Do YYYY, h:mm:ss a');;
 			}
 		}
-		//app.updateDirectMesssagesBreadcrumbs(userData);
+		*/
 		$("#friendName").html(Handlebars.getTemplate("direct-message-friend-name")(userData));
 		app.checkDirectMessageStatus();
 		$( ".dmMessageDiv" ).hide();
 		$( ".dm_" + receiverId).fadeIn();
+		$("#directMessagesActionsContainer").show();
 	},
+	/*
 	updateDirectMesssagesBreadcrumbs:function(user){
         $('#directMessagesBreadCrumbContainer').html(Handlebars.getTemplate("direct-message-breadcrumb-template")(user));        
 	},
+	*/
 	//REVISIT
 	initiateDirectMessages:function(receiverId,bSkipWelcome) {
 				var pkMessages = app.generatePublicKeyMessages(receiverId);
@@ -607,7 +668,6 @@ var app = {
 	sendingDirectMessage:false,
 	prepareDirectMessage:function(receiverId) {
 		if(app.sendingDirectMessage){
-			alert("already sending direct message!")
 			return;
 		}
 		var directMessage = $("#directMessage").val();
@@ -1774,7 +1834,7 @@ $( document ).ready(function() {
 					}
 			   }
 			   else if (document.getElementById("privateMessages").style.display=="block" && !app.updatingDirectMessages) {
-					app.getDirectMessages(true);
+					app.getOlderDirectMessages();
 			   }
 			}
 		}

@@ -206,18 +206,10 @@ var app = {
         .done(function (response) {
 			if(response.length > 0){
 				$("#olderDirectMessagesButtonContainer").show();
-				console.log("Done getting the messages, got " + response.length);
-				var startId = 0;
-				var endId = 0;
-				console.log("From " + response[0].id_str + " to " + response[response.length-1].id_str);
 				if(!app.dmSinceId){
-					console.log("setting the since id to " + response[0].id_str);
 					app.dmSinceId = response[0].id_str;
 				}
 				var messages = app.processDirectMessagesResponse(response);
-				//app.updateDirectMesssagesBreadcrumbs(null);
-				
-				
 			}
 			else {
 				app.hideOverlays();
@@ -627,15 +619,6 @@ var app = {
 		var userData = {};
 		userData.name = receiverName;
 		userData.id_str=receiverId;
-		/*
-		var receivedKeys = app.activeUser.publicKeys;
-		for(var x in receivedKeys){
-			if(receivedKeys[x].id_str == receiverId){
-				userData.publicKey=receivedKeys[x];
-				userData.publicKey.displayDate = new moment(userData.publicKey.receiveDate).format('MMMM Do YYYY, h:mm:ss a');;
-			}
-		}
-		*/
 		$("#friendName").html(Handlebars.getTemplate("direct-message-friend-name")(userData));
 		app.checkDirectMessageStatus();
 		$( ".dmMessageDiv" ).hide();
@@ -643,11 +626,6 @@ var app = {
 		$("#directMessagesActionsContainer").show();
 		$('body').scrollTop(0);
 	},
-	/*
-	updateDirectMesssagesBreadcrumbs:function(user){
-        $('#directMessagesBreadCrumbContainer').html(Handlebars.getTemplate("direct-message-breadcrumb-template")(user));        
-	},
-	*/
 	//REVISIT
 	initiateDirectMessages:function(receiverId,bSkipWelcome) {
 				var pkMessages = app.generatePublicKeyMessages(receiverId);
@@ -750,7 +728,6 @@ var app = {
 			app.sendingDirectMessage=false;
 			app.hideOverlays();
 			alert("You do not have that users public key.");
-			
 		}
 		
 	},

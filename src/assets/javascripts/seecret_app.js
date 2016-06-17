@@ -618,6 +618,7 @@ var app = {
 		$("#friendName").html("");
 		$( ".dmMessageDiv" ).fadeIn();
 		$("#directMessagesActionsContainer").hide();
+		$('body').scrollTop(0);
 	},	
 	setDirectMessageReceiver:function(receiverId, receiverName){
 		$("#selectedReceiverId").val(receiverId);
@@ -640,6 +641,7 @@ var app = {
 		$( ".dmMessageDiv" ).hide();
 		$( ".dm_" + receiverId).fadeIn();
 		$("#directMessagesActionsContainer").show();
+		$('body').scrollTop(0);
 	},
 	/*
 	updateDirectMesssagesBreadcrumbs:function(user){

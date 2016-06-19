@@ -1,0 +1,17 @@
+{{#.}}
+	<div class="friendDetailsContainer" id="friendDetails_{{id_str}}" class="friendDetails">
+		<img src="{{profile_image_url}}" /> <strong>{{screen_name}}</strong> message count: {{message_count}}   <a href="javascript:app.toggleFriendMessages('{{id_str}}',this.id)" id="friendMessagesToggleLink_{{id_str}}">show conversation</a> 
+		Most recent: {{tweetShortDate created_at}}  
+		{{#if publicKey}}
+			<br/>
+			<textarea id="directMessage_{{id_str}}" style="width:50%"></textarea>
+			<input type=button onClick="app.prepareDirectMessage('{{id_str}}')" value="Send message" class="button"/>
+		{{else}}
+		<br/>Not sure if {{screen_name}} has your public key?  <input type=button onClick="app.initiateDirectMessages({{id_str}},true)" value="send it"/>  ({{screen_name}} can't send you encryted messages until you have sent them your key)
+		{{/if}}
+		<br/>
+		<div id="friendMessages_{{id_str}}" style="display:none" class="friendMessages"></div>
+	</div>
+{{/.}}
+
+

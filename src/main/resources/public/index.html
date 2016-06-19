@@ -95,19 +95,21 @@ Created by Simple Dynamics https://www.simpledynamics.net
 			</div>
 			<div id="privateMessages" class="startingState" style="display: none">
 				<h2 class="timeLine">
-					Direct Messages <span id="friendName"></span>
+					Direct Messages
 				</h2>
 				<input type="button" id="newestDirectMessagesButton" value="Refresh" onClick="app.getNewestDirectMessages()" class="button" />
-				<div class="viewHeader">
-					<input type="hidden" id="selectedReceiverId" /> <input type="hidden" id="selectedReceiverName" />
+				<input type="button" id="showAllDirectMessageButton" value="Show all" onClick="app.showAllDirectMessages()" class="button" />
+				<br/><br/>
+				<div id="friendsContainer">
+				
+				
 				</div>
-				<div id="directMessagesBreadCrumbContainer"></div>
-				<div class="container" style="" id="directMessagesActionsContainer"></div>
-				<img src="img/encrypted.png" class="dmIcon" /> = encrypted, <img src="img/signed.jpg" class="dmIcon" /> = signed<br />(read the <a href="https://www.seecret.net/faq.html"
-					target="_new">FAQ</a> to understand more) <br />
-				<br />
+				<div id="directMessagesLegendContainer" style="display:none">
+					<img src="img/encrypted.png" class="dmIcon" /> = encrypted, <img src="img/signed.jpg" class="dmIcon" /> = signed<br />(Not sure what these mean? Read the <a href="https://www.seecret.net/faq.html" target="_new">FAQ</a> to understand more) <br /><br />
+				</div>
 				<div id="directMessages"></div>
 				<div id="olderDirectMessagesButtonContainer" style="display: none">
+					<br/>
 					<input type="button" value="Get older messages" onClick="app.getOlderDirectMessages()" class="button" />
 				</div>
 			</div>

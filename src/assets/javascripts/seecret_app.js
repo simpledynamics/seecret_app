@@ -13,7 +13,7 @@ var app = {
 	oauthResult:null,
 	doScroll:true,
 	activeUser:{},
-	
+	NUM_DM:200,
 	publicKeyStartRegex:/^\s*-----BEGIN PGP PUBLIC KEY BLOCK-----\s/,
 	publicKeyEndRegex:/\s-----END PGP PUBLIC KEY BLOCK-----\s*$/,
 	pgpMessageStartRegex:/^\s*-----BEGIN PGP MESSAGE-----/,
@@ -195,7 +195,7 @@ var app = {
 	},
 	setupDMPostData:function() {
 		app.dmPostData = {
-			count: 100,
+			count: app.NUM_DM,
 			full_text:true,
 			include_entities:false,
 			skip_status:true
@@ -215,7 +215,7 @@ var app = {
         .done(function (response) {
 			//console.log("Got "+ response.length + " direct messages");
 			if(response.length > 0){
-				$("#olderDirectMessagesButtonContainer").show();
+				$("#getOlderMessagesButton").show();
 				if(!app.dmSinceId){
 					app.dmSinceId = response[0].id_str;
 				}
@@ -250,7 +250,7 @@ var app = {
 		if(response.length == 1 && response[0].id_str == app.dmMaxId){
 			if(!app.hasFirstDirectMessage) {
 					$("#directMessages").append(Handlebars.getTemplate("no-more-direct-messages-template")());
-					$("#olderDirectMessagesButtonContainer").hide();
+					$("#getOlderMessagesButton").hide();
 			}
 			app.hasFirstDirectMessage = true;
 			app.hideOverlays();
@@ -273,11 +273,13 @@ var app = {
 		
 		var friendList = app.getFriendsFromMessageList(messages);
 		app.markMessageableFriends(friendList);
+		app.markFriendsWithSentKeys(friendList);
 		console.log("Found " + friendList.length + " friends");
 		if(  $("#friendsContainer").is(":empty") ){
 			$("#friendsContainer").html(Handlebars.getTemplate("friends-list-template")(friendList));
 		}
 		else {
+			//TODO:  update friend list entry with a 'new' indicator?  or message count etc... or 'have key, don't have key' indicator...?
 			var newFriends = [];
 			for(var f in friendList){
 				if(document.getElementById("friendDetails_" + friendList[f].id_str) == null) {
@@ -316,7 +318,6 @@ var app = {
 			}
 		}
 		app.hideOverlays();
-		
 	},
 	updateDirectMessagesUI:function(messages,friendList) {
 		app.hideOverlays();
@@ -331,7 +332,6 @@ var app = {
 					$('#friendMessages_'+friendList[f].id_str).prepend(Handlebars.getTemplate("direct-messages-template")(friendMessages));        
 				}
 			}
-			//TODO:  update friend list entry with a 'new' indicator?  or message count etc... or 'have key, don't have key' indicator...?
 		}
 		else {
 			app.renderFriendMessages(friendList,messages);
@@ -344,6 +344,18 @@ var app = {
 		for(var f in friends){
 			console.log("the public key is " + keys[friends[f].id_str]);
 			friends[f].publicKey = keys[friends[f].id_str];
+		}
+	},
+	markFriendsWithSentKeys:function(friends){
+		console.log("marking friends with sent keys!");
+		var sentKeys = app.getObject("sentPublicKeys-"+app.activeUser.user.id_str);
+		for(var s in sentKeys){
+			for (var f in friends){
+				if(s == friends[f].id_str){
+					//console.log("found a sent key to " + s);
+					friends[f].sentKey = sentKeys[s];
+				}
+			}
 		}
 	},
 	renderAllFriendMessages:function(friends,timeline){
@@ -407,10 +419,10 @@ var app = {
 			app.setupDMPostData();
 			app.dmPostData.max_id=app.dmMaxId;
 			app.doDMPost(app.dmPostData,function(response){
-				if(response.length < 100 || app.dmMaxId == response[response.length-1].id_str){
+				if(response.length < app.NUM_DM || app.dmMaxId == response[response.length-1].id_str){
 						app.hasFirstDirectMessage = true;
 						$("#directMessages").append(Handlebars.getTemplate("no-more-direct-messages-template")());
-						$("#olderDirectMessagesButtonContainer").hide();
+						$("#getOlderMessagesButton").hide();
 				}
 				app.handleDMResponse(response);
 			});
@@ -461,6 +473,7 @@ var app = {
 		for(var each in keys){
 			if(keys[each].sender.id_str == app.activeUser.user.id){
 				//this is the user's own key in an outbound DM;
+				//should never happen because dms API returns only inbound AFAICT
 				continue;
 			}
 			//last sent key should be found first and the older ones ignored
@@ -472,10 +485,14 @@ var app = {
 					profile_image_url:keys[each].sender.profile_image_url,
 					receiveDate:keys[each].created_at
 				}
-				
 			}
 		}
 		for(var x in newPublicKeys){
+			if(!publicKeys[x]){
+				//this is a newly received public key
+				//TODO:  yellow fade this?
+				$("#friendKeyContainer_"+x).html("Just sent you their key!");
+			}
 			publicKeys[x] = newPublicKeys[x];
 		}
 		app.saveObject("publicKeys-"+app.activeUser.user.id_str,publicKeys);
@@ -498,7 +515,7 @@ var app = {
 			var sentPublicKeys = app.activeUser.sentPublicKeys;
 			if(sentPublicKeys == null) sentPublicKeys = {};
 			for(var k in newKeys){
-				sentPublicKeys[k] = new Date();;
+				sentPublicKeys[k] = new Date();
 			}
 			app.activeUser.sentPublicKeys=sentPublicKeys;
 			app.saveObject("sentPublicKeys-"+app.activeUser.user.id_str,sentPublicKeys);
@@ -750,12 +767,9 @@ var app = {
 					callback();
 	},
     showAllDirectMessages:function(){
-		$("#friendName").html("");
-		$( ".dmMessageDiv" ).fadeIn();
-		$("#directMessagesActionsContainer").hide();
-		$('body').scrollTop(0);
+		$(".friendMessages").show();
 	},	
-	setDirectMessageReceiver:function(receiverId, receiverName){
+/*	setDirectMessageReceiver:function(receiverId, receiverName){
 		$("#selectedReceiverId").val(receiverId);
 		$("#selectedReceiverName").val(receiverName);
 		var user = app.activeUser.user;
@@ -769,6 +783,7 @@ var app = {
 		$("#directMessagesActionsContainer").show();
 		$('body').scrollTop(0);
 	},
+*/	
 	//REVISIT
 	initiateDirectMessages:function(receiverId,bSkipWelcome) {
 				var pkMessages = app.generatePublicKeyMessages(receiverId);
@@ -783,7 +798,8 @@ var app = {
 					var sentKeys = {};
 					sentKeys[receiverId] = true;
 					app.trackSentPublicKeys(sentKeys);
-					app.checkDirectMessageStatus();					
+					//TODO:  update friend list content instead of this
+					//app.checkDirectMessageStatus();					
 				});
 	},
 	prepareDirectMessage:function(receiverId) {
@@ -926,6 +942,9 @@ var app = {
 			app.renderPrivateKeySettings();
 			app.setView(app.SETTINGS_VIEW);
 		}
+	},
+	openDirectMessageForm:function(id_str){
+		$("#friendMessageForm_"+id_str).fadeIn();
 	},
 	checkDirectMessageStatus:function() {
 		app.doScroll=false;
@@ -1199,10 +1218,18 @@ var app = {
 		
 	},
 	processMessageList:function(messages,senderPropertyRef,maxIdRef){
+		/*
+		if(senderPropertyRef=="sender"){
+			for(var m in messages){
+				if(messages[m].sender.id_str == app.activeUser.user.id_str){
+					console.log("found an outbound message from user! ");
+				}
+			}
+		}
+		*/
 		var senderFinder = function(message) {
 			return message[senderPropertyRef]?message[senderPropertyRef].id_str:null;
 		}
-		
 		var uniqueSenders = app.getUniqueInstancesFromList(messages,senderFinder);
 		//console.log("unique senders = " + JSON.stringify(uniqueSenders));
 		var messageIndexes = app.getMessageIndexes(messages,uniqueSenders,senderFinder);
@@ -1597,6 +1624,8 @@ var app = {
 			$('#left-panel').css('left', '-14em');						
 		}
 	},	
+	//Limit the covertext length to 100 characters.  we want at least 40 chars of hidden text per Seecret chain segment....
+	//Strip all consecutive whitespace and remove leading whitespace..
 	processScaffoldField:function(num){
 		var field = $("#scaffold"+num);
 		val = field.val();
@@ -1680,7 +1709,7 @@ var app = {
 		app.processScaffolding();
 	},
 	addScaffoldField:function(num,val){
-			var id= num;
+			var id=num;
 			var scaffoldCount = num+1;
 			var data = {scaffoldId:id,val:val,scaffoldCount:scaffoldCount};
 			$('#scaffoldsContainer').append(Handlebars.getTemplate("scaffold-template")(data));        

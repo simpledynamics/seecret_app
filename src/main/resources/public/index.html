@@ -97,18 +97,15 @@ Created by Simple Dynamics https://www.simpledynamics.net
 				<h2 class="timeLine">
 					Direct Messages
 				</h2>
-				<input type="button" id="newestDirectMessagesButton" value="Refresh" onClick="app.getNewestDirectMessages()" class="button" />
 				<input type="button" id="showAllDirectMessageButton" value="Show all" onClick="app.showAllDirectMessages()" class="button" />
-				<br/><br/>
+				<input type="button" id="newestDirectMessagesButton" value="Check for new" onClick="app.getNewestDirectMessages()" class="button" />
+				<!--<input type="button" id="getOlderMessagesButton" value="Get older messages" onClick="app.getOlderDirectMessages()" class="button" />-->
+				<br/>
 				<div id="friendsContainer"></div>
 				<div id="directMessagesLegendContainer" style="display:none">
 					<img src="img/encrypted.png" class="dmIcon" /> = encrypted, <img src="img/signed.jpg" class="dmIcon" /> = signed<br />(Not sure what these mean? Read the <a href="https://www.seecret.net/faq.html" target="_new">FAQ</a> to understand more) <br /><br />
 				</div>
 				<div id="directMessages"></div>
-				<div id="olderDirectMessagesButtonContainer" style="display: none">
-					<br/>
-					<input type="button" value="Get older messages" onClick="app.getOlderDirectMessages()" class="button" />
-				</div>
 			</div>
 			<div id="settings" class="settings startingState" style="display: none">
 				<h2>Settings</h2>

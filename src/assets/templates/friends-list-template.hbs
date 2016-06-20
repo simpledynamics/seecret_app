@@ -1,7 +1,8 @@
 {{#.}}
 	<div class="friendDetailsContainer" id="friendDetails_{{id_str}}" class="friendDetails">
 		<img src="{{profile_image_url}}" /> <strong>{{screen_name}}</strong> message count: {{message_count}}   <a href="javascript:app.toggleFriendMessages('{{id_str}}',this.id)" id="friendMessagesToggleLink_{{id_str}}">show conversation</a> 
-		Most recent: {{tweetShortDate created_at}}  
+		{{tweetShortDate most_recent.created_at}}  
+		
 		{{#if publicKey}}
 			<br/>
 			<textarea id="directMessage_{{id_str}}" style="width:50%"></textarea>

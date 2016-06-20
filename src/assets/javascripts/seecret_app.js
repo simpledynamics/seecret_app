@@ -806,10 +806,11 @@ var app = {
 		if(app.sendingDirectMessage){
 			return;
 		}
-		var directMessage = $("#directMessage").val();
+		var directMessage = $("#directMessage_"+receiverId).val();
 		if(directMessage.length ==0){
 			return;
 		}
+		$("#directMessage_"+receiverId).val("");
 		app.sendingDirectMessage = true;
 		app.overlay();
 		app.encryptDirectMessage(directMessage,receiverId);

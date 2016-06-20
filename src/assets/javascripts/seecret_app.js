@@ -188,13 +188,10 @@ var app = {
 			app.dmPostData.since_id=app.dmSinceId;
 			app.overlay();
 			app.doDMPost(app.dmPostData,app.handleDMResponse);
-
 		}
 		else {
 			console.log("getting newest but there's no since id?  ");
 		}
-		
-
 	},
 	setupDMPostData:function() {
 		app.dmPostData = {
@@ -216,7 +213,7 @@ var app = {
             data: postData
         })
         .done(function (response) {
-			console.log("Got "+ response.length + " direct messages");
+			//console.log("Got "+ response.length + " direct messages");
 			if(response.length > 0){
 				$("#olderDirectMessagesButtonContainer").show();
 				if(!app.dmSinceId){
@@ -238,7 +235,6 @@ var app = {
         .fail(function (err) {
 			app.hideOverlays();
         })
-		
 	},
 	handleDMResponse:function(response){
 		/*		
@@ -278,17 +274,26 @@ var app = {
 		var friendList = app.getFriendsFromMessageList(messages);
 		app.markMessageableFriends(friendList);
 		console.log("Found " + friendList.length + " friends");
-		if(!bNewest){
+		if(  $("#friendsContainer").is(":empty") ){
 			$("#friendsContainer").html(Handlebars.getTemplate("friends-list-template")(friendList));
-			app.renderFriendMessages(friendList,messages);
-			$("#friendsContainer").fadeIn();
 		}
-		else{
+		else {
+			var newFriends = [];
 			for(var f in friendList){
-				if($("#friendDetails_"+friendList[f].id_str) == null){
-					$("#friendsContainer").prepend([friendList[f]]);
+				if(document.getElementById("friendDetails_" + friendList[f].id_str) == null) {
+					newFriends.push(friendList[f]);
 				}
 			}
+			if(newFriends.length > 0){
+				$("#friendsContainer").prepend(Handlebars.getTemplate("friends-list-template")(newFriends));
+				
+			}
+			else {
+				console.log("no new friends");
+			}
+		}
+
+		if(bNewest) {
 			var screen_names = "New messages from ";
 			var delimiter = "";
 			for(var f in friendList){
@@ -303,20 +308,21 @@ var app = {
 				app.markEncryptedDirectMessages(messages);
 				//The animated image freezes when jumping into promise land
 				//app.decryptDirectMessages(messages);
-				app.updateDirectMessagesUI(messages);
+				app.updateDirectMessagesUI(messages,friendList);
 			}
 			else {
-				app.updateDirectMessagesUI(messages);
+				app.updateDirectMessagesUI(messages,friendList);
 				//app.updateDirectMessagesUI(messages);
 			}
 		}
 		app.hideOverlays();
 		
 	},
-	updateDirectMessagesUI:function(messages) {
+	updateDirectMessagesUI:function(messages,friendList) {
 		app.hideOverlays();
-		var friendList = app.getFriendsFromMessageList(messages);
-		if(app.dmPostData.since_id){
+		var friendList = friendList?friendList:app.getFriendsFromMessageList(messages);
+		app.renderAllFriendMessages(friendList,messages);
+		/*if(app.dmPostData.since_id){
 			for(var f in friendList){
 				var friendMessages = app.filterMessageListByFriendId(messages,friendList[f].id_str);
 				console.log("found " + friendMessages.length + " messages from " +friendList[f].screen_name);
@@ -330,6 +336,7 @@ var app = {
 		else {
 			app.renderFriendMessages(friendList,messages);
 		}
+		*/
 		app.updatingDirectMessages=false;
 	},
 	markMessageableFriends:function(friends){
@@ -339,14 +346,19 @@ var app = {
 			friends[f].publicKey = keys[friends[f].id_str];
 		}
 	},
-	renderFriendMessages:function(friends,timeline){
+	renderAllFriendMessages:function(friends,timeline){
 		for(var f in friends){
-			app.renderFriendMessage(friends[f].id_str,timeline);
+			app.renderFriendMessages(friends[f].id_str,timeline);
 		}
 	},
-	renderFriendMessage:function(friendId,timeline){
+	renderFriendMessages:function(friendId,timeline){
 		var messages = app.filterMessageListByFriendId(timeline,friendId);
-		$("#friendMessages_" + friendId).append(Handlebars.getTemplate("direct-messages-template")(messages));
+		if(app.dmPostData.sinceId){
+			$("#friendMessages_" + friendId).prepend(Handlebars.getTemplate("direct-messages-template")(messages));
+		}
+		else {
+			$("#friendMessages_" + friendId).append(Handlebars.getTemplate("direct-messages-template")(messages));
+		}
 	},
 	getFriendsFromMessageList:function(timeline){
 		var friends = {};
@@ -354,6 +366,7 @@ var app = {
 			if(!friends[timeline[t].sender.screen_name]) {
 				friends[timeline[t].sender.screen_name] = timeline[t].sender;
 				friends[timeline[t].sender.screen_name].most_recent = timeline[t];
+				console.log("Most recent message from " + timeline[t].sender.screen_name +  " is " + timeline[t].created_at);
 			}
 			if(!friends[timeline[t].sender.screen_name].message_count) {
 				friends[timeline[t].sender.screen_name].message_count = 0;
@@ -390,14 +403,19 @@ var app = {
 		return messages;
 	},
 	getOlderDirectMessages:function() {
-		app.setupDMPostData();
-		app.dmPostData.max_id=app.dmMaxId;
-		app.doDMPost(app.dmPostData,function(response){
-			console.log("current max id is " + app.dmMaxId);
-			console.log("got " + response.length + " more!");
-			app.dmMaxId = response[response.length-1].id_str;
-		});
-		
+		if(!app.hasFirstDirectMessage){
+			app.setupDMPostData();
+			app.dmPostData.max_id=app.dmMaxId;
+			app.doDMPost(app.dmPostData,function(response){
+				if(response.length < 100 || app.dmMaxId == response[response.length-1].id_str){
+						app.hasFirstDirectMessage = true;
+						$("#directMessages").append(Handlebars.getTemplate("no-more-direct-messages-template")());
+						$("#olderDirectMessagesButtonContainer").hide();
+				}
+				app.handleDMResponse(response);
+			});
+			
+		}
 	},
 	isPublicKey:function(val){
 		return app.publicKeyStartRegex.test(val) && app.publicKeyEndRegex.test(val);
@@ -976,6 +994,7 @@ var app = {
 		if(response.length > 0) {
 			if(response.length == 1 && response[0].id_str == app.maxId){
 				$("#status-list").append(Handlebars.getTemplate("no-more-timeline-message-template")());
+				$("#getOlderTimelineButton").hide();
 			}
 			else {
 				app.processTimelineResponse(response);
@@ -1039,14 +1058,14 @@ var app = {
 		});
 	},
 	unhideAndDecompressSeecretsInList:function(timeline,bShowAll){
-		console.log("Unhiding the seecrets but showing all!");
+		//console.log("Unhiding the seecrets but showing all!");
 		var filteredTimeline = [];
 		for(var x in timeline){
 			if(!timeline[x].seecret_envelope){
-				console.log("no seecret envelope at " + x);
+				//console.log("no seecret envelope at " + x);
 			}
 			if(timeline[x].seecret_envelope){
-				console.log("found a seecret enevelop in message " + x);
+				//console.log("found a seecret enevelop in message " + x);
 				var envelope = timeline[x].seecret_envelope;
 				var seecretMessage = app.seecret_engine.getSeecretFromEnvelope(envelope);
 				var contentType = app.seecret_engine.getContentTypeFromEnvelope(envelope);
@@ -1057,7 +1076,7 @@ var app = {
 						timeline[x].seecret = message;
 					}
 					catch(error){
-						console.log("error decompressing a seecret message: " + JSON.stringify(error));
+						//console.log("error decompressing a seecret message: " + JSON.stringify(error));
 						timeline[x].seecret = "Could not decompress the Seecret";
 						timeline[x].seecret_error = error;
 					}
@@ -1185,11 +1204,11 @@ var app = {
 		}
 		
 		var uniqueSenders = app.getUniqueInstancesFromList(messages,senderFinder);
-		console.log("unique senders = " + JSON.stringify(uniqueSenders));
+		//console.log("unique senders = " + JSON.stringify(uniqueSenders));
 		var messageIndexes = app.getMessageIndexes(messages,uniqueSenders,senderFinder);
-		console.log("message indexes  = " + JSON.stringify(messageIndexes));
+		//console.log("message indexes  = " + JSON.stringify(messageIndexes));
 		var messages = app.dechainifyMessages(messages,messageIndexes,senderPropertyRef);
-		console.log("dechainified to " + messages.length + " messages");
+		//console.log("dechainified to " + messages.length + " messages");
 		app[maxIdRef] = app.lastProcessedStatusId  = messages[messages.length-1].id_str;
 		//find out if any chained seecrets are started by not finished in this chain, and set max id to that message so next time we get latest we start there...
 		//yes, there is a chance that a seecret is started and finished across more than 200 tweets in a user's timeline... no idea what to do with that.

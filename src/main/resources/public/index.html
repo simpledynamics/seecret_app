@@ -90,7 +90,7 @@ Created by Simple Dynamics https://www.simpledynamics.net
 					onChange="if(app.homeTimeline) {app.updateHomeTimeline(true);}else {app.updateUserTimeline(app.userTimelineId);}" />
 				<div id="status-list" class="status-list"></div>
 				<div id="updateHomeTimelineButtonContianer">
-					<input type="button" value="Get older messages" onClick="app.updateHomeTimeline()" class="button" />
+					<input type="button" value="Get older messages" id="getOlderTimelineButton" onClick="app.updateHomeTimeline()" class="button" />
 				</div>
 			</div>
 			<div id="privateMessages" class="startingState" style="display: none">
@@ -100,10 +100,7 @@ Created by Simple Dynamics https://www.simpledynamics.net
 				<input type="button" id="newestDirectMessagesButton" value="Refresh" onClick="app.getNewestDirectMessages()" class="button" />
 				<input type="button" id="showAllDirectMessageButton" value="Show all" onClick="app.showAllDirectMessages()" class="button" />
 				<br/><br/>
-				<div id="friendsContainer">
-				
-				
-				</div>
+				<div id="friendsContainer"></div>
 				<div id="directMessagesLegendContainer" style="display:none">
 					<img src="img/encrypted.png" class="dmIcon" /> = encrypted, <img src="img/signed.jpg" class="dmIcon" /> = signed<br />(Not sure what these mean? Read the <a href="https://www.seecret.net/faq.html" target="_new">FAQ</a> to understand more) <br /><br />
 				</div>

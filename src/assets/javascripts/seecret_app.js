@@ -175,11 +175,8 @@ var app = {
     },
 	initializeDirectMessagesView:function(){
 		app.setView(app.DIRECT_MESSAGES_VIEW);		
-		if($("#directMessages").html() == "") {
+		if($("#friendsContainer").html() == "") {
 			app.startDirectMessages();
-		}
-		else {
-			app.getNewestDirectMessages();
 		}
 	},
 	getNewestDirectMessages:function() {
@@ -316,11 +313,9 @@ var app = {
 				app.markEncryptedDirectMessages(messages);
 				//The animated image freezes when jumping into promise land
 				app.decryptDirectMessages(messages);
-				//app.updateDirectMessagesUI(messages,friendList);
 			}
 			else {
 				app.updateDirectMessagesUI(messages,friendList);
-				//app.updateDirectMessagesUI(messages);
 			}
 		}
 		app.hideOverlays();
@@ -358,7 +353,7 @@ var app = {
 	},
 	renderFriendMessages:function(friendId,timeline){
 		var messages = app.filterMessageListByFriendId(timeline,friendId);
-		if(app.dmPostData.sinceId){
+		if(app.dmPostData.since_id){
 			$("#friendMessages_" + friendId).prepend(Handlebars.getTemplate("direct-messages-template")(messages));
 		}
 		else {
@@ -514,6 +509,7 @@ var app = {
 			app.saveObject("sentPublicKeys-"+app.activeUser.user.id_str,sentPublicKeys);
 	},
 	decryptDirectMessages:function(messages){
+		app.timer("decryptDirectMessages");
 		var privateKey = openpgp.key.readArmored(app.activeUser.privateKey.armored).keys[0];
 		if(app.decryptPrivateKey(privateKey)) {
 			app.verifyMessagesDecrypted(messages,privateKey);
@@ -602,7 +598,10 @@ var app = {
 			}
 			app.saveObject("dmSenders-"+app.activeUser.user.id_str,dmSenders);
 			app.refreshActiveUserDMSenders(),
+			app.timer("decryptDirectMessages");
+			app.timer("updateDirectMessagesUI");
 			app.updateDirectMessagesUI(messages);
+			app.timer("updateDirectMessagesUI");
 		}
 	},
 	undecryptedMessageContentHandler:null,

@@ -209,13 +209,18 @@ var app = {
 	},
 	doDMPost:function(postData,callback){
 		app.updatingDirectMessages=true;
+		app.timer("direct message post");
     	app.oauthResult.get('1.1/direct_messages.json', {
             data: postData
         })
         .done(function (response) {
+			app.timer("direct message post");
 			//console.log("Got "+ response.length + " direct messages");
 			if(response.length > 0){
-				$("#getOlderMessagesButton").show();
+				if(response.length == app.NUM_DM){
+					$("#getOlderMessagesButton").show();
+					
+				}
 				if(!app.dmSinceId){
 					app.dmSinceId = response[0].id_str;
 				}
@@ -237,6 +242,7 @@ var app = {
         })
 	},
 	handleDMResponse:function(response){
+		app.timer("handleDMResponse");
 		/*		
 		return timeline;
 		*/
@@ -309,8 +315,8 @@ var app = {
 		if(app.timelineContainsEncryptedMessages(messages)) {
 				app.markEncryptedDirectMessages(messages);
 				//The animated image freezes when jumping into promise land
-				//app.decryptDirectMessages(messages);
-				app.updateDirectMessagesUI(messages,friendList);
+				app.decryptDirectMessages(messages);
+				//app.updateDirectMessagesUI(messages,friendList);
 			}
 			else {
 				app.updateDirectMessagesUI(messages,friendList);
@@ -318,25 +324,12 @@ var app = {
 			}
 		}
 		app.hideOverlays();
+		app.timer("handleDMResponse");
 	},
 	updateDirectMessagesUI:function(messages,friendList) {
 		app.hideOverlays();
 		var friendList = friendList?friendList:app.getFriendsFromMessageList(messages);
 		app.renderAllFriendMessages(friendList,messages);
-		/*if(app.dmPostData.since_id){
-			for(var f in friendList){
-				var friendMessages = app.filterMessageListByFriendId(messages,friendList[f].id_str);
-				console.log("found " + friendMessages.length + " messages from " +friendList[f].screen_name);
-				if(friendMessages.length > 0){
-					console.log("rendering messages into #friendMessages_"+friendList[f].id_str);
-					$('#friendMessages_'+friendList[f].id_str).prepend(Handlebars.getTemplate("direct-messages-template")(friendMessages));        
-				}
-			}
-		}
-		else {
-			app.renderFriendMessages(friendList,messages);
-		}
-		*/
 		app.updatingDirectMessages=false;
 	},
 	markMessageableFriends:function(friends){
@@ -1011,13 +1004,16 @@ var app = {
 		}).fail(app.handleGetTimelineError);
 	},
 	handleTimelineResponse:function(response){
+		app.timer("Get timeline");
 		if(response.length > 0) {
 			if(response.length == 1 && response[0].id_str == app.maxId){
 				$("#status-list").append(Handlebars.getTemplate("no-more-timeline-message-template")());
 				$("#getOlderTimelineButton").hide();
 			}
 			else {
+				app.timer("Process timeline Response");
 				app.processTimelineResponse(response);
+				app.timer("Process timeline Response");
 			}
 		}
 		else {
@@ -1458,6 +1454,7 @@ var app = {
 			app.lastProcessedStatusId= null;
 		}
 		app.overlay()
+		app.timer("Get timeline");
 		app.getTimeline(postData,app.handleTimelineResponse);
     },
 	prepareUpdateMessage:function() { 
@@ -2028,7 +2025,7 @@ $( document ).ready(function() {
 					}
 			   }
 			   else if (document.getElementById("privateMessages").style.display=="block" && !app.updatingDirectMessages) {
-					app.getOlderDirectMessages();
+					//app.getOlderDirectMessages();
 			   }
 			}
 		}

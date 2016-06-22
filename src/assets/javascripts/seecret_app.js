@@ -218,9 +218,8 @@ var app = {
 					$("#getOlderMessagesButton").show();
 					
 				}
-				if(!app.dmSinceId){
-					app.dmSinceId = response[0].id_str;
-				}
+				app.dmSinceId = response[0].id_str;
+				//if(!app.dmSinceId){}
 				callback(response);
 			}
 			else {
@@ -248,7 +247,7 @@ var app = {
 			alert("No new messages");
 			return;
 		}
-		$(".friendMessages").hide();
+		$(".dmIconNew").hide();
 		console.log("handling dm response for " + response.length);
 		if(response.length == 1 && response[0].id_str == app.dmMaxId){
 			if(!app.hasFirstDirectMessage) {
@@ -354,6 +353,9 @@ var app = {
 	renderFriendMessages:function(friendId,timeline){
 		var messages = app.filterMessageListByFriendId(timeline,friendId);
 		if(app.dmPostData.since_id){
+			for(var m in messages){
+				messages[m].new = true;
+			}
 			$("#friendMessages_" + friendId).prepend(Handlebars.getTemplate("direct-messages-template")(messages));
 		}
 		else {

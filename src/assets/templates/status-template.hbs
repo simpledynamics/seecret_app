@@ -30,7 +30,6 @@
 							
 							</div>
 							<div class="footer">
-								{{#if seecret}}
 								<div class="tweetActionsDisabled">
 									<ul class="tweetActions">
 										<li class="reply"><div href="" alt="Reply"></div></li>
@@ -38,30 +37,13 @@
 										<li class="favorite"><div href="" alt="Favorite"></div></li> <!-- if favorite should be 'on' use class=favoriteOn -->
 										{{#if follower}}
 										<li class="dm">
-											<div class="dm_button3" title="Message" onclick="app.setDirectMessageReceiver('{{user.id_str}}','{{user.screen_name}}');app.setView(app.DIRECT_MESSAGES_VIEW);">
+											<div class="dm_button3" title="Message" onclick="app.initializeDirectMessagesView();">
 												<div class="fa fa-envelope"></div>
 											</div>
 										</li>
 										{{/if}}
 									</ul>							
 								</div>
-								{{else}}
-								<div class="tweetActions">
-									<ul class="tweetActions">
-										<li class="reply"><div href="" alt="Reply"></div></li>
-										<li class="retweet"><div href="" alt="ReTweet"></div></li> <!-- if retweet should be 'on' use class=retweetOn -->
-										<li class="favorite"><div href="" alt="Favorite"></div></li> <!-- if favorite should be 'on' use class=favoriteOn -->
-										{{#if follower}}
-										<li class="dm">
-											<div class="dm_button3" title="Message" onclick="app.setDirectMessageReceiver('{{user.id_str}}','{{user.screen_name}}');app.setView(app.DIRECT_MESSAGES_VIEW);">
-												<div class="fa fa-envelope"></div>
-											</div>
-										</li>
-										{{/if}}
-									</ul>							
-								</div>
-								{{/if}}
-								
 							</div>
 						</div>
 					</div>

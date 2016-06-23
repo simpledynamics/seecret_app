@@ -13,6 +13,31 @@ var app = {
 	oauthResult:null,
 	doScroll:true,
 	activeUser:{},
+	NUM_DM:200,
+	publicKeyStartRegex:/^\s*-----BEGIN PGP PUBLIC KEY BLOCK-----\s/,
+	publicKeyEndRegex:/\s-----END PGP PUBLIC KEY BLOCK-----\s*$/,
+	pgpMessageStartRegex:/^\s*-----BEGIN PGP MESSAGE-----/,
+	pgpMessageEndRegex:/\s-----END PGP MESSAGE-----\s*$/,
+	dmPostData:{},
+    dmMaxId:null,
+	dmSinceId:null,
+	passphrase: null,
+	hasFirstDirectMessage:false,
+	joinMessage:
+	"I'm using Seecret to send encrypted direct messages over Twitter. Try it with me! Just go to https://www.seecret.net",
+	sendingDirectMessage:false,
+	postedDirectMessageId:null,
+	directMessagesToPost:null,
+	directMessageCount:0,
+	maxId:null,
+	lastId:null,
+	homeTimeline:true,
+	userTimelineId:null,
+	httpsReplaceRegex:/^http:/,
+	postCompleteCount:0,
+	postCompleteTarget:0,
+	timers:{},
+	privateKeyUpdateStatus:{},
 	refreshActiveUserTotal:function(){
 		if(app.activeUser){
 			var obj = app.getObject("privateKey-" + app.activeUser.user.id_str);
@@ -148,68 +173,54 @@ var app = {
 				app.unauthenticatedUI();
 			}
     },
-	dmPostData:{},
-    dmMaxId:null,
-	dmSinceId:null,
 	initializeDirectMessagesView:function(){
 		app.setView(app.DIRECT_MESSAGES_VIEW);		
-		if($("#directMessages").html() == "") {
-			app.getAllDirectMessages();
-		}
-		else {
-			app.getNewestDirectMessages();
+		if($("#friendsContainer").html() == "") {
+			app.startDirectMessages();
 		}
 	},
 	getNewestDirectMessages:function() {
 		app.setupDMPostData();
 		if(app.dmSinceId){
 			app.dmPostData.since_id=app.dmSinceId;
+			app.overlay();
+			app.doDMPost(app.dmPostData,app.handleDMResponse);
 		}
-		app.getDirectMessages();
-	},
-	getOlderDirectMessages:function() {
-		if(app.hasFirstDirectMessage){
-			return;
+		else {
+			console.log("getting newest but there's no since id?  ");
 		}
-		app.setupDMPostData();
-		app.dmPostData.max_id=app.dmMaxId;
-		app.getDirectMessages();
 	},
 	setupDMPostData:function() {
 		app.dmPostData = {
-			count: 100,
+			count: app.NUM_DM,
 			full_text:true,
 			include_entities:false,
 			skip_status:true
 		};
 	},
-	getAllDirectMessages:function(){
-		$("#directMessages").empty();
-		app.dmMaxId=null;
-		app.dmSinceId=null;
-		app.hasFirstDirectMessage = false;
+	startDirectMessages:function() {
 		app.setupDMPostData();
-		$("#olderDirectMessagesButtonContainer").hide();
-		app.getDirectMessages();
-	},
-    getDirectMessages:function() {
-		$("#friendName").html("");
-		$( ".dmMessageDiv" ).fadeIn();
-		app.updatingDirectMessages=true;
-		$("#directMessagesActionsContainer").empty();
-		$("#directMessagesBreadCrumbContainer").empty();
-		$("#friendName").empty();
 		app.overlay();
+		app.doDMPost(app.dmPostData,app.handleDMResponse);
+		
+	},
+	doDMPost:function(postData,callback){
+		app.updatingDirectMessages=true;
+		app.timer("direct message post");
     	app.oauthResult.get('1.1/direct_messages.json', {
-            data: app.dmPostData
+            data: postData
         })
         .done(function (response) {
+			app.timer("direct message post");
+			//console.log("Got "+ response.length + " direct messages");
 			if(response.length > 0){
-				$("#olderDirectMessagesButtonContainer").show();
-				if(!app.dmSinceId){
-					app.dmSinceId = response[0].id_str;
+				if(response.length == app.NUM_DM){
+					$("#getOlderMessagesButton").show();
+					
 				}
-				var messages = app.processDirectMessagesResponse(response);
+				app.dmSinceId = response[0].id_str;
+				//if(!app.dmSinceId){}
+				callback(response);
 			}
 			else {
 				app.hideOverlays();
@@ -226,21 +237,188 @@ var app = {
 			app.hideOverlays();
         })
 	},
-	updateDirectMessagesUI:function(messages) {
-		app.hideOverlays();
-		if(app.dmPostData.since_id){
-			$('#directMessages').prepend(Handlebars.getTemplate("direct-messages-template")(messages));        
+	handleDMResponse:function(response){
+		app.timer("handleDMResponse");
+		/*		
+		return timeline;
+		*/
+		var bNewest = app.dmPostData.since_id != null;
+		if(bNewest && response.length == 0){
+			alert("No new messages");
+			return;
+		}
+		$(".dmIconNew").hide();
+		console.log("handling dm response for " + response.length);
+		if(response.length == 1 && response[0].id_str == app.dmMaxId){
+			if(!app.hasFirstDirectMessage) {
+					$("#directMessages").append(Handlebars.getTemplate("no-more-direct-messages-template")());
+					$("#getOlderMessagesButton").hide();
+			}
+			app.hasFirstDirectMessage = true;
+			app.hideOverlays();
+			app.updatingDirectMessages=false;
+		}
+		else if(response.length == 0){
+			$("#directMessages").append(Handlebars.getTemplate("no-seecrets-in-direct-messages-template")());
+			app.hideOverlays();
+			app.updatingDirectMessages=false;
 		}
 		else {
-			$('#directMessages').append(Handlebars.getTemplate("direct-messages-template")(messages));        
-			
+		/* 
+		Ok let's dechainify seecrets, and save off new public keys received, and decrypt valid encrypted messages
+		*/
+		var messages = app.processMessageList(response,"sender","dmMaxId");
+		if(app.timelineContainsKeys(messages)) {
+			console.log("saving public keys!");
+			app.savePublicKeys(app.getPublicKeyMessagesFromDMList(messages));
 		}
+		
+		var friendList = app.getFriendsFromMessageList(messages);
+		app.markMessageableFriends(friendList);
+		app.markFriendsWithSentKeys(friendList);
+		console.log("Found " + friendList.length + " friends");
+		if(  $("#friendsContainer").is(":empty") ){
+			$("#friendsContainer").html(Handlebars.getTemplate("friends-list-template")(friendList));
+		}
+		else {
+			//TODO:  update friend list entry with a 'new' indicator?  or message count etc... or 'have key, don't have key' indicator...?
+			var newFriends = [];
+			for(var f in friendList){
+				if(document.getElementById("friendDetails_" + friendList[f].id_str) == null) {
+					newFriends.push(friendList[f]);
+				}
+			}
+			if(newFriends.length > 0){
+				$("#friendsContainer").prepend(Handlebars.getTemplate("friends-list-template")(newFriends));
+				
+			}
+			else {
+				console.log("no new friends");
+			}
+		}
+
+		if(bNewest) {
+			var screen_names = "New messages from ";
+			var delimiter = "";
+			for(var f in friendList){
+				screen_names += delimiter + friendList[f].screen_name;
+				delimiter = ",";
+			}
+			if(response.length > 0){
+				alert(screen_names);
+			}
+		}
+		if(app.timelineContainsEncryptedMessages(messages)) {
+				app.markEncryptedDirectMessages(messages);
+				//The animated image freezes when jumping into promise land
+				app.decryptDirectMessages(messages);
+			}
+			else {
+				app.updateDirectMessagesUI(messages,friendList);
+			}
+		}
+		app.hideOverlays();
+		app.timer("handleDMResponse");
+	},
+	updateDirectMessagesUI:function(messages,friendList) {
+		app.hideOverlays();
+		var friendList = friendList?friendList:app.getFriendsFromMessageList(messages);
+		app.renderAllFriendMessages(friendList,messages);
 		app.updatingDirectMessages=false;
 	},
-	publicKeyStartRegex:/^\s*-----BEGIN PGP PUBLIC KEY BLOCK-----\s/,
-	publicKeyEndRegex:/\s-----END PGP PUBLIC KEY BLOCK-----\s*$/,
-	pgpMessageStartRegex:/^\s*-----BEGIN PGP MESSAGE-----/,
-	pgpMessageEndRegex:/\s-----END PGP MESSAGE-----\s*$/,
+	markMessageableFriends:function(friends){
+		var keys = app.getObject("publicKeys-"+app.activeUser.user.id_str);
+		for(var f in friends){
+			console.log("the public key is " + keys[friends[f].id_str]);
+			friends[f].publicKey = keys[friends[f].id_str];
+		}
+	},
+	markFriendsWithSentKeys:function(friends){
+		console.log("marking friends with sent keys!");
+		var sentKeys = app.getObject("sentPublicKeys-"+app.activeUser.user.id_str);
+		for(var s in sentKeys){
+			for (var f in friends){
+				if(s == friends[f].id_str){
+					//console.log("found a sent key to " + s);
+					friends[f].sentKey = sentKeys[s];
+				}
+			}
+		}
+	},
+	renderAllFriendMessages:function(friends,timeline){
+		for(var f in friends){
+			app.renderFriendMessages(friends[f].id_str,timeline);
+		}
+	},
+	renderFriendMessages:function(friendId,timeline){
+		var messages = app.filterMessageListByFriendId(timeline,friendId);
+		if(app.dmPostData.since_id){
+			for(var m in messages){
+				messages[m].new = true;
+			}
+			$("#friendMessages_" + friendId).prepend(Handlebars.getTemplate("direct-messages-template")(messages));
+		}
+		else {
+			$("#friendMessages_" + friendId).append(Handlebars.getTemplate("direct-messages-template")(messages));
+		}
+	},
+	getFriendsFromMessageList:function(timeline){
+		var friends = {};
+		for(var t in timeline){
+			if(!friends[timeline[t].sender.screen_name]) {
+				friends[timeline[t].sender.screen_name] = timeline[t].sender;
+				friends[timeline[t].sender.screen_name].most_recent = timeline[t];
+				console.log("Most recent message from " + timeline[t].sender.screen_name +  " is " + timeline[t].created_at);
+			}
+			if(!friends[timeline[t].sender.screen_name].message_count) {
+				friends[timeline[t].sender.screen_name].message_count = 0;
+			}
+			friends[timeline[t].sender.screen_name].message_count++;
+		}
+		var friendList = [];
+		for(f in friends){
+			friendList.push(friends[f]);
+		}
+		return friendList;
+		
+	},
+	toggleFriendMessages:function(friendId){
+		var linkText = $("#friendMessagesToggleLink_" + friendId).html();
+		if(linkText != "show conversation"){
+			$("#friendMessagesToggleLink_" + friendId).html("show conversation");
+			$("#friendMessages_" + friendId).fadeOut();
+			
+		}
+		else {
+			$("#friendMessagesToggleLink_" + friendId).html("hide");
+			$("#friendMessages_" + friendId).fadeIn();
+		}
+	},
+	filterMessageListByFriendId:function(list,friendId){
+		var messages = [];
+		for(var l in list){
+			if(list[l].sender.id_str== friendId || list[l].sender.id_str == app.activeUser.id_str){
+				messages.push(list[l]);
+			}
+		}
+		console.log("filtered " + list.length + " down to " + messages.length);
+		return messages;
+	},
+	getOlderDirectMessages:function() {
+		if(!app.hasFirstDirectMessage){
+			app.setupDMPostData();
+			app.dmPostData.max_id=app.dmMaxId;
+			app.doDMPost(app.dmPostData,function(response){
+				if(response.length < app.NUM_DM || app.dmMaxId == response[response.length-1].id_str){
+						app.hasFirstDirectMessage = true;
+						$("#directMessages").append(Handlebars.getTemplate("no-more-direct-messages-template")());
+						$("#getOlderMessagesButton").hide();
+				}
+				app.handleDMResponse(response);
+			});
+			
+		}
+	},
 	isPublicKey:function(val){
 		return app.publicKeyStartRegex.test(val) && app.publicKeyEndRegex.test(val);
 	},
@@ -273,7 +451,6 @@ var app = {
 			}
 		}
 		return keys;
-		
 	},
 	savePublicKeys:function(keys){
 		var user = app.activeUser.user;
@@ -286,6 +463,7 @@ var app = {
 		for(var each in keys){
 			if(keys[each].sender.id_str == app.activeUser.user.id){
 				//this is the user's own key in an outbound DM;
+				//should never happen because dms API returns only inbound AFAICT
 				continue;
 			}
 			//last sent key should be found first and the older ones ignored
@@ -294,47 +472,21 @@ var app = {
 					key:keys[each].seecret,
 					screen_name:keys[each].sender.screen_name,
 					id_str:keys[each].sender.id_str,
+					profile_image_url:keys[each].sender.profile_image_url,
 					receiveDate:keys[each].created_at
 				}
-				
 			}
 		}
 		for(var x in newPublicKeys){
+			if(!publicKeys[x]){
+				//this is a newly received public key
+				//TODO:  yellow fade this?
+				$("#friendKeyContainer_"+x).html("Just sent you their key!");
+			}
 			publicKeys[x] = newPublicKeys[x];
 		}
 		app.saveObject("publicKeys-"+app.activeUser.user.id_str,publicKeys);
 		app.activeUser.publicKeys = publicKeys;
-	},
-	hasFirstDirectMessage:false,
-	processDirectMessagesResponse:function(directMessages) {
-		if(directMessages.length == 1 && directMessages[0].id_str == app.dmMaxId){
-			if(!app.hasFirstDirectMessage) {
-					$("#directMessages").append(Handlebars.getTemplate("no-more-direct-messages-template")());
-					$("#olderDirectMessagesButtonContainer").hide();
-			}
-			app.hasFirstDirectMessage = true;
-			app.hideOverlays();
-			app.updatingDirectMessages=false;
-		}
-		else if(directMessages.length == 0){
-			$("#directMessages").append(Handlebars.getTemplate("no-seecrets-in-direct-messages-template")());
-			app.hideOverlays();
-			app.updatingDirectMessages=false;
-		}
-		else {
-			var messages = app.processDirectMessages(directMessages,app.getUniqueDMSenders);
-			if(app.timelineContainsKeys(messages)) {
-				app.savePublicKeys(app.getPublicKeyMessagesFromDMList(messages));
-			}
-			if(app.timelineContainsEncryptedMessages(messages)) {
-				app.markEncryptedDirectMessages(messages);
-				//The animated image freezes when jumping into promise land
-				app.decryptDirectMessages(messages);
-			}
-			else {
-				app.updateDirectMessagesUI(messages);
-			}
-		}
 	},
 	markEncryptedDirectMessages:function(messages){
 		for(var m in messages){
@@ -353,13 +505,13 @@ var app = {
 			var sentPublicKeys = app.activeUser.sentPublicKeys;
 			if(sentPublicKeys == null) sentPublicKeys = {};
 			for(var k in newKeys){
-				sentPublicKeys[k] = new Date();;
+				sentPublicKeys[k] = new Date();
 			}
 			app.activeUser.sentPublicKeys=sentPublicKeys;
 			app.saveObject("sentPublicKeys-"+app.activeUser.user.id_str,sentPublicKeys);
 	},
-	passphrase: null,
 	decryptDirectMessages:function(messages){
+		app.timer("decryptDirectMessages");
 		var privateKey = openpgp.key.readArmored(app.activeUser.privateKey.armored).keys[0];
 		if(app.decryptPrivateKey(privateKey)) {
 			app.verifyMessagesDecrypted(messages,privateKey);
@@ -371,7 +523,6 @@ var app = {
 					messages[m].text = messages[m].text + " (could not decrypt)";
 				}
 			}
-			
 			app.updateDirectMessagesUI(messages);
 		}
 	},
@@ -449,7 +600,10 @@ var app = {
 			}
 			app.saveObject("dmSenders-"+app.activeUser.user.id_str,dmSenders);
 			app.refreshActiveUserDMSenders(),
+			app.timer("decryptDirectMessages");
+			app.timer("updateDirectMessagesUI");
 			app.updateDirectMessagesUI(messages);
+			app.timer("updateDirectMessagesUI");
 		}
 	},
 	undecryptedMessageContentHandler:null,
@@ -607,12 +761,9 @@ var app = {
 					callback();
 	},
     showAllDirectMessages:function(){
-		$("#friendName").html("");
-		$( ".dmMessageDiv" ).fadeIn();
-		$("#directMessagesActionsContainer").hide();
-		$('body').scrollTop(0);
+		$(".friendMessages").show();
 	},	
-	setDirectMessageReceiver:function(receiverId, receiverName){
+/*	setDirectMessageReceiver:function(receiverId, receiverName){
 		$("#selectedReceiverId").val(receiverId);
 		$("#selectedReceiverName").val(receiverName);
 		var user = app.activeUser.user;
@@ -626,6 +777,7 @@ var app = {
 		$("#directMessagesActionsContainer").show();
 		$('body').scrollTop(0);
 	},
+*/	
 	//REVISIT
 	initiateDirectMessages:function(receiverId,bSkipWelcome) {
 				var pkMessages = app.generatePublicKeyMessages(receiverId);
@@ -640,20 +792,19 @@ var app = {
 					var sentKeys = {};
 					sentKeys[receiverId] = true;
 					app.trackSentPublicKeys(sentKeys);
-					app.checkDirectMessageStatus();					
+					//TODO:  update friend list content instead of this
+					//app.checkDirectMessageStatus();					
 				});
 	},
-	joinMessage:
-	"I'm using Seecret to send encrypted direct messages over Twitter. Try it with me! Just go to https://www.seecret.net",
-	sendingDirectMessage:false,
 	prepareDirectMessage:function(receiverId) {
 		if(app.sendingDirectMessage){
 			return;
 		}
-		var directMessage = $("#directMessage").val();
+		var directMessage = $("#directMessage_"+receiverId).val();
 		if(directMessage.length ==0){
 			return;
 		}
+		$("#directMessage_"+receiverId).val("");
 		app.sendingDirectMessage = true;
 		app.overlay();
 		app.encryptDirectMessage(directMessage,receiverId);
@@ -731,9 +882,6 @@ var app = {
 		}
 		
 	},
-	postedDirectMessageId:null,
-	directMessagesToPost:null,
-	directMessageCount:0,
 	postDirectMessages:function(msgs,callback){
 		app.directMessagesToPost= msgs;
 		app.directMessageCount=0;
@@ -790,6 +938,9 @@ var app = {
 			app.setView(app.SETTINGS_VIEW);
 		}
 	},
+	openDirectMessageForm:function(id_str){
+		$("#friendMessageForm_"+id_str).fadeIn();
+	},
 	checkDirectMessageStatus:function() {
 		app.doScroll=false;
 		var receiverId = $("#selectedReceiverId").val();
@@ -817,10 +968,6 @@ var app = {
 		}
 		app.doScroll=true;
 	},
-	maxId:null,
-	lastId:null,
-	homeTimeline:true,
-	userTimelineId:null,
 	updateUserTimeline:function(screenName,bStart){
 		if(bStart){
 			app.maxId = null;
@@ -858,12 +1005,16 @@ var app = {
 		}).fail(app.handleGetTimelineError);
 	},
 	handleTimelineResponse:function(response){
+		app.timer("Get timeline");
 		if(response.length > 0) {
 			if(response.length == 1 && response[0].id_str == app.maxId){
 				$("#status-list").append(Handlebars.getTemplate("no-more-timeline-message-template")());
+				$("#getOlderTimelineButton").hide();
 			}
 			else {
+				app.timer("Process timeline Response");
 				app.processTimelineResponse(response);
+				app.timer("Process timeline Response");
 			}
 		}
 		else {
@@ -922,6 +1073,41 @@ var app = {
 			//console.log("failed to get follower info but keep going ");
 			callback(timeline);
 		});
+	},
+	unhideAndDecompressSeecretsInList:function(timeline,bShowAll){
+		//console.log("Unhiding the seecrets but showing all!");
+		var filteredTimeline = [];
+		for(var x in timeline){
+			if(!timeline[x].seecret_envelope){
+				//console.log("no seecret envelope at " + x);
+			}
+			if(timeline[x].seecret_envelope){
+				//console.log("found a seecret enevelop in message " + x);
+				var envelope = timeline[x].seecret_envelope;
+				var seecretMessage = app.seecret_engine.getSeecretFromEnvelope(envelope);
+				var contentType = app.seecret_engine.getContentTypeFromEnvelope(envelope);
+				var message = app.seecret_engine.unhide(seecretMessage,contentType);
+				if(contentType == app.seecret_engine.config.CONTENT_TYPES.NUMBERS_ARRAY){
+					try{
+						message = seecret_compression.decompress(message);
+						timeline[x].seecret = message;
+					}
+					catch(error){
+						//console.log("error decompressing a seecret message: " + JSON.stringify(error));
+						timeline[x].seecret = "Could not decompress the Seecret";
+						timeline[x].seecret_error = error;
+					}
+				}
+				else {
+					timeline[x].seecret = message;
+				}
+				filteredTimeline.push(timeline[x]);
+			}
+			else if(bShowAll && !app.seecret_engine.hasSeecretContent(timeline[x].text)){
+				filteredTimeline.push(timeline[x]);
+			}
+		}
+		return filteredTimeline;
 	},
 	unhideAndDecompressTimelineSeecrets:function(timeline,bShowAll){
 		var filteredTimeline = [];
@@ -1007,44 +1193,98 @@ var app = {
 		}
 		return startIndex;
 	},
-	//TODO:  merge this all with the timeline/dm stuff into one set of methods that switches on sender/user
-	processDirectMessages:function(timeline,filterGenerator){
-		var uniqueSenders = filterGenerator(timeline);
-		var messageIndexes = app.getSeecretMessageIndexesBySender(timeline,uniqueSenders);
-		var timeline = app.dechainifyDirectMessages(timeline,messageIndexes);
-		app.dmMaxId = app.lastProcessedStatusId  = timeline[timeline.length-1].id_str;
-		var firstIncompleteStart = app.getEarliestIncompleteDMChainStartId(timeline,uniqueSenders);
-		if(firstIncompleteStart > 0){
-			app.dmMaxId = timeline[firstIncompleteStart].id_str;
-		}
-		timeline = app.unhideAndDecompressTimelineSeecrets(timeline,true);
-		timeline = app.imgUrlsToHttps(timeline,"sender");
-		return timeline;
-	},
-	processTimelineMessages:function(timeline,filterGenerator){
-		var uniqueTweeters = filterGenerator(timeline);
-		var messageIndexes = app.getMessageIndexes(timeline,uniqueTweeters,app.tweetSenderGetter);
-		var timeline = app.dechainifyTweets(timeline,messageIndexes);
-		app.maxId = app.lastProcessedStatusId  = timeline[timeline.length-1].id_str;
-		var firstIncompleteStart = app.getEarliestIncompleteChainStartId(timeline,uniqueTweeters);
-		if(firstIncompleteStart > 0){
-			app.maxId = timeline[firstIncompleteStart].id_str;
-		}
-		timeline = app.unhideAndDecompressTimelineSeecrets(timeline,!document.getElementById("showOnlySeecrets").checked);
-		timeline = app.imgUrlsToHttps(timeline,"user");
-		return timeline;
-	},
-	httpsReplaceRegex:/^http:/,
-	imgUrlsToHttps:function(list,memberObject){
-		for(var l in list){
-			if(list[l][memberObject] && list[l][memberObject].profile_image_url){
-				list[l][memberObject].profile_image_url = list[l][memberObject].profile_image_url.replace(app.httpsReplaceRegex,"https:");
+	getFirstIncompleteChainStart:function(chain,matcher){
+		var bStarted = false;
+		var bEnded = false;
+		var startIndex = 0;
+		for(var c in chain){
+			if(matcher(chain[c]) [senderProp].sender.id_str == userId){
+				if(app.seecret_engine.hasSeecretContent(timeline[t].text)) {
+					if(app.seecret_engine.isEnvelopeStart(timeline[t].text)){
+						bStarted = true;
+						startIndex= t;
+					}
+					if(app.seecret_engine.isEnvelopeEnd(timeline[t].text)){
+						bEnded = true;
+						bStarted = false;
+						startIndex = 0;
+					}
+				} 
 			}
 		}
-		return list;
+		return startIndex;
+		
+	},
+	processMessageList:function(messages,senderPropertyRef,maxIdRef){
+		/*
+		if(senderPropertyRef=="sender"){
+			for(var m in messages){
+				if(messages[m].sender.id_str == app.activeUser.user.id_str){
+					console.log("found an outbound message from user! ");
+				}
+			}
+		}
+		*/
+		var senderFinder = function(message) {
+			return message[senderPropertyRef]?message[senderPropertyRef].id_str:null;
+		}
+		var uniqueSenders = app.getUniqueInstancesFromList(messages,senderFinder);
+		//console.log("unique senders = " + JSON.stringify(uniqueSenders));
+		var messageIndexes = app.getMessageIndexes(messages,uniqueSenders,senderFinder);
+		//console.log("message indexes  = " + JSON.stringify(messageIndexes));
+		var messages = app.dechainifyMessages(messages,messageIndexes,senderPropertyRef);
+		//console.log("dechainified to " + messages.length + " messages");
+		app[maxIdRef] = app.lastProcessedStatusId  = messages[messages.length-1].id_str;
+		//find out if any chained seecrets are started by not finished in this chain, and set max id to that message so next time we get latest we start there...
+		//yes, there is a chance that a seecret is started and finished across more than 200 tweets in a user's timeline... no idea what to do with that.
+		var firstIncompleteStartIndex = 0;
+		for(var u in uniqueSenders){
+			console.log("finding first incomplete message start for " + u)
+			var bStarted = false;
+			var bEnded = false;
+			var startIndex = 0;
+			for(var m in messages){
+				var id = senderFinder(messages[m]);
+				//console.log("about to check if " + id + " is same as " + u);
+				if(id == u){
+					if(app.seecret_engine.hasSeecretContent(messages[m].text)) {
+						if(app.seecret_engine.isEnvelopeStart(messages[m].text)){
+							bStarted = true;
+							startIndex= m;
+						}
+						if(app.seecret_engine.isEnvelopeEnd(messages[m].text)){
+							bEnded = true;
+							bStarted = false;
+							startIndex = 0;
+						}
+					} 
+				}
+			}
+			if(startIndex > 0 && firstIncompleteStartIndex == 0){
+				firstIncompleteStartIndex = startIndex;
+			}
+			else if(startIndex > 0 && startIndex < firstIncompleteStartIndex){
+				firstIncompleteStartIndex = startIndex;
+			}
+		}
+		var firstIncompleteStart = firstIncompleteStartIndex;
+		if(firstIncompleteStart > 0){
+			app[maxIdRef] = messages[firstIncompleteStart].id_str;
+		}
+		console.log("unhideAndDecompress started with " + messages.length);
+		messages = app.unhideAndDecompressSeecretsInList(messages,true);
+		console.log("unhideAndDecompress left " + messages.length);
+		//now make sure all profile image refs are https;
+		for(var m in messages){
+			if(messages[m][senderPropertyRef] && messages[m][senderPropertyRef].profile_image_url){
+				messages[m][senderPropertyRef].profile_image_url = messages[m][senderPropertyRef].profile_image_url.replace(app.httpsReplaceRegex,"https:");
+			}
+		}
+		return messages;
 	},
 	processTimelineWithFollowerInfo:function(timeline){
-		var timeline = app.processTimelineMessages(timeline,app.getUniqueTweeters);
+		//var timeline = app.processTimelineMessages(timeline,app.getUniqueTweeters);
+		var timeline = app.processMessageList(timeline,"user","maxId");
 		if(timeline.length > 0){
 			$('#status-list').append(Handlebars.getTemplate("status-template")(timeline)); 
 		}
@@ -1063,40 +1303,11 @@ var app = {
 	renderUserTimelineHeader:function(screenName){
 		$("#timelineName").html( "for " + screenName + " &nbsp;&nbsp;&nbsp;<a href='javascript:app.initTimeline();app.updateHomeTimeline()'>Back to my timeline</a>");
 	},
-	dechainifyTweets:function(timeline,indexes){
-		for(var mi in indexes){
-			if(indexes[mi].length > 0){
-				var ordinal = 0;
-				for(var uid in indexes[mi]){
-					var dechained = app.seecret_engine.dechainify(timeline,{
-						chainSegmentMatcher:function(segment){
-							if(segment && segment.text && typeof segment.text == "string" && segment.user && segment.user.id_str==mi){
-								return segment;
-							} 
-							else 
-							{
-								return null;
-							}
-						},
-						chainSegmentContentFinder:this.chainSegmentContentFinder,
-						startIndex:indexes[mi][uid],
-						withCovertexts:true
-					})
-					if(dechained && dechained.seecret!="") {
-						timeline[indexes[mi][uid]].seecret_envelope = dechained.seecret;
-						timeline[indexes[mi][uid]].covertexts = dechained.covertexts;
-					}
-					ordinal++;
-				}
-			}
-		}
-		return timeline;
-	},	
-	dechainifyDirectMessages:function(messages,indexes){
+	dechainifyMessages:function(messages,indexes,idRef){
 		for(var mi in indexes){
 			if(indexes[mi].length > 0){
 				var matcher = function(segment){
-					if(segment && segment.text && typeof segment.text == "string" && segment.sender && segment.sender.id_str==mi){
+					if(segment && segment.text && typeof segment.text == "string" && segment[idRef] && segment[idRef].id_str==mi){
 						return segment;
 					} 
 					else 
@@ -1205,10 +1416,13 @@ var app = {
 		return dm.sender.id_str;
 	},
 	getUniqueInstancesFromList:function(list,getter){
+		console.log("getting unique instances");
 		var uniques = {};
 		for(var l in list){
 			var unique = getter(list[l]);
-			uniques[unique] = unique;
+			if(unique){
+				uniques[unique] = unique;
+			}
 		}
 		return uniques;
 	},
@@ -1241,10 +1455,9 @@ var app = {
 			app.lastProcessedStatusId= null;
 		}
 		app.overlay()
+		app.timer("Get timeline");
 		app.getTimeline(postData,app.handleTimelineResponse);
     },
-	postCompleteCount:0,
-	postCompleteTarget:0,
 	prepareUpdateMessage:function() { 
 			var plainMessage = $('#textarea-statusUpdate').val();
 			var envelope=app.hideAndCompress(plainMessage);
@@ -1410,6 +1623,8 @@ var app = {
 			$('#left-panel').css('left', '-14em');						
 		}
 	},	
+	//Limit the covertext length to 100 characters.  we want at least 40 chars of hidden text per Seecret chain segment....
+	//Strip all consecutive whitespace and remove leading whitespace..
 	processScaffoldField:function(num){
 		var field = $("#scaffold"+num);
 		val = field.val();
@@ -1493,7 +1708,7 @@ var app = {
 		app.processScaffolding();
 	},
 	addScaffoldField:function(num,val){
-			var id= num;
+			var id=num;
 			var scaffoldCount = num+1;
 			var data = {scaffoldId:id,val:val,scaffoldCount:scaffoldCount};
 			$('#scaffoldsContainer').append(Handlebars.getTemplate("scaffold-template")(data));        
@@ -1655,7 +1870,6 @@ var app = {
 	deleteSavedItem:function(name){
 			delete localStorage[name];
 	},
-	privateKeyUpdateStatus:{},
 	//REVISIT
 	importPrivateKey:function() {
 		var user = app.activeUser.user;
@@ -1779,7 +1993,6 @@ var app = {
 		var iOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;		
 		return iOS;
 	},
-	timers:{},
 	timer:function(name) {
 		var time = moment();
 		if(app.timers[name]){
@@ -1813,7 +2026,7 @@ $( document ).ready(function() {
 					}
 			   }
 			   else if (document.getElementById("privateMessages").style.display=="block" && !app.updatingDirectMessages) {
-					app.getOlderDirectMessages();
+					//app.getOlderDirectMessages();
 			   }
 			}
 		}

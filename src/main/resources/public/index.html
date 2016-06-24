@@ -14,23 +14,31 @@ Created by Simple Dynamics https://www.simpledynamics.net
 <meta name="format-detection" content="telephone=no" />
 <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
 <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
-<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/fastclick/0.6.11/fastclick.min.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/oauth-io/0.5.2/oauth.min.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment.min.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/openpgp/2.3.0/openpgp.min.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.5/handlebars.min.js"></script>
-<script type="text/javascript" src="lib/moment-twitter.js"></script>
-<script type="text/javascript" src="lib/smaz/smaz.js"></script>
-<script type="text/javascript" src="lib/shoco/shoco_jquery_safe.js"></script>
-<script src="js/covertexts.js"></script>
-<script src="js/oauthio_key.js"></script>
-<script src="js/seecret-1.0.min.js"></script>
-<!-- uncompressed data-th-src only loaded in dev server  -->
-<script data-th-src="seecret_compression.js"></script>
-<script data-th-src="seecret_app.js" src="js/seecret_app-1.0.min.js"></script>
-<link rel="stylesheet" type="text/css" href="css/seecret_app.css" />
-<link rel="stylesheet" type="text/css" href="css/font-awesome-4.3.0/css/font-awesome.min.css" />
+
+<!-- Public CDN libraries -->
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.2.min.js" integrity="sha384-Pn+PczAsODRZ2PiGg0IheRROpP7lXO1NTIjiPo6cca8TliBvaeil42fobhzvZd74" crossorigin="anonymous"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/fastclick/0.6.11/fastclick.min.js" integrity="sha384-4FS9nLDjKOPIgz/SgGvZV4C8RHHRyRP1Fb6ZW/XH/o8PFaviPmgzLc6kOS2GQ87x" crossorigin="anonymous"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/oauth-io/0.5.2/oauth.min.js" integrity="sha384-ZgETqdDSffkQ/fWPDdqFmEKPt4WqtJjpkLVLJ+AN4nlrl5WxjxXb6WcQW1Zwozd4" crossorigin="anonymous"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment.min.js" integrity="sha384-MV8AwEgYXLMw5ZPj4763CSPk+tYGoUZGdwr/+EfkAZ1Dl2rGHxOMpQ1IW7VtyUPn" crossorigin="anonymous"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/openpgp/2.3.0/openpgp.min.js" integrity="sha384-hEHlk9poU9YzXfkFxU/FX5mcqcmlq7Pdolzl/64/c952X8Lh+D11H9FY+7vd3+hk" crossorigin="anonymous"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.5/handlebars.min.js" integrity="sha384-iiBFRfCTHSXi/mHNU8P2fMrhLgng6gJgQOaeIgzgg6ZNUQUDSR9P6zCey743eHIE" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous"/>
+
+<!-- Git CDN external libraries -->
+<script src="https://cdn.rawgit.com/hijonathan/moment.twitter/74065ac41af15df5b229f8467a42e5ada05fb062/moment-twitter.js" integrity="sha384-YDJzPLwNHd7RN68UeXwZxi4HvDr+uiLb05ERGjP6Mh07nkmncxIZg/lNXquF9QcK" crossorigin="anonymous"></script>
+<script src="https://cdn.rawgit.com/personalcomputer/smaz.js/d9443fc4f43375029e5c907697c177045f50b823/lib/smaz.js" integrity="sha384-fLSuNuwxNz6mg0aa6NBKih1GLNVt07T87BZDnhJVXt4QoDdTTj0CV7oFpunuPLPe" crossorigin="anonymous"></script>	
+<script src="https://cdn.rawgit.com/simpledynamics/seecret/7b7558e9ee6bfa275a4fff9c7c9f212f5a6c4988/javascript/seecret-1.0.min.js" integrity="sha384-dGjG7mjQbcK66MOvVD0bWlOhOTVA2VeGNWwJ9GcbsR+nMfgAO4D0smatNHPH9u1G" crossorigin="anonymous"></script>
+
+<!-- Internal resources -->
+<script type="text/javascript" src="js/covertexts.js" integrity="sha384-uHK-gvpDe5h-ZyAf9xEyH3XjKHAuwMA5YECqFXT_WX9Ijg3345lc2lAdRf29ta1X"></script>
+<script type="text/javascript" src="js/oauthio_key.js" integrity="sha384-5qiTcoahRX9pe6NMO8tb8uGyn9VOsyxxsNhTs_0UCau_uaN8-JAEwtK6V31vAuRv"></script>
+<script type="text/javascript" src="lib/shoco/shoco_jquery_safe.js" integrity="sha384-hjTm2ilB0ahdLW5xXDDM-HbWV7wUcWrufom4cBAJT3fj_U-2ZeChlgCYRXmUQfFf"></script>
+
+<!-- uncompressed data-th-src only overrides src attribute while running dev server -->
+<script type="text/javascript" data-th-src="seecret_compression.js"></script>
+<script type="text/javascript" data-th-src="seecret_app.js" data-th-attr="integrity=''" src="js/seecret_app-1.0.min.js"></script>
+<link rel="stylesheet" href="css/seecret_app.css" data-th-attr="integrity=''" />
+
 <meta name="msapplication-tap-highlight" content="no" />
 <title>Seecret</title>
 </head>

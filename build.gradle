@@ -68,17 +68,43 @@ javascript.source {
 task "checksumPublicWebContent" { 
 	def path = "src/main/resources/public/"
  	def hashes = new StringBuilder()
+
     def sourceTree = fileTree(dir: path , includes: ["**/*.html", "**/*.js", "**/*.css"])
 	sourceTree.each {File file ->
-	  String checksum;
-	  file.withInputStream { ins -> checksum =  org.apache.commons.codec.digest.DigestUtils.sha1Hex(ins) }
-	  def webPath = relativePath(file).substring(path.size())
-	  hashes.append("SHA1(").append(webPath).append(")= ").append(checksum).append("\n")
+	  String sha1checksum;
+	  file.withInputStream { ins -> sha1checksum =  org.apache.commons.codec.digest.DigestUtils.sha1Hex(ins) }
+	  def webPath = relativePath(file).substring(path.size()).replaceAll("\\\\", "/")
+	  hashes.append("SHA1(").append(webPath).append(")= ").append(sha1checksum).append("\n")
 	}
-	File hashesFile =file( new File("src/main/resources/public/hashes.txt"))
+	File hashesFile = file( new File("src/main/resources/public/hashes.txt"))
 	hashesFile.setText(hashes.toString())
 }
 checksumPublicWebContent.shouldRunAfter combineJs
+
+task "sriPublicWebContent" { 
+	def path = "src/main/resources/public/"
+ 
+ 	def subresourceIntegrity = new StringBuilder()
+    def sourceTree = fileTree(dir: path , includes: ["**/*.js"])
+	sourceTree.each {File file ->
+	  String sha384integrity;
+	  file.withInputStream { ins -> sha384integrity =  org.apache.commons.codec.binary.Base64.encodeBase64URLSafeString(org.apache.commons.codec.digest.DigestUtils.sha384(ins)) }
+	  def webPath = relativePath(file).substring(path.size()).replaceAll("\\\\", "/")
+	  subresourceIntegrity.append("<script type=\"text/javascript\" src=\"").append(webPath).append("\" integrity=\"sha384-").append(sha384integrity).append("\"></script>").append("\n")
+	}
+	
+    sourceTree = fileTree(dir: path , includes: ["**/*.css"])
+	sourceTree.each {File file ->
+	  String sha384integrity;
+	  file.withInputStream { ins -> sha384integrity =  org.apache.commons.codec.binary.Base64.encodeBase64URLSafeString(org.apache.commons.codec.digest.DigestUtils.sha384(ins)) }
+	  def webPath = relativePath(file).substring(path.size()).replaceAll("\\\\", "/")
+	  subresourceIntegrity.append("<link rel=\"stylesheet\" href=\"").append(webPath).append("\" integrity=\"sha384-").append(sha384integrity).append("\"/>").append("\n")
+	}
+
+	File subresourceIntegrityFile = file( new File("src/main/resources/public/subresource_integrity.txt"))
+	subresourceIntegrityFile.setText(subresourceIntegrity.toString())
+}
+sriPublicWebContent.shouldRunAfter combineJs
 
 processResources {
   dependsOn combineJs

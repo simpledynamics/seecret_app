@@ -16,6 +16,8 @@ The repository is the contents of the Seecret app as described at [https://www.s
   - moment-twitter.js - A Twitter-like date formatter for moment.js - Fork or contribute at [https://github.com/hijonathan/moment.twitter](https://github.com/hijonathan/moment.twitter)
   - Fastclick.js for mobile click responsiveness - Fork or contribute at [https://github.com/ftlabs/fastclick](https://github.com/ftlabs/fastclick)
   
+  All third party dependencies are served via public CDNs like [cdnjs](https://cdnjs.com/) or [RawGit](http://rawgit.com/). In addition we provide [Subresource Integrity](https://www.w3.org/TR/SRI/) hashes on all our script and link tags calculated with a public [SRI Hash generator](https://www.srihash.org/). Subresource Integrity is an important security feature and we encourage you to [read up on it](http://lmgtfy.com/?q=Subresource+Integrity) and [test your browser](http://w3c-test.org/subresource-integrity/subresource-integrity.sub.html) for support.
+  
 ## Building
 There is no build.  Just copy the contents of the [src/main/resources/public](src/main/resources/public) to your web server as is.  To read more about hosting Seecret yourself, go to [https://www.seecret.net/mirror.html](https://www.seecret.net/mirror.html)
 
@@ -44,11 +46,9 @@ The hashes are also published at the following locations (sometimes as hidden Se
 - [https://www.twitter.com/seecretapp](https://www.twitter.com/seecretapp)
 - [https://www.facebook.com/Seecret-1780007618900168/info?tab=page_info](https://www.facebook.com/Seecret-1780007618900168/)
 - [https://www.simpledynamics.net/seecret_hashes.html](https://www.simpledynamics.net/seecret_hashes.html)
-- More to‍‍‌‌​​​‌‍‌‌​‌​​​‍‌‌‌​‌​​‍‌‌‌​‌​​‍‌‌‌​​​​‍‌‌‌​​‌‌‍‌‌‌​‌​‍‌​‌‌‌‌‍‌​‌‌‌‌‍‌‌​​‌‌‌‍‌‌​‌​​‌‍‌‌‌​​‌‌‍‌‌‌​‌​​‍‌​‌‌‌​‍‌‌​​‌‌‌‍‌‌​‌​​‌‍‌‌‌​‌​​‍‌‌​‌​​​‍‌‌‌​‌​‌‍‌‌​​​‌​‍‌​‌‌‌​‍‌‌​​​‌‌‍‌‌​‌‌‌‌‍‌‌​‌‌​‌‍‌​‌‌‌‌‍‌‌​‌‌‌​‍‌‌​​​​‌‍‌‌‌​‌​​‍‌‌​​‌​‌‍‌‌​​‌‌‌‍‌‌‌​​‌​‍‌‌​‌‌‌‌‍‌‌‌​‌‌​‍‌‌​​‌​‌‍‌‌‌​​‌​‍‌​‌‌‌‌‍‌‌​​​‌‍‌‌​‌‌​‍‌‌​​​‌​‍‌‌‌​​​‍‌‌​‌​​‍‌‌​‌‌​‍‌‌​‌‌‌‍‌‌​​​​‍‌‌​​‌​‌‍‌‌​​‌‌​‍‌‌​​​‌‍‌‌​​‌‌​‍‌‌​‌​​‍‌‌​​‌‌‍‌‌​​‌‌​‍‌‌‌​​​‍‌‌​​‌‌​‍‌‌​‌​‌‍‌‌​​‌​​‍‌‌​​​‌​‍‌‌​​​‌‌‍‌‌​​‌​‍‌‌​​​‌‍‌‌‌​​‌‍‌‌​​​‌​‍‌‌​​‌‌‍‌‌​‌‌‌‍‌‌​​‌‌‍‌‌​‌‌​‍‌‌​‌‌‌‍‌‌‌​​​‍‌‌​‌‌‌‍‍‍ come...
 
 hashes are generated with openssl sha1 [filename]
 
-More to‍‍‌‌​​​‌‍‌‌​‌​​​‍‌‌‌​‌​​‍‌‌‌​‌​​‍‌‌‌​​​​‍‌‌‌​​‌‌‍‌‌‌​‌​‍‌​‌‌‌‌‍‌​‌‌‌‌‍‌‌​​‌‌‌‍‌‌​‌​​‌‍‌‌‌​​‌‌‍‌‌‌​‌​​‍‌​‌‌‌​‍‌‌​​‌‌‌‍‌‌​‌​​‌‍‌‌‌​‌​​‍‌‌​‌​​​‍‌‌‌​‌​‌‍‌‌​​​‌​‍‌​‌‌‌​‍‌‌​​​‌‌‍‌‌​‌‌‌‌‍‌‌​‌‌​‌‍‌​‌‌‌‌‍‌‌​‌‌‌​‍‌‌​​​​‌‍‌‌‌​‌​​‍‌‌​​‌​‌‍‌‌​​‌‌‌‍‌‌‌​​‌​‍‌‌​‌‌‌‌‍‌‌‌​‌‌​‍‌‌​​‌​‌‍‌‌‌​​‌​‍‌​‌‌‌‌‍‌‌​​​‌‍‌‌​‌‌​‍‌‌​​​‌​‍‌‌‌​​​‍‌‌​‌​​‍‌‌​‌‌​‍‌‌​‌‌‌‍‌‌​​​​‍‌‌​​‌​‌‍‌‌​​‌‌​‍‌‌​​​‌‍‌‌​​‌‌​‍‌‌​‌​​‍‌‌​​‌‌‍‌‌​​‌‌​‍‌‌‌​​​‍‌‌​​‌‌​‍‌‌​‌​‌‍‌‌​​‌​​‍‌‌​​​‌​‍‌‌​​​‌‌‍‌‌​​‌​‍‌‌​​​‌‍‌‌‌​​‌‍‌‌​​​‌​‍‌‌​​‌‌‍‌‌​‌‌‌‍‌‌​​‌‌‍‌‌​‌‌​‍‌‌​‌‌‌‍‌‌‌​​​‍‌‌​‌‌‌‍‍‍ come...
 
 ## License 
 [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-nc-sa/4.0/)

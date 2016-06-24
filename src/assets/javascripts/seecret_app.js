@@ -2090,7 +2090,7 @@ Handlebars.registerHelper('tweetShortDate', function(tweetDate) {
 Handlebars.getTemplate = function(name) {
 	if (Handlebars.templates === undefined || Handlebars.templates[name] === undefined) {
 		$.ajax({
-			url : name + '.hbsx',
+			url : name + '.hbs',
 			success : function(data) {
 				if (Handlebars.templates === undefined) {
 					Handlebars.templates = {};

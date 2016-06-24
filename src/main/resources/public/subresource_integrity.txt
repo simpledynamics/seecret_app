@@ -1,0 +1,6 @@
+<script type="text/javascript" src="js/covertexts.js" integrity="sha384-uHK-gvpDe5h-ZyAf9xEyH3XjKHAuwMA5YECqFXT_WX9Ijg3345lc2lAdRf29ta1X"></script>
+<script type="text/javascript" src="js/oauthio_key.js" integrity="sha384-5qiTcoahRX9pe6NMO8tb8uGyn9VOsyxxsNhTs_0UCau_uaN8-JAEwtK6V31vAuRv"></script>
+<script type="text/javascript" src="js/seecret-1.0.min.js" integrity="sha384-dGjG7mjQbcK66MOvVD0bWlOhOTVA2VeGNWwJ9GcbsR-nMfgAO4D0smatNHPH9u1G"></script>
+<script type="text/javascript" src="js/seecret_app-1.0.min.js" integrity="sha384-oLkTMV36t_u1UGVbpaOuWdVE9tBABKPz15mVWTQdUJZ-vGKqxpo8vmEAgFGojVzw"></script>
+<script type="text/javascript" src="lib/shoco/shoco_jquery_safe.js" integrity="sha384-hjTm2ilB0ahdLW5xXDDM-HbWV7wUcWrufom4cBAJT3fj_U-2ZeChlgCYRXmUQfFf"></script>
+<link rel="stylesheet" href="css/seecret_app.css" integrity="sha384-IGOom-zK9JEP4lNNuSPbAFaIG75XeczBzJnK3g631mP76z0-grpC5YkVD-X7QJBK"/>

@@ -5,16 +5,15 @@
 							<br/><br/>
 							Private Key:<br/>
 							<div>
-								<pre id="privateKeyTextarea">{{privateKey.armored}}</pre>
+								<p id="privateKeyTextarea">{{privateKey.armored}}</p>
 								<button onClick="app.copyContentsToClipboard('privateKeyTextarea')">Copy to clipboard</button>
 							</div>
 						</div>
 						<div class="formRow">
-							<br/>
 							Passphrase:<br/>
 							<div>
 								{{#if keyOptions.passphrase}}
-								<pre id="privateKeyPassphrase" style="font-weight:bold">{{keyOptions.passphrase}}</pre><br/>
+								<p id="privateKeyPassphrase" style="font-weight:bold">{{keyOptions.passphrase}}</p><br/>
 								<button onClick="app.copyContentsToClipboard('privateKeyPassphrase')">Copy to clipboard</button><br/><br/>
 								<button onClick="app.deleteSavedPassphrase()">Delete from device</button> <br/>
 								<span class="note">(You'll be prompted for it each time.)</span>											
@@ -24,15 +23,12 @@
 								{{/unless}}
 								<br/><br/>
 								<button onClick="app.changePassphrase()">Change passphrase</button>
-								<p/>
-								<br/>
 							</div>
 						</div>																		 
 						<div class="formRow">
-							<br/>
 							Public Key:<br/>
 							<div>
-								<pre id="publicKeyExport">{{publicKey.armored}}</pre>
+								<p id="publicKeyExport">{{publicKey.armored}}</p>
 								<button onClick="app.copyContentsToClipboard('publicKeyExport')">Copy to clipboard</button><p/>
 							</div>
 						</div>		

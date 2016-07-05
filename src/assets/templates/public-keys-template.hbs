@@ -1,8 +1,7 @@
 				{{#each keys}}
-				<div class="keyDisplayContainer">
-					<br/><br/>
+				<div class="keyDisplayContainer formRow">
 					From <a href="javascript:app.initializeDirectMessageView()">{{screen_name}}</a> sent on {{displayDate}}.
-					<pre class="keyDisplay" id="keyDisplay_{{id_str}}">{{key}}</pre>
+					<p class="keyDisplay" id="keyDisplay_{{id_str}}">{{key}}</p>
 					<br/>
 					<button onClick="app.copySenderPublicKeyToClipboard('{{id_str}}')">Copy to clipboard</button>
 				</div>

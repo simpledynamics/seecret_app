@@ -105,10 +105,11 @@ Created by Simple Dynamics https://www.simpledynamics.net
 				<h2 class="timeLine">
 					Direct Messages
 				</h2>
-				<input type="button" id="showAllDirectMessageButton" value="Show all" onClick="app.showAllDirectMessages()" class="button" />
-				<input type="button" id="newestDirectMessagesButton" value="Check for new" onClick="app.getNewestDirectMessages()" class="button" />
-				<input type="button" id="getOlderMessagesButton" value="Get older messages" onClick="app.getOlderDirectMessages()" class="button" style="display:none" />
-				<br/>
+				<div style="margin:0 0 10px 0">
+					<input type="button" id="showAllDirectMessageButton" value="Show all" onClick="app.showAllDirectMessages()" class="button" />
+					<input type="button" id="newestDirectMessagesButton" value="Check for new" onClick="app.getNewestDirectMessages()" class="button" />
+					<input type="button" id="getOlderMessagesButton" value="Get older messages" onClick="app.getOlderDirectMessages()" class="button" style="display:none" />				
+				</div>
 				<div id="friendsContainer"></div>
 				<div id="directMessagesLegendContainer" style="display:none">
 					<img src="img/encrypted.png" class="dmIcon" /> = encrypted, <img src="img/signed.jpg" class="dmIcon" /> = signed<br />(Not sure what these mean? Read the <a href="https://www.seecret.net/faq.html" target="_new">FAQ</a> to understand more) <br /><br />
@@ -252,12 +253,12 @@ Created by Simple Dynamics https://www.simpledynamics.net
 			<li class="fa fa-close"></li>
 		</div>
 		<div class="menuLinks">
-			<a id="timelineButton" style="display: block" href="#timeline" onclick="app.initTimeline();app.setView(app.TIMELINE_VIEW);" data-icon="alert" class="menuLink">Timeline</a> 
-			<a id="privateMessageButton" style="display: none" href="#privateMessages" onclick="app.initializeDirectMessagesView();" data-icon="alert" class="menuLink">Direct Messages</a> 
-			<a id="settingsButton" style="display: block" href="#settings" onclick="app.setView(app.SETTINGS_VIEW);" data-icon="alert" class="menuLink">Settings</a>
-			<a id="logoutButton" style="display: block" href="#" onclick="app.logoutFromTwitter();app.setView(app.FAQ_VIEW);" data-icon="alert" class="menuLink">Logout</a> 
-			<a id="aboutButton" style="display: block" href="#about" onclick="app.setView(app.ABOUT_VIEW);" data-icon="alert" class="menuLink">About Seecret</a> 
-			<a id="hashesButton" style="display: block" href="#hashes" onclick="app.setView(app.HASHES_VIEW);" data-icon="alert" class="menuLink">Verification</a>
+			<a id="timelineButton" style="display: block" href="#timeline" onclick="app.initTimeline();app.setView(app.TIMELINE_VIEW);" class="menuLink">Timeline</a> 
+			<a id="privateMessagesButton" style="display: none" href="#privateMessages" onclick="app.initializeDirectMessagesView();" class="menuLink">Direct Messages</a> 
+			<a id="settingsButton" style="display: block" href="#settings" onclick="app.setView(app.SETTINGS_VIEW);" class="menuLink">Settings</a>
+			<a id="logoutButton" style="display: block" href="#" onclick="app.logoutFromTwitter();app.setView(app.FAQ_VIEW);" class="menuLink">Logout</a> 
+			<a id="aboutButton" style="display: block" href="#about" onclick="app.setView(app.ABOUT_VIEW);" class="menuLink">About Seecret</a> 
+			<a id="hashesButton" style="display: block" href="#hashes" onclick="app.setView(app.HASHES_VIEW);" class="menuLink">Verification</a>
 			<P />
 		</div>
 	</div>

@@ -386,11 +386,13 @@ var app = {
 		var linkText = $("#friendMessagesToggleLink_" + friendId).html();
 		if(linkText != "show conversation"){
 			$("#friendMessagesToggleLink_" + friendId).html("show conversation");
+			$("#friendMessageForm_"+friendId).fadeOut();
 			$("#friendMessages_" + friendId).fadeOut();
 			
 		}
 		else {
-			$("#friendMessagesToggleLink_" + friendId).html("hide");
+			$("#friendMessagesToggleLink_" + friendId).html("hide conversation");
+			$("#friendMessageForm_"+friendId).fadeIn();
 			$("#friendMessages_" + friendId).fadeIn();
 		}
 	},
@@ -1526,13 +1528,13 @@ var app = {
 			$("#privateKeyCopyarea").empty();
 			$("#publicKeysDisplayArea").empty();
 			app.unauthenticatedHeader()
-			$("#privateMessageButton").hide();
+			$("#privateMessagesButton").hide();
 			$("#timelineButton").hide();
 			app.unauthenticatedMenu();
 			app.setView(app.ABOUT_VIEW);
 	},
 	authenticatedMenu:function(){
-			$("#privateMessageButton").show();
+			$("#privateMessagesButton").show();
 			$("#timelineButton").show();
 			$("#settingsButton").show();
 			$("#logoutButton").show();
@@ -1542,7 +1544,7 @@ var app = {
 			
 	},
 	unauthenticatedMenu:function(){
-			$("#privateMessageButton").hide();
+			$("#privateMessagesButton").hide();
 			$("#timelineButton").hide();
 			$("#settingsButton").hide();
 			$("#logoutButton").hide();

@@ -2051,7 +2051,7 @@ $( document ).ready(function() {
 		e.preventDefault();
 		app.updateStatus();
 	});
-	$.ajax({
+/*	$.ajax({
 		url:"hashes.txt"
 	}).done(function(response){
 		var hashlist = app.getNameValuePairsFromArgumentList(response,/\n/,"=");
@@ -2080,8 +2080,10 @@ $( document ).ready(function() {
 		app.unauthenticatedMenu();
 		$("#aboutButton").hide();
 	});
-	
-	
+*/	
+	$('#hashesContent').html(Handlebars.getTemplate("hashes-template")(hashes));
+	app.initialize();  
+
 });
 Handlebars.registerHelper('tweetShortDate', function(tweetDate) {
 	var dtext =  moment(tweetDate, 'dd MMM DD HH:mm:ss ZZ YYYY', 'en').twitter();

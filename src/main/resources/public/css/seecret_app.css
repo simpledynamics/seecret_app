@@ -825,78 +825,6 @@ h2.timeLine,
 
 
 
-#faq  h2 {
-	margin: 0 0 40px 0;
-	font-size:2em;
-}
-#faq .row {
-	margin: 0 0 30px 0;
-}
-
-#faq .row .question {
-	font-weight:bold;
-	margin: 0 0 5px 0;
-}
-.badgesViewMobile,
-.badgesView {
-	width:26em;
-	margin: 0 auto;
-}
-
-.badgesViewMobile h3,
-.badgesView h3,
-.badgesView .thanks {
-	font-weight:bold;
-	font-size:1.25em;
-	margin: 0 0 3px 0;
-}
-
-.badgesViewMobile h3,
-.badgesView h3,
-.badgesView .thanks {
-	font-weight:bold;
-	font-size:1.25em;
-	margin: 0 0 3px 0;
-}
-
-.badgesViewMobile > div,
-.badgesView > div {
-	margin: 0 0 3em 0;
-}
-
-.badgesViewMobile > div > div,
-.badgesView > div > div {
-	display:inline-block;
-	vertical-align:top;
-}
-.badgesViewMobile > div > div{
-	margin: 0 5px 0 0;
-}
-
-.badgesView > div > form {
-	display:inline-block;
-	vertical-align:top;
-	margin:0 10px 0 0;
-}
-.badgesViewMobile  > div > form {
-	display:block;
-}
-
-.badgesViewMobile .badgesButton {
-	display:block;
-	text-align:center;
-	padding: 1em;
-	margin: 0 0 5px 0;
-	border:1px solid #ccc;
-	background: #E39E9A;
-	color:#fff;
-	
-	-webkit-border-radius: 5px;
-	-moz-border-radius: 5px;
-	border-radius: 5px;
-	cursor:pointer;	
-}
-
 #overlay,#overlay2 {
 	width: 100vw;
 	height: 100vh;
@@ -932,6 +860,22 @@ h2.timeLine,
 	  position:relative;
 	top: 50%;
 	left:50%;
+}
+
+
+ul.hashesList li {
+	xlist-style: disc;
+	padding:3px;
+	background-color:#CCC;
+	font-weight:bold;
+	color:black;
+	margin:2px;
+	margin-left:20px;
+}
+ul.hashesLocationsList li {
+	padding:3px;
+	margin:2px;
+	margin-left:20px;
 }
 
 /********************************************************/

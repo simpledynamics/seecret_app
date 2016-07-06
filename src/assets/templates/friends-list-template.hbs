@@ -9,9 +9,8 @@
 			</div>
 			<div id="friendKeyContainer_{{id_str}}">
 			{{#unless sentKey}}
-				Do you want to invite {{screen_name}} to use Seecret with you?
-				<input type=button class="button" value="YES" onClick="app.initiateDirectMessages({{id_str}})"/>.  
-				<br/>{{screen_name}} will receive an invite message and a Seecret key that will allow you to exchange encrypted messages.
+				<input type=button value="Invite {{screen_name}}" onClick="app.initiateDirectMessages({{id_str}})"/>.  
+				<br/>You can send {{receiver_name}} messages once they accept your invite.
 			{{/unless}}
 			</div>
 		</div>

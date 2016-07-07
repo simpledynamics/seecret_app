@@ -2051,36 +2051,6 @@ $( document ).ready(function() {
 		e.preventDefault();
 		app.updateStatus();
 	});
-/*	$.ajax({
-		url:"hashes.txt"
-	}).done(function(response){
-		var hashlist = app.getNameValuePairsFromArgumentList(response,/\n/,"=");
-		if(hashlist == null){
-			$('#hashesContent').html(Handlebars.getTemplate("hashes-not-found-template")());;
-			app.setView(app.HASHES_VIEW);
-			app.unauthenticatedMenu();  
-		}
-		else {
-			var nameRegex = /^SHA1\((.*)\)$/;
-			var hashes = [];
-			for(var h in hashlist){
-				if(nameRegex.test(hashlist[h].name)) {
-					var match = nameRegex.exec(hashlist[h].name);
-					hashlist[h].name = match[1].replace("../","");;
-					hashes.push(hashlist[h]);
-				}
-			}
-			$('#hashesContent').html(Handlebars.getTemplate("hashes-template")(hashes));
-			app.initialize();  
-
-		}
-	}).fail(function(err){
-		$('#hashesContent').html(Handlebars.getTemplate("hashes-not-found-template")());;
-		app.setView(app.HASHES_VIEW);
-		app.unauthenticatedMenu();
-		$("#aboutButton").hide();
-	});
-*/	
 	$('#hashesContent').html(Handlebars.getTemplate("hashes-template")(hashes));
 	app.initialize();  
 

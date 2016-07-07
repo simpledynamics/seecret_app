@@ -207,7 +207,7 @@ input, textarea, select {
 .header #headerTitle div{
 	height: 4.15em;	
 	width: 15em;
-	background: url('../img/seecret_logo_575px.png');
+	background: url('https://cdn.rawgit.com/simpledynamics/seecret_app/d43b1cab4428ce1e945c2cfcdcab4243b1258284/src/main/resources/public/img/seecret_logo_575px.png');
       -webkit-background-size: cover;
       -moz-background-size: cover;
       -o-background-size: cover;
@@ -237,7 +237,7 @@ input, textarea, select {
 #loginButton div {
 	width:9.9em;
 	height:1.75em;
-	background:url(../img/sign-in-with-twitter-gray.png);	
+	background:url('https://cdn.rawgit.com/simpledynamics/seecret_app/d43b1cab4428ce1e945c2cfcdcab4243b1258284/src/main/resources/public/img/sign-in-with-twitter-gray.png');	
       -webkit-background-size: cover;
       -moz-background-size: cover;
       -o-background-size: cover;
@@ -246,7 +246,7 @@ input, textarea, select {
 #loginButton2 div {
 	width:9.9em;
 	height:1.75em;
-	background:url(../img/sign-in-with-twitter-gray.png);	
+	background:url('https://cdn.rawgit.com/simpledynamics/seecret_app/d43b1cab4428ce1e945c2cfcdcab4243b1258284/src/main/resources/public/img/sign-in-with-twitter-gray.png');	
       -webkit-background-size: cover;
       -moz-background-size: cover;
       -o-background-size: cover;
@@ -419,7 +419,7 @@ h2.timeLine,
 .basicTweet .message .tworse  .seecretLogo .icon{
 	min-width:1em;
 	height:1em;
-	background: url(../img/seecret_logo_15px.png) no-repeat center center;
+	background: url('https://cdn.rawgit.com/simpledynamics/seecret_app/d43b1cab4428ce1e945c2cfcdcab4243b1258284/src/main/resources/public/img/seecret_logo_15px.png') no-repeat center center;
 	-webkit-background-size: cover;
 	-moz-background-size: cover;
 	-o-background-size: cover;
@@ -439,7 +439,7 @@ h2.timeLine,
 .signedIcon {
 	min-width:1em;
 	height:1em;
-	background: url(../img/signed.jpg) no-repeat center center;
+	background: url('https://cdn.rawgit.com/simpledynamics/seecret_app/d43b1cab4428ce1e945c2cfcdcab4243b1258284/src/main/resources/public/img/signed.jpg') no-repeat center center;
 	-webkit-background-size: cover;
 	-moz-background-size: cover;
 	-o-background-size: cover;
@@ -449,7 +449,7 @@ h2.timeLine,
 .encryptedIcon  {
 	min-width:1em;
 	height:1em;
-	background: url(../img/encrypted.png) no-repeat center center;
+	background: url('https://cdn.rawgit.com/simpledynamics/seecret_app/d43b1cab4428ce1e945c2cfcdcab4243b1258284/src/main/resources/public/img/encrypted.png') no-repeat center center;
 	-webkit-background-size: cover;
 	-moz-background-size: cover;
 	-o-background-size: cover;
@@ -471,7 +471,7 @@ h2.timeLine,
 .originalMessage .messages .tweetLogo {
 	width:1em;
 	height:1em;
-	background:url('../img/Twitter_logo_blue_32.png') no-repeat center center;
+	background:url('https://cdn.rawgit.com/simpledynamics/seecret_app/d43b1cab4428ce1e945c2cfcdcab4243b1258284/src/main/resources/public/img/Twitter_logo_blue_32.png') no-repeat center center;
 	-webkit-background-size: cover;
 	-moz-background-size: cover;
 	-o-background-size: cover;
@@ -507,7 +507,7 @@ h2.timeLine,
 .basicTweet .footer .tweetActions ul li.reply div{
 	width:16px;
 	height:16px;
-	background:url(../img/reply-sprite.png) 0 0;
+	background:url('https://cdn.rawgit.com/simpledynamics/seecret_app/d43b1cab4428ce1e945c2cfcdcab4243b1258284/src/main/resources/public/img/reply-sprite.png') 0 0;
 }
 
 .basicTweet .footer .tweetActions ul li.reply div:hover {
@@ -517,13 +517,13 @@ h2.timeLine,
 .basicTweet .footer .tweetActions ul li.retweet div{
 	width:19px;
 	height:16px;
-	background:url(../img/retweet-sprite.png) 0 0;
+	background:url('https://cdn.rawgit.com/simpledynamics/seecret_app/d43b1cab4428ce1e945c2cfcdcab4243b1258284/src/main/resources/public/img/retweet-sprite.png') 0 0;
 }
 
 .basicTweet .footer .tweetActions ul li.retweetOn div{
 	width:19px;
 	height:16px;
-	background:url(../img/retweet-sprite.png) -38px 0;
+	background:url('https://cdn.rawgit.com/simpledynamics/seecret_app/d43b1cab4428ce1e945c2cfcdcab4243b1258284/src/main/resources/public/img/retweet-sprite.png') -38px 0;
 }
 
 .basicTweet .footer .tweetActions ul li.retweet div:hover {
@@ -533,12 +533,12 @@ h2.timeLine,
 .basicTweet .footer .tweetActions ul li.favorite div{
 	width:16px;
 	height:16px;
-	background:url(../img/favorite-sprite.png) 0 0;
+	background:url('https://cdn.rawgit.com/simpledynamics/seecret_app/d43b1cab4428ce1e945c2cfcdcab4243b1258284/src/main/resources/public/img/favorite-sprite.png') 0 0;
 }
 .basicTweet .footer .tweetActions ul li.favoriteOn div{
 	width:16px;
 	height:16px;
-	background:url(../img/favorite-sprite.png) -32px 0;
+	background:url('https://cdn.rawgit.com/simpledynamics/seecret_app/d43b1cab4428ce1e945c2cfcdcab4243b1258284/src/main/resources/public/img/favorite-sprite.png') -32px 0;
 }
 
 .basicTweet .footer .tweetActions ul li.favorite div:hover {
@@ -600,32 +600,32 @@ h2.timeLine,
 .basicTweet .footer .tweetActionsDisabled ul li.reply div{
 	width:16px;
 	height:16px;
-	background:url(../img/reply-sprite.png) 0 0;
+	background:url('https://cdn.rawgit.com/simpledynamics/seecret_app/d43b1cab4428ce1e945c2cfcdcab4243b1258284/src/main/resources/public/img/reply-sprite.png') 0 0;
 }
 
 
 .basicTweet .footer .tweetActionsDisabled ul li.retweet div{
 	width:19px;
 	height:16px;
-	background:url(../img/retweet-sprite.png) 0 0;
+	background:url('https://cdn.rawgit.com/simpledynamics/seecret_app/d43b1cab4428ce1e945c2cfcdcab4243b1258284/src/main/resources/public/img/retweet-sprite.png') 0 0;
 }
 
 .basicTweet .footer .tweetActionsDisabled ul li.retweetOn div{
 	width:19px;
 	height:16px;
-	background:url(../img/retweet-sprite.png) -38px 0;
+	background:url('https://cdn.rawgit.com/simpledynamics/seecret_app/d43b1cab4428ce1e945c2cfcdcab4243b1258284/src/main/resources/public/img/retweet-sprite.png') -38px 0;
 }
 
 
 .basicTweet .footer .tweetActionsDisabled ul li.favorite div{
 	width:16px;
 	height:16px;
-	background:url(../img/favorite-sprite.png) 0 0;
+	background:url('https://cdn.rawgit.com/simpledynamics/seecret_app/d43b1cab4428ce1e945c2cfcdcab4243b1258284/src/main/resources/public/img/favorite-sprite.png') 0 0;
 }
 .basicTweet .footer .tweetActionsDisabled ul li.favoriteOn div{
 	width:16px;
 	height:16px;
-	background:url(../img/favorite-sprite.png) -32px 0;
+	background:url('https://cdn.rawgit.com/simpledynamics/seecret_app/d43b1cab4428ce1e945c2cfcdcab4243b1258284/src/main/resources/public/img/favorite-sprite.png') -32px 0;
 }
 
 
@@ -839,7 +839,7 @@ h2.timeLine,
 #overlay div {
 	width: 3em;
 	height: 3em;
-	background:url('../img/ajax-loader.gif') no-repeat;
+	background:url('https://cdn.rawgit.com/simpledynamics/seecret_app/d43b1cab4428ce1e945c2cfcdcab4243b1258284/src/main/resources/public/img/ajax-loader.gif') no-repeat;
       -webkit-background-size: cover;
       -moz-background-size: cover;
       -o-background-size: cover;
@@ -852,7 +852,7 @@ h2.timeLine,
 	width: 13em;
 	height: 13em;
 	background-color:#000;
-	background:url('../img/seecret_icon_wait.gif') no-repeat;
+	background:url('https://cdn.rawgit.com/simpledynamics/seecret_app/d43b1cab4428ce1e945c2cfcdcab4243b1258284/src/main/resources/public/img/seecret_icon_wait.gif') no-repeat;
       -webkit-background-size: cover;
       -moz-background-size: cover;
       -o-background-size: cover;

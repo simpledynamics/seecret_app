@@ -2009,6 +2009,7 @@ var app = {
 	}
 }
 $( document ).ready(function() {
+	$("body").html(Handlebars.getTemplate("body-template")())
 	openpgp.config.show_comment=false;
 	openpgp.config.show_version=false;
 	app.seecret_engine = new SEECRET_ENGINE();

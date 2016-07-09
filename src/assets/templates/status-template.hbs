@@ -37,7 +37,7 @@
 										<li class="favorite"><div href="" alt="Favorite"></div></li> <!-- if favorite should be 'on' use class=favoriteOn -->
 										{{#if follower}}
 										<li class="dm">
-											<div class="dm_button3" title="Message" onclick="app.initializeDirectMessagesView();">
+											<div class="dm_button3" title="Message" onclick="app.toConversation('{{user.id_str}}');">
 												<div class="fa fa-envelope"></div>
 											</div>
 										</li>

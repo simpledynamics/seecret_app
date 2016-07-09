@@ -237,11 +237,40 @@ var app = {
 			app.hideOverlays();
         })
 	},
+	toConversation:function(followerId){
+		app.setView(app.DIRECT_MESSAGES_VIEW);
+		if(document.getElementById("friendDetails_" + followerId) == null) {
+			app.getFollowerInfo(followerId,app.createConversationEntry);
+		}
+		else {
+			//app.toggleFriendMessages('{{id_str}}',this.id)" id="friendMessagesToggleLink_{{id_str}}"
+			app.toggleFriendMessages(followerId,"friendMessagesToggleLink_"+followerId);				
+		}
+	},
+	getFollowerInfo:function(followerId,callback){
+		console.log("getting follower info for " + followerId);
+		app.oauthResult.get('1.1/users/show.json?user_id='+followerId)
+		.done(function (response) {
+			console.log("Got the follower: " + response);
+			callback(response)
+		})
+		.fail(function (err) {
+			console.log("Error getting new follower id " + JSON.stringify(err));
+		});
+	},
+	createConversationEntry:function(follower){
+		var keys = app.getObject("publicKeys-"+app.activeUser.user.id_str);
+		if(keys){
+			follower.publicKey = keys[follower.id_str];
+		}
+		var sentkeys = app.getObject("sentPublicKeys-"+app.activeUser.user.id_str);
+		if(sentkeys){
+			follower.sentKey = sentkeys[follower.id_str];
+		}
+		$("#friendsContainer").append(Handlebars.getTemplate("conversation-template")(follower));
+	},
 	handleDMResponse:function(response){
 		app.timer("handleDMResponse");
-		/*		
-		return timeline;
-		*/
 		var bNewest = app.dmPostData.since_id != null;
 		if(bNewest && response.length == 0){
 			alert("No new messages");
@@ -278,7 +307,7 @@ var app = {
 		app.markFriendsWithSentKeys(friendList);
 		console.log("Found " + friendList.length + " friends");
 		if(  $("#friendsContainer").is(":empty") ){
-			$("#friendsContainer").html(Handlebars.getTemplate("friends-list-template")(friendList));
+			$("#friendsContainer").html(Handlebars.getTemplate("conversations-template")(friendList));
 		}
 		else {
 			//TODO:  update friend list entry with a 'new' indicator?  or message count etc... or 'have key, don't have key' indicator...?
@@ -794,6 +823,7 @@ var app = {
 					var sentKeys = {};
 					sentKeys[receiverId] = true;
 					app.trackSentPublicKeys(sentKeys);
+
 					//TODO:  update friend list content instead of this
 					//app.checkDirectMessageStatus();					
 				});

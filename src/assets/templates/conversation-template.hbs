@@ -1,31 +1,33 @@
-{{#.}}
 <div class="friendDetailsContainer" id="friendDetails_{{id_str}}">
 	<div style="display:inline-block;vertical-align:top;margin:0 0.5em 0 0;">
 		<img src="{{profile_image_url}}" class="profileImg" />
 	</div>
 	<div style="display:inline-block;vertical-align:top;max-width:80%">
 		<div id="conversationInfoDiv_{{id_str}}">
-			You have <span id="messageCount_{{id_str}}">{{message_count}} messages</span> from <span style="font-weight:bold;">{{screen_name}}</span>; 
+			{{#if message_count}}
+			You have <span id="messageCount_{{id_str}}">{{message_count}} messages</span> from <span style="font-weight:bold;">{{screen_name}}</span>;
 			<br/>last message: {{tweetShortDate most_recent.created_at}} 
-			<br/><a href="javascript:app.toggleFriendMessages('{{id_str}}',this.id)" id="friendMessagesToggleLink_{{id_str}}">show conversation</a> 
+			<br/><a href="javascript:app.toggleFriendMessages('{{id_str}}',this.id)" id="friendMessagesToggleLink_{{id_str}}">show conversation</a>
+			{{else}}
+			No Seecret messages from {{screen_name}} 
+			{{/if}} 
 		</div>
 		<div id="friendKeyContainer_{{id_str}}">
-		<!-- If no sent key -->
-		{{#unless sentKey}}
+		{{#if sentKey}}
 			{{#unless publicKey}}
-				<input type=button value="Invite {{screen_name}}" onClick="app.initiateDirectMessages({{id_str}})"/>.  
-				<br/>You can send {{receiver_name}} messages once they accept your invite.
-			{{else}}
-				<input type=button value="Allow {{screen_name}}" onClick="app.initiateDirectMessages({{id_str}})"/>.  
-				<br/>Let {{receiver_name}} send you encrypted messages with Seecret.
-			{{/if}}
-		{{else if publicKey}}
-				<input type=button value="Ask {{screen_name}}" onClick="app.initiateDirectMessages({{id_str}})"/>.  
-				<br/>Ask {{receiver_name}} to let you send encrypted messages with Seecret.
+				<!-- user has sent their key to this follower but has not received a public key in return -->
+				<input type=button value="Allow {{screen_name}} to send you Seecret messages" onClick="app.initiateDirectMessages({{id_str}})"/>. 
+			{{/unless}}
 		{{else}}
-		
-		{{/unless}}
-		
+			{{#unless publicKey}}
+			<!-- user has not sent or received public keys with this follower -->
+				<input type=button value="Invite {{screen_name}}" onClick="app.initiateDirectMessages({{id_str}})"/>.  
+				<br/>You can send {{screen_name}} messages once they accept your invite.
+			{{else}}
+				<!-- user has not sent their public key in response, but this follower has sent their key -->
+				<br/>{{screen_name}} wants to message you with Seecret.  <input type=button value="Allow" onClick="app.sendPublicKey({{id_str}})"/>.
+			{{/unless}}		
+		{{/if}}
 		</div>
 	</div>
 	<div id="friendPublicKeyDetails_{{id_str}}" style="padding:0.5em 0">
@@ -39,6 +41,3 @@
 	</div>		
 	<div id="friendMessages_{{id_str}}" style="display:none" class="friendMessages"></div>
 </div>
-{{/.}}
-
-

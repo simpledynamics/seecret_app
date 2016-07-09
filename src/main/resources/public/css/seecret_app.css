@@ -878,6 +878,12 @@ ul.hashesLocationsList li {
 	margin-left:20px;
 }
 
+span.undecryptedMessagesInfo {
+	color:red;
+	
+}
+
+
 /********************************************************/
 
 

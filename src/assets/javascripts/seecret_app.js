@@ -182,6 +182,7 @@ var app = {
 	getNewestDirectMessages:function() {
 		app.setupDMPostData();
 		if(app.dmSinceId){
+			//alert("getting messages since " + app.dmSinceId);
 			app.dmPostData.since_id=app.dmSinceId;
 		}
 		else {
@@ -212,14 +213,15 @@ var app = {
         })
         .done(function (response) {
 			app.timer("direct message post");
-			//console.log("Got "+ response.length + " direct messages");
+			console.log("Got "+ response.length + " direct messages");
 			if(response.length > 0){
 				if(response.length == app.NUM_DM){
 					$("#getOlderMessagesButton").show();
-					
 				}
-				app.dmSinceId = response[0].id_str;
-				//if(!app.dmSinceId){}
+				//don't reset since id if we were getting older messages...
+				if(!app.dmPostData.max_id) {
+					app.dmSinceId = response[0].id_str;
+				}
 				callback(response);
 			}
 			else {
@@ -302,11 +304,38 @@ var app = {
 			app.savePublicKeys(app.getPublicKeyMessagesFromDMList(messages));
 		}
 		
-		var friendList = app.getFriendsFromMessageList(messages);
+		if(app.timelineContainsEncryptedMessages(messages)) {
+				app.markEncryptedDirectMessages(messages);
+				//The animated image freezes when jumping into promise land
+				app.decryptDirectMessages(messages);
+			}
+			else {
+				app.createConversationEntries(messages);
+				app.updateDirectMessagesUI(messages,friendList);
+			}
+		}
+		app.hideOverlays();
+		app.timer("handleDMResponse");
+	},
+	createConversationEntries:function(messageList) {
+		var friendList = app.getFriendsFromMessageList(messageList);
+		var bNewest = app.dmPostData.since_id != null;
+		if(bNewest) {
+			var screen_names = "New messages from ";
+			var delimiter = "";
+			for(var f in friendList){
+				screen_names += delimiter + friendList[f].screen_name;
+				delimiter = ",";
+			}
+			if(messageList.length > 0){
+				alert(screen_names);
+			}
+		}
 		app.markMessageableFriends(friendList);
 		app.markFriendsWithSentKeys(friendList);
+		app.markFriendsWithUnencryptedMessages(friendList,messageList);
 		console.log("Found " + friendList.length + " friends");
-		if(  $("#friendsContainer").is(":empty") ){
+		if($("#friendsContainer").is(":empty") ){
 			$("#friendsContainer").html(Handlebars.getTemplate("conversations-template")(friendList));
 		}
 		else {
@@ -325,29 +354,6 @@ var app = {
 				console.log("no new friends");
 			}
 		}
-
-		if(bNewest) {
-			var screen_names = "New messages from ";
-			var delimiter = "";
-			for(var f in friendList){
-				screen_names += delimiter + friendList[f].screen_name;
-				delimiter = ",";
-			}
-			if(response.length > 0){
-				alert(screen_names);
-			}
-		}
-		if(app.timelineContainsEncryptedMessages(messages)) {
-				app.markEncryptedDirectMessages(messages);
-				//The animated image freezes when jumping into promise land
-				app.decryptDirectMessages(messages);
-			}
-			else {
-				app.updateDirectMessagesUI(messages,friendList);
-			}
-		}
-		app.hideOverlays();
-		app.timer("handleDMResponse");
 	},
 	updateDirectMessagesUI:function(messages,friendList) {
 		app.hideOverlays();
@@ -370,6 +376,17 @@ var app = {
 				if(s == friends[f].id_str){
 					//console.log("found a sent key to " + s);
 					friends[f].sentKey = sentKeys[s];
+				}
+			}
+		}
+	},
+	markFriendsWithUnencryptedMessages:function(friends,messages){
+		for(var f in friends){
+			friends[f].unencryptedMessages = false;
+			for(var m in messages){
+				if(messages[m].encrypted && !messages[m].encryptionSuccessful){
+					friends[f].unencryptedMessages=true
+					break;
 				}
 			}
 		}
@@ -633,6 +650,7 @@ var app = {
 			app.refreshActiveUserDMSenders(),
 			app.timer("decryptDirectMessages");
 			app.timer("updateDirectMessagesUI");
+			app.createConversationEntries(messages);
 			app.updateDirectMessagesUI(messages);
 			app.timer("updateDirectMessagesUI");
 		}

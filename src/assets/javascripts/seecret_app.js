@@ -183,12 +183,12 @@ var app = {
 		app.setupDMPostData();
 		if(app.dmSinceId){
 			app.dmPostData.since_id=app.dmSinceId;
-			app.overlay();
-			app.doDMPost(app.dmPostData,app.handleDMResponse);
 		}
 		else {
 			console.log("getting newest but there's no since id?  ");
 		}
+		app.overlay();
+		app.doDMPost(app.dmPostData,app.handleDMResponse);
 	},
 	setupDMPostData:function() {
 		app.dmPostData = {
@@ -310,7 +310,7 @@ var app = {
 			$("#friendsContainer").html(Handlebars.getTemplate("conversations-template")(friendList));
 		}
 		else {
-			//TODO:  update friend list entry with a 'new' indicator?  or message count etc... or 'have key, don't have key' indicator...?
+			//TODO:  update friend list entry with a 'new' indicator
 			var newFriends = [];
 			for(var f in friendList){
 				if(document.getElementById("friendDetails_" + friendList[f].id_str) == null) {
@@ -318,7 +318,7 @@ var app = {
 				}
 			}
 			if(newFriends.length > 0){
-				$("#friendsContainer").prepend(Handlebars.getTemplate("friends-list-template")(newFriends));
+				$("#friendsContainer").prepend(Handlebars.getTemplate("conversations-template")(newFriends));
 				
 			}
 			else {

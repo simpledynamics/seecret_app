@@ -201,11 +201,11 @@
 	</div>
 	<!-- Left panel -->
 	<div style="" id="panelControl" onclick="app.openClosePanel('open')">
-		<i class="fa fa-bars"></i>
+		<i id="openTarget"  class="fa fa-bars"></i>
 	</div>
 	<div id="left-panel" class="panel">
 		<div id="closeMenu" style="" href="#" onclick="app.openClosePanel('close');" data-icon="alert" class="closePanelControl">
-			<li class="fa fa-close"></li>
+			<li id="closeTarget" class="fa fa-close"></li>
 		</div>
 		<div class="menuLinks">
 			<a id="timelineButton" style="display: block" href="#timeline" onclick="app.initTimeline();app.setView(app.TIMELINE_VIEW);" class="menuLink">Timeline</a> 

@@ -2019,6 +2019,11 @@ $( document ).ready(function() {
 	openpgp.config.show_comment=false;
 	openpgp.config.show_version=false;
 	app.seecret_engine = new SEECRET_ENGINE();
+	$('body').click(function(event){
+		if(event.target.id != "openTarget"){
+			app.openClosePanel('close');
+		}
+	})
 	$(window).scroll(function() {
 		if(app.doScroll){
 			var scrollTop = $(window).scrollTop();

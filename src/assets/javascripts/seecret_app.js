@@ -252,10 +252,13 @@ var app = {
 	},
 	getFollowerInfo:function(followerId,callback){
 		console.log("getting follower info for " + followerId);
+		//Currently no other case for getting follower info in a call, so we assume it's because someone has clicked on the messaage icon from the timeline.
+		//if this gets used more generically the 'show message form' line on 261 below will need to be more intelligent.  ie. not do it in all cases.
 		app.oauthResult.get('1.1/users/show.json?user_id='+followerId)
 		.done(function (response) {
 			console.log("Got the follower: " + response);
-			callback(response)
+			callback(response);
+			$("#friendMessageForm_"+response.id_str).show();
 		})
 		.fail(function (err) {
 			console.log("Error getting new follower id " + JSON.stringify(err));
@@ -264,7 +267,12 @@ var app = {
 	createConversationEntry:function(follower){
 		var keys = app.getObject("publicKeys-"+app.activeUser.user.id_str);
 		if(keys){
+			for(var k in keys){
+				console.log("does follower " + follower.id_str + " match " + k);
+			}
 			follower.publicKey = keys[follower.id_str];
+			console.log("GOT THE KEY:  " + follower.publicKey);
+			//console.log("Did not find the public key for " + follower.screen_name);
 		}
 		var sentkeys = app.getObject("sentPublicKeys-"+app.activeUser.user.id_str);
 		if(sentkeys){

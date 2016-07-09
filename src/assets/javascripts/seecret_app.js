@@ -247,7 +247,6 @@ var app = {
 			app.getFollowerInfo(followerId,app.createConversationEntry);
 		}
 		else {
-			//app.toggleFriendMessages('{{id_str}}',this.id)" id="friendMessagesToggleLink_{{id_str}}"
 			app.toggleFriendMessages(followerId,"friendMessagesToggleLink_"+followerId);				
 		}
 	},
@@ -344,9 +343,19 @@ var app = {
 				else {
 					var currentCount = $("#messageCount_"+friendList[f].id_str).html();
 					if(currentCount){
-						friendList[f].message_count+=currentCount;
+						friendList[f].message_count+=parseInt(currentCount);
 					}
-					$("#friendDetails_"+friendList[f].id_str).replaceWith(Handlebars.getTemplate("conversation-template")(friendList[f]));
+					var bShowConversation = false;
+					if($("#friendMessagesToggleLink_" + friendList[f].id_str).html() == "hide conversation") {
+						//conversation is open so let's reopen the new form..
+						bShowConversation = true;
+					}
+
+					$("#conversationStatusContainer_"+friendList[f].id_str).replaceWith(Handlebars.getTemplate("conversation-status-template")(friendList[f]));
+					if(bShowConversation){
+						$("#friendMessageForm_" + friendList[f].id_str).show();
+						$("#friendMessagesToggleLink_" + friendList[f].id_str).html("hide conversation");						
+					}
 				}
 			}
 			if(newFriends.length > 0){
@@ -402,6 +411,7 @@ var app = {
 	renderFriendMessages:function(friendId,timeline){
 		var messages = app.filterMessageListByFriendId(timeline,friendId);
 		if(app.dmPostData.since_id){
+			console.log("prepending " + messages.length + " new messages from " + friendId);
 			for(var m in messages){
 				messages[m].new = true;
 			}
@@ -434,8 +444,11 @@ var app = {
 	toggleFriendMessages:function(friendId){
 		var linkText = $("#friendMessagesToggleLink_" + friendId).html();
 		if(linkText != "show conversation"){
+			console.log("updating conversation link to say 'show conversation'");
 			$("#friendMessagesToggleLink_" + friendId).html("show conversation");
+			console.log("hiding friendMessagesForm_" + friendId);
 			$("#friendMessageForm_"+friendId).fadeOut();
+			console.log("hiding friendMessages_" + friendId);
 			$("#friendMessages_" + friendId).fadeOut();
 			
 		}
@@ -1311,7 +1324,14 @@ var app = {
 	},
 	processTimelineWithFollowerInfo:function(timeline){
 		//var timeline = app.processTimelineMessages(timeline,app.getUniqueTweeters);
+		var retainMaxId = null;
+		if(app.dmPost && app.dmPost.since_id && app.dmMaxId){
+			retainMaxId = app.dmMaxId;
+		}
 		var timeline = app.processMessageList(timeline,"user","maxId");
+		if(retainMaxId){
+			app.dmMaxId=retainMaxId;
+		}
 		if(timeline.length > 0){
 			$('#status-list').append(Handlebars.getTemplate("status-template")(timeline)); 
 		}
@@ -2037,6 +2057,7 @@ var app = {
 $( document ).ready(function() {
 	//Handlebars.partials = Handlebars.templates;
 	Handlebars.registerPartial("conversation-template",Handlebars.getTemplate("conversation-template"));
+	Handlebars.registerPartial("conversation-status-template",Handlebars.getTemplate("conversation-status-template"));
 	$("body").html(Handlebars.getTemplate("body-template")())
 	openpgp.config.show_comment=false;
 	openpgp.config.show_version=false;

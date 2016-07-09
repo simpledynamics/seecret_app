@@ -810,7 +810,7 @@ var app = {
 	},
 */	
 	//REVISIT
-	initiateDirectMessages:function(receiverId,bSkipWelcome) {
+	invite:function(receiverId,bSkipWelcome) {
 				var pkMessages = app.generatePublicKeyMessages(receiverId);
 				var messages = Array();
 				for(var pk in pkMessages){
@@ -823,9 +823,7 @@ var app = {
 					var sentKeys = {};
 					sentKeys[receiverId] = true;
 					app.trackSentPublicKeys(sentKeys);
-
-					//TODO:  update friend list content instead of this
-					//app.checkDirectMessageStatus();					
+					$("#friendKeyContainer_"+receiverId).html("Invite sent.");
 				});
 	},
 	prepareDirectMessage:function(receiverId) {
@@ -1932,9 +1930,10 @@ var app = {
 			app.activeUser.privateKey = privateKey;
 			app.activeUser.publicKey = publicKey;
 			app.activeUser.keyOptions = keyOptions; 
-			app.resendPublicKeys();
 			app.renderPrivateKeySettings();
-			alert("Successfully imported the private key.");
+			if(confirm("Successfully imported the private key. Send your new key to the contacts who have the old one?")) {
+				app.resendPublicKeys();
+			}
 		}
 		else {
 			alert("Could not decrypt the key with the passphrase you entered.  Please try again");

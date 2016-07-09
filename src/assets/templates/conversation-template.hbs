@@ -15,14 +15,14 @@
 		<div id="friendKeyContainer_{{id_str}}">
 		{{#if sentKey}}
 			{{#unless publicKey}}
-				<!-- user has sent their key to this follower but has not received a public key in return -->
-				<input type=button value="Invite {{screen_name}}" onClick="app.invite({{id_str}},true)"/>.
+				<!-- user has sent their key to this follower but has not received a public key in return.  TODO:  make this a key request -->
+				<input type=button value="Invite {{screen_name}}" onClick="app.keyRequest({{id_str}})"/>.
 				(You may be seeing this because you are using a new mirror site or a different device.  Read more in the <a href="https://www.seecret.net/faq.html" target="_new">FAQ</a>) 
 			{{/unless}}
 		{{else}}
 			{{#if publicKey}}
 				<!-- user has received this follower's public key but has not sent their own public key in response -->
-				<br/>{{screen_name}} wants to message you with Seecret.  <input type=button value="Allow" onClick="app.sendPublicKey({{id_str}})"/>.
+				<br/>{{screen_name}} wants to message you with Seecret.  <input type=button value="Allow" onClick="app.invite({{id_str}},true)"/>.
 			{{else}}
 				<!-- user has not sent or received public keys with this follower -->
 				<input type=button value="Invite {{screen_name}}" onClick="app.invite({{id_str}})"/>.  

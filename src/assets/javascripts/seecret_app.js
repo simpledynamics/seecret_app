@@ -794,22 +794,6 @@ var app = {
     showAllDirectMessages:function(){
 		$(".friendMessages").show();
 	},	
-/*	setDirectMessageReceiver:function(receiverId, receiverName){
-		$("#selectedReceiverId").val(receiverId);
-		$("#selectedReceiverName").val(receiverName);
-		var user = app.activeUser.user;
-		var userData = {};
-		userData.name = receiverName;
-		userData.id_str=receiverId;
-		$("#friendName").html(Handlebars.getTemplate("direct-message-friend-name")(userData));
-		app.checkDirectMessageStatus();
-		$( ".dmMessageDiv" ).hide();
-		$( ".dm_" + receiverId).fadeIn();
-		$("#directMessagesActionsContainer").show();
-		$('body').scrollTop(0);
-	},
-*/	
-	//REVISIT
 	invite:function(receiverId,bSkipWelcome) {
 				var pkMessages = app.generatePublicKeyMessages(receiverId);
 				var messages = Array();
@@ -823,6 +807,7 @@ var app = {
 					var sentKeys = {};
 					sentKeys[receiverId] = true;
 					app.trackSentPublicKeys(sentKeys);
+					//app.getFollowerInfo(receiverId,app.updateConversationEntry);
 					$("#friendKeyContainer_"+receiverId).html("Invite sent.");
 				});
 	},
@@ -1105,11 +1090,10 @@ var app = {
 		});
 	},
 	unhideAndDecompressSeecretsInList:function(timeline,bShowAll){
-		//console.log("Unhiding the seecrets but showing all!");
 		var filteredTimeline = [];
 		for(var x in timeline){
-			if(!timeline[x].seecret_envelope){
-				//console.log("no seecret envelope at " + x);
+			if(!timeline[x].seecret_envelope && document.getElementById("showOnlySeecrets").checked){
+				continue;
 			}
 			if(timeline[x].seecret_envelope){
 				//console.log("found a seecret enevelop in message " + x);
@@ -1246,15 +1230,6 @@ var app = {
 		
 	},
 	processMessageList:function(messages,senderPropertyRef,maxIdRef){
-		/*
-		if(senderPropertyRef=="sender"){
-			for(var m in messages){
-				if(messages[m].sender.id_str == app.activeUser.user.id_str){
-					console.log("found an outbound message from user! ");
-				}
-			}
-		}
-		*/
 		var senderFinder = function(message) {
 			return message[senderPropertyRef]?message[senderPropertyRef].id_str:null;
 		}
@@ -1318,7 +1293,7 @@ var app = {
 		if(timeline.length > 0){
 			$('#status-list').append(Handlebars.getTemplate("status-template")(timeline)); 
 		}
-		else if($("#showOnlySeecrets")){
+		else if(document.getElementById("showOnlySeecrets").checked){
 			$("#status-list").append(Handlebars.getTemplate("no-seecrets-in-timeline-segment-template")());
 		}
 		$('.basicTweet').fadeIn();

@@ -228,6 +228,8 @@ var app = {
 				app.hideOverlays();
 				if(app.dmPostData.since_id){
 					alert("No new direct messages");
+					var bNewest = app.dmPostData.since_id != null;
+					$('.dmIconNew').hide();
 				}
 				else if(!app.dmPostData.max_id){
 					$("#directMessages").html("You have no direct messages.");
@@ -273,20 +275,13 @@ var app = {
 	},
 	handleDMResponse:function(response){
 		app.timer("handleDMResponse");
-		var bNewest = app.dmPostData.since_id != null;
-		if(bNewest && response.length == 0){
-			alert("No new messages");
-			return;
+		//console.log("Got " + response.length + " direct messages");
+		for(var r in response){
+			//console.log("response text is " + response[r].text);
 		}
-		$(".dmIconNew").hide();
 		console.log("handling dm response for " + response.length);
 		if(response.length == 1 && response[0].id_str == app.dmMaxId){
-			if(!app.hasFirstDirectMessage) {
-					$("#directMessages").append(Handlebars.getTemplate("no-more-direct-messages-template")());
-					$("#getOlderMessagesButton").hide();
-			}
 			app.hasFirstDirectMessage = true;
-			app.hideOverlays();
 			app.updatingDirectMessages=false;
 		}
 		else if(response.length == 0){
@@ -295,19 +290,19 @@ var app = {
 			app.updatingDirectMessages=false;
 		}
 		else {
-		/* 
-		Ok let's dechainify seecrets, and save off new public keys received, and decrypt valid encrypted messages
-		*/
-		var messages = app.processMessageList(response,"sender","dmMaxId");
-		if(app.timelineContainsKeys(messages)) {
-			console.log("saving public keys!");
-			app.savePublicKeys(app.getPublicKeyMessagesFromDMList(messages));
-		}
-		
-		if(app.timelineContainsEncryptedMessages(messages)) {
-				app.markEncryptedDirectMessages(messages);
-				//The animated image freezes when jumping into promise land
-				app.decryptDirectMessages(messages);
+			/* 
+			Ok let's dechainify seecrets, and save off new public keys received, and decrypt valid encrypted messages
+			*/
+			var messages = app.processMessageList(response,"sender","dmMaxId");
+			if(app.timelineContainsKeys(messages)) {
+				console.log("saving public keys!");
+				app.savePublicKeys(app.getPublicKeyMessagesFromDMList(messages));
+			}
+			
+			if(app.timelineContainsEncryptedMessages(messages)) {
+					app.markEncryptedDirectMessages(messages);
+					//The animated image freezes when jumping into promise land
+					app.decryptDirectMessages(messages);
 			}
 			else {
 				app.createConversationEntries(messages);
@@ -342,8 +337,16 @@ var app = {
 			//TODO:  update friend list entry with a 'new' indicator
 			var newFriends = [];
 			for(var f in friendList){
+				friendList[f].newMessages=true;
 				if(document.getElementById("friendDetails_" + friendList[f].id_str) == null) {
 					newFriends.push(friendList[f]);
+				}
+				else {
+					var currentCount = $("#messageCount_"+friendList[f].id_str).html();
+					if(currentCount){
+						friendList[f].message_count+=currentCount;
+					}
+					$("#friendDetails_"+friendList[f].id_str).replaceWith(Handlebars.getTemplate("conversation-template")(friendList[f]));
 				}
 			}
 			if(newFriends.length > 0){
@@ -460,6 +463,7 @@ var app = {
 				if(response.length < app.NUM_DM || app.dmMaxId == response[response.length-1].id_str){
 						app.hasFirstDirectMessage = true;
 						$("#directMessages").append(Handlebars.getTemplate("no-more-direct-messages-template")());
+						//??  $("#privateMessages").prepend(Handlebars.getTemplate("no-more-direct-messages-template")());
 						$("#getOlderMessagesButton").hide();
 				}
 				app.handleDMResponse(response);

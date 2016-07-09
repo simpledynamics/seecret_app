@@ -5,7 +5,10 @@
 	<div style="display:inline-block;vertical-align:top;max-width:80%">
 		<div id="conversationInfoDiv_{{id_str}}">
 			{{#if message_count}}
-			<span id="messageCount_{{id_str}}">{{message_count}} messages</span> from <span style="font-weight:bold;">{{screen_name}}</span>, last one {{tweetShortDate most_recent.created_at}}
+			<span id="messageCount_{{id_str}}">{{message_count}}</span> messages from <span style="font-weight:bold;">{{screen_name}}</span>, last one {{tweetShortDate most_recent.created_at}}
+				{{#if newMessages}}
+					<img src="https://cdn.rawgit.com/simpledynamics/seecret_app/e449e723f317fce6866a09c016d36acddaaac9d6/src/main/resources/public/img/new-icon.png" class="dmIconNew" alt="New" title="New" />
+				{{/if}}
 			{{#if unencryptedMessages}}
 				<br/><span class="undecryptedMessagesInfo">Some messages from {{screen_name}} could not be decrypted. Read the <a href="https://www.seecret.net/faq.html" target="_new">FAQ</a> to understand more.</span>
 			{{/if}}
@@ -20,17 +23,17 @@
 		{{#if sentKey}}
 			{{#unless publicKey}}
 				<!-- user has sent their key to this follower but has not received a public key in return.  TODO:  make this a key request -->
-				<input type=button value="Invite {{screen_name}}" onClick="app.keyRequest({{id_str}})"/>.
+				<input type=button value="Invite {{screen_name}}" onClick="app.keyRequest({{id_str}})"/>
 				(You may be seeing this because you are using a new mirror site or a different device.  Read more in the <a href="https://www.seecret.net/faq.html" target="_new">FAQ</a>) 
 			{{/unless}}
 		{{else}}
 			{{#if publicKey}}
 				<!-- user has received this follower's public key but has not sent their own public key in response -->
-				<br/>{{screen_name}} wants to message you with Seecret.  <input type=button value="Allow" onClick="app.invite({{id_str}},true)"/>.
+				<br/>{{screen_name}} wants to message you with Seecret.  <input type=button value="Allow" onClick="app.invite({{id_str}},true)"/>
 			{{else}}
 				<!-- user has not sent or received public keys with this follower -->
 				<input type=button value="Invite {{screen_name}}" onClick="app.invite({{id_str}})"/>.  
-				<br/>You can send {{screen_name}} messages once they accept your invite.
+				<br/>You can send {{screen_name}} messages once they accept your invite
 			{{/if}}		
 		{{/if}}
 		</div>

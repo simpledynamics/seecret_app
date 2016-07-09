@@ -1,42 +1,4 @@
 {{#.}}
-<div class="friendDetailsContainer" id="friendDetails_{{id_str}}">
-	<div style="display:inline-block;vertical-align:top;margin:0 0.5em 0 0;">
-		<img src="{{profile_image_url}}" class="profileImg" />
-	</div>
-	<div style="display:inline-block;vertical-align:top;max-width:80%">
-		<div id="conversationInfoDiv_{{id_str}}">
-			You have <span id="messageCount_{{id_str}}">{{message_count}} messages</span> from <span style="font-weight:bold;">{{screen_name}}</span>; 
-			<br/>last message: {{tweetShortDate most_recent.created_at}} 
-			<br/><a href="javascript:app.toggleFriendMessages('{{id_str}}',this.id)" id="friendMessagesToggleLink_{{id_str}}">show conversation</a> 
-		</div>
-		<div id="friendKeyContainer_{{id_str}}">
-		{{#if sentKey}}
-			{{#unless publicKey}}
-				<!-- user has sent their key to this follower but has not received a public key in return -->
-				<input type=button value="Allow {{screen_name}} to send you Seecret messages" onClick="app.initiateDirectMessages({{id_str}})"/>. 
-			{{/unless}}
-		{{else}}
-			{{#unless publicKey}}
-			<!-- user has not sent or received public keys with this follower -->
-				<input type=button value="Invite {{screen_name}}" onClick="app.initiateDirectMessages({{id_str}})"/>.  
-				<br/>You can send {{screen_name}} messages once they accept your invite.
-			{{else}}
-				<!-- user has not sent their public key in response, but this follower has sent their key -->
-				<br/>{{screen_name}} wants to message you with Seecret.  <input type=button value="Allow" onClick="app.sendPublicKey({{id_str}})"/>.
-			{{/unless}}		
-		{{/if}}
-		</div>
-	</div>
-	<div id="friendPublicKeyDetails_{{id_str}}" style="padding:0.5em 0">
-	{{#if publicKey}}
-		<div id="friendMessageForm_{{id_str}}" style="display:none">
-			<textarea id="directMessage_{{id_str}}" class="dmField"></textarea>
-			<input type=button onClick="app.prepareDirectMessage('{{id_str}}')" value="Send message" class="button" />
-			<div style="margin:5px 0;">Not sure if {{screen_name}} has your public key?  <input type=button class="button" onClick="app.initiateDirectMessages({{id_str}},true)" value="Send it"/></div>
-		</div>
-	{{/if}}
-	</div>		
-	<div id="friendMessages_{{id_str}}" style="display:none" class="friendMessages"></div>
-</div>
+{{> conversation-template}}
 {{/.}}
 

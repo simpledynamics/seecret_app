@@ -2039,6 +2039,8 @@ var app = {
 	}
 }
 $( document ).ready(function() {
+	//Handlebars.partials = Handlebars.templates;
+	Handlebars.registerPartial("conversation-template",Handlebars.getTemplate("conversation-template"));
 	$("body").html(Handlebars.getTemplate("body-template")())
 	openpgp.config.show_comment=false;
 	openpgp.config.show_version=false;

@@ -9,7 +9,7 @@
 				{{#if newMessages}}
 					<img src="https://cdn.rawgit.com/simpledynamics/seecret_app/e449e723f317fce6866a09c016d36acddaaac9d6/src/main/resources/public/img/new-icon.png" class="dmIconNew" alt="New" title="New" />
 				{{/if}}
-			{{#if unencryptedMessages}}
+			{{#if XunencryptedMessages}}
 				<br/><span class="undecryptedMessagesInfo">Some messages from {{screen_name}} could not be decrypted. Read the <a href="https://www.seecret.net/faq.html" target="_new">FAQ</a> to understand more.</span>
 			{{/if}}
 						 
@@ -42,7 +42,8 @@
 	{{#if publicKey}}
 		<div id="friendMessageForm_{{id_str}}" style="display:none">
 			<textarea id="directMessage_{{id_str}}" class="dmField"></textarea>
-			<input type=button onClick="app.prepareDirectMessage('{{id_str}}')" value="Send message" class="button" /> ( Not sure if {{screen_name}} has your public key?  <input type=button class="button" onClick="app.invite({{id_str}},true)" value="Send it"/>)
+			<input type=button onClick="app.prepareDirectMessage('{{id_str}}')" value="Send message" class="button" />
+			<br/>Not sure if {{screen_name}} has been allowed to message you?  <input type=button class="button" onClick="app.invite({{id_str}},true)" value="Allow"/>
 		</div>
 	{{/if}}
 	</div>

@@ -1,5 +1,5 @@
 <script type="text/javascript" src="js/covertexts.js" integrity="sha384-uHK-gvpDe5h-ZyAf9xEyH3XjKHAuwMA5YECqFXT_WX9Ijg3345lc2lAdRf29ta1X"></script>
 <script type="text/javascript" src="js/oauthio_key.js" integrity="sha384-Eo3G2dk-u_q9NmwGBfuP3Iib-MYhCmqukiVqbZvGdXxtDsVvtMZa4-ts95GGF_4y"></script>
-<script type="text/javascript" src="js/seecret_app-1.0.min.js" integrity="sha384-9wAKJLEXjuKF2Q77owKz-LKtOZGq222AamyekmargDfToZBnLRu3fSl6x9KXAg4P"></script>
+<script type="text/javascript" src="js/seecret_app-1.0.min.js" integrity="sha384-U0bc6FKJr0E93MA_u_8RnQ3MwXZ7Qjb5kK8Ppj8bjcpmHlKrpVaXljgFLA8e9vUc"></script>
 <script type="text/javascript" src="lib/shoco/shoco_jquery_safe.js" integrity="sha384-1BVDgz3JxFJjBys2Cq3ms31zV2xeDXBQOOGB5HHfvwDn7u7vM59TZFEtj7OpJ4RO"></script>
-<link rel="stylesheet" href="css/seecret_app.css" integrity="sha384-ZyJnwxCRIA8NXmepl24mGOXqzfi5_u0_C0nFkKzH9KRKamhYO10Ob28QeeGA3R5r"/>
+<link rel="stylesheet" href="css/seecret_app.css" integrity="sha384-I92YZLYZ0DBAYZ92kD7OH-SWPaAZYEHWOQo6fUQe_WkTaSpiiPBiGgQ9fEVjplNG"/>

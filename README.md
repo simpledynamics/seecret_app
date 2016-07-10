@@ -22,8 +22,7 @@ The repository is the contents of the Seecret app as described at [https://www.s
 There is no build.  Just copy the contents of the [src/main/resources/public](src/main/resources/public) to your web server as is.  To read more about hosting Seecret yourself, go to [https://www.seecret.net/mirror.html](https://www.seecret.net/mirror.html)
 
 ## Deployment 
-The app authenticates the user to Twitter via Oauth.io.  Contact us to add your url to our Oauth.io account, or set up your own and put your key value in 
-src/main/resources/public/js/oauthio_key.js.  You can run on localhost as well.
+The app authenticates the user to Twitter via Oauth.io.  Contact us to add your url to our Oauth.io account.   You can run on localhost as well.
 
 There is also a [Spring Boot](http://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#using-boot-running-your-application) deployment wrapper you can use to run the application locally. Just run `./gradlew bootRun` and load [http://localhost](http://localhost)
 
@@ -39,7 +38,7 @@ We have a [roadmap](https://github.com/simpledynamics/seecret_app/wiki) of featu
  - [Scott McFarlane](https://github.com/keola4)
 
 ## Hashes
-The SHA1 hashes for version 1.0 of the Seecret app are located in [hashes.txt](src/main/resources/public/hashes.txt)
+The SHA384 hash for version 1.0 of the Seecret index.html file is located in [hashes.txt](src/main/resources/public/hashes.txt)
 
 The hashes are also published at the following locations (sometimes as hidden Seecrets):
 - [https://www.seecret.net/mirror.html](http://www.seecret.net/mirror.html)

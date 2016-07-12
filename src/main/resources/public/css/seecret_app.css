@@ -281,7 +281,7 @@ input, textarea, select {
 	text-align:center;
 }
 
-
+button,
 input[type=button],
 input.button,
 #submitButtonContainer button,

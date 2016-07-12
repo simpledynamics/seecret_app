@@ -6,7 +6,7 @@
 							Private Key:<br/>
 							<div>
 								<p id="privateKeyTextarea">{{privateKey.armored}}</p>
-								<button onClick="app.copyContentsToClipboard('privateKeyTextarea')">Copy to clipboard</button>
+								<button onClick="app.copyContentsToClipboard('privateKeyTextarea')" class="button">Copy to clipboard</button>
 							</div>
 						</div>
 						<div class="formRow">
@@ -14,22 +14,22 @@
 							<div>
 								{{#if keyOptions.passphrase}}
 								<p id="privateKeyPassphrase" style="font-weight:bold">{{keyOptions.passphrase}}</p><br/>
-								<button onClick="app.copyContentsToClipboard('privateKeyPassphrase')">Copy to clipboard</button><br/><br/>
-								<button onClick="app.deleteSavedPassphrase()">Delete from device</button> <br/>
+								<button onClick="app.copyContentsToClipboard('privateKeyPassphrase')" class="button">Copy to clipboard</button><br/><br/>
+								<button onClick="app.deleteSavedPassphrase()" class="button">Delete from device</button> <br/>
 								<span class="note">(You'll be prompted for it each time.)</span>											
 								{{/if}}
 								{{#unless keyOptions.passphrase}}
 								Passphrase not saved. 
 								{{/unless}}
 								<br/><br/>
-								<button onClick="app.changePassphrase()">Change passphrase</button>
+								<button onClick="app.changePassphrase()" class="button">Change passphrase</button>
 							</div>
 						</div>																		 
 						<div class="formRow">
 							Public Key:<br/>
 							<div>
 								<p id="publicKeyExport">{{publicKey.armored}}</p>
-								<button onClick="app.copyContentsToClipboard('publicKeyExport')">Copy to clipboard</button><p/>
+								<button onClick="app.copyContentsToClipboard('publicKeyExport')" class="button">Copy to clipboard</button><p/>
 							</div>
 						</div>		
 						{{else}}

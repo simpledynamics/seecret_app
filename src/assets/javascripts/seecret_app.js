@@ -846,6 +846,7 @@ var app = {
 				if(!bSkipWelcome) {
 					messages.push({text:app.joinMessage,receiverId:receiverId});
 				}
+				app.overlay();
 				app.postDirectMessages(messages, function(){
 					var sentKeys = {};
 					sentKeys[receiverId] = true;
@@ -941,6 +942,7 @@ var app = {
 		
 	},
 	postDirectMessages:function(msgs,callback){
+		app.overlay();
 		app.directMessagesToPost= msgs;
 		app.directMessageCount=0;
 		app.checkDirectMessages(callback);

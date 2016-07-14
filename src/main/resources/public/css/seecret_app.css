@@ -590,7 +590,11 @@ h2.timeLine,
 	background-position: -16px 0;
 }
 
-
+.dm_profileCopy {
+	display:inline-block;
+	vertical-align:top;
+	max-width:80%;	
+}
 
 .dm_button input {
     padding: 5px;
@@ -1057,6 +1061,10 @@ span.undecryptedMessagesInfo {
 		font-size:0.75em;
 	}
 	
+	#directMessagesLegendContainer {
+		font-size: 0.75em;
+	}
+	
 	#footer .footerLogo {
 		width:11em;
 	}
@@ -1075,6 +1083,11 @@ span.undecryptedMessagesInfo {
 		width:8.9em;
 		height:1.55em;
 	}	
+	
+	.dm_profileCopy {
+		width:75%;
+	}
+	
 	
 }	
 

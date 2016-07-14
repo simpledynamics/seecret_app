@@ -5,19 +5,15 @@
 	<div class="dm_profileCopy" style="">
 		<div id="conversationInfoDiv_{{id_str}}">
 			{{#if message_count}}
-			<span id="messageCount_{{id_str}}">{{message_count}}</span> messages from <span style="font-weight:bold;">{{screen_name}}</span>, last one {{tweetShortDate most_recent.created_at}}
+			<span style="font-weight:bold;">{{screen_name}}</span> last sent {{tweetShortDate most_recent.created_at}}
 				{{#if newMessages}}
 					<i class="fa fa-comments msgCount{{newMessageCount}}" aria-hidden="true" style="font-size:1.5em" id="newMessagesStatus_{{id_str}}"></i>
 				{{/if}}
-			{{#if XunencryptedMessages}}
-				<br/><span class="undecryptedMessagesInfo">Some messages from {{screen_name}} could not be decrypted. Read the <a href="https://www.seecret.net/faq.html" target="_new">FAQ</a> to understand more.</span>
-			{{/if}}
-						 
-			<br/><a href="javascript:app.toggleFriendMessages('{{id_str}}',this.id)" id="friendMessagesToggleLink_{{id_str}}">show conversation</a>
+			<br/>
+			<a href="javascript:app.toggleFriendMessages('{{id_str}}',this.id)" id="friendMessagesToggleLink_{{id_str}}">show conversation</a> (<span id="messageCount_{{id_str}}">{{message_count}}</span>)
 			{{else}}
 			No Seecret messages from {{screen_name}} 
 			{{/if}} 
-			
 		</div>
 		<div id="friendKeyContainer_{{id_str}}">
 		{{#if sentKey}}

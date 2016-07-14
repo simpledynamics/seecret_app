@@ -40,7 +40,7 @@
 			<textarea id="directMessage_{{id_str}}" class="dmField"></textarea>
 			<input type=button onClick="app.prepareDirectMessage('{{id_str}}')" value="Send message" class="button" />
 			{{#if sentKey}}
-			<br/>Not sure if {{screen_name}} has been allowed to message you?  <input type=button class="button" onClick="app.invite({{id_str}},true)" value="Allow"/>
+			<div style="margin:10px 0 0 0;padding:5px; border:1px solid #fff;background:#e4dcdc;color:#333">Not sure if {{screen_name}} has been allowed to message you?  <input type=button class="button" onClick="app.invite({{id_str}},true)" value="Allow"/></div>
 			{{/if}}
 		</div>
 	{{/if}}

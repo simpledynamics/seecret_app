@@ -62,7 +62,6 @@ var app = {
 		app.activeUser.dmSenders = obj;
 	},
     initialize: function() {
-		app.unauthenticatedUI();
 		app.initOauth();
     },
     loginToTwitter: function() {
@@ -1603,6 +1602,7 @@ var app = {
 			$("#timelineButton").hide();
 			app.unauthenticatedMenu();
 			app.setView(app.ABOUT_VIEW);
+			app.hideOverlays();
 	},
 	authenticatedMenu:function(){
 			$("#privateMessagesButton").show();
@@ -2086,6 +2086,7 @@ $( document ).ready(function() {
 	Handlebars.registerPartial("conversation-template",Handlebars.getTemplate("conversation-template"));
 	Handlebars.registerPartial("conversation-status-template",Handlebars.getTemplate("conversation-status-template"));
 	$("body").html(Handlebars.getTemplate("body-template")())
+
 	openpgp.config.show_comment=false;
 	openpgp.config.show_version=false;
 	app.seecret_engine = new SEECRET_ENGINE();
@@ -2095,6 +2096,7 @@ $( document ).ready(function() {
 		}
 	})
 	$(window).scroll(function() {
+		alert("window.scroll");
 		if(app.doScroll){
 			var scrollTop = $(window).scrollTop();
 			var winHeight = $(window).height();
@@ -2116,11 +2118,9 @@ $( document ).ready(function() {
 		}
 	});
 	window.onpopstate = function(event) {
-		  //console.log("location: " + document.location + ", state: " + JSON.stringify(event.state));
-		  //console.log("hash is " + document.location.hash);
-		  if(document.location.hash){
-			  app.setViewFromHash(document.location.hash);
-		  }
+		if(document.location.hash){
+		  app.setViewFromHash(document.location.hash);
+		}
 	};
 	$("#textarea-statusUpdate").keyup(
 		function(eventObject){
@@ -2141,6 +2141,7 @@ $( document ).ready(function() {
 		app.updateStatus();
 	});
 	$('#hashesContent').html(Handlebars.getTemplate("hashes-template")(hashes));
+	app.overlay();
 	app.initialize();  
 
 });

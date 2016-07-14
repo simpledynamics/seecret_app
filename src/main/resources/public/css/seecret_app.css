@@ -480,6 +480,7 @@ h2.timeLine,
 }
 .msgCount9::after{
 	content: "9+";
+	left:-16px;
 }
 .signedIcon {
 	min-width:1em;

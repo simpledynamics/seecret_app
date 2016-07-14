@@ -62,9 +62,6 @@ var app = {
 		app.activeUser.dmSenders = obj;
 	},
     initialize: function() {
-		if(location.hash){
-			//history.pushState("", document.title, window.location.pathname + window.location.search);
-		}
 		app.unauthenticatedUI();
 		app.initOauth();
     },
@@ -351,6 +348,10 @@ var app = {
 			if(messageList.length > 0){
 				alert(screen_names);
 			}
+			for(var f in friendList){
+				friendList[f].newMessages=true;
+				friendList[f].newMessageCount = friendList[f].message_count;
+			}
 		}
 		app.markMessageableFriends(friendList);
 		app.markFriendsWithSentKeys(friendList);
@@ -363,7 +364,8 @@ var app = {
 			//TODO:  update friend list entry with a 'new' indicator
 			var newFriends = [];
 			for(var f in friendList){
-				friendList[f].newMessages=true;
+				//friendList[f].newMessages=true;
+				//friendList[f].newMessageCount = friendList[f].message_count;
 				if(document.getElementById("friendDetails_" + friendList[f].id_str) == null) {
 					newFriends.push(friendList[f]);
 				}
@@ -387,10 +389,17 @@ var app = {
 			}
 			if(newFriends.length > 0){
 				$("#friendsContainer").prepend(Handlebars.getTemplate("conversations-template")(newFriends));
-				
 			}
 			else {
 				console.log("no new friends");
+			}
+			if(bNewest){
+				for(var f in friendList){
+					//set new message indicator.
+					
+					
+				}
+				
 			}
 		}
 	},
@@ -1659,6 +1668,11 @@ var app = {
 		app.hideAllViews();
 		$('#' + viewName).fadeIn(function(){app.doScroll=true;}).css("display","block");
 		app.setMenuState(viewName + "Button");
+		for(var each in window.location) {
+			console.log("window.location." + each + " = " + window.location[each]);
+		}
+		//history.pushState({hash:"#" + viewName}, "#" + viewName, window.location.pathname + window.location.path);
+
 	},
 	renderPublicKeys:function (){
 		var sentPublicKeys = app.activeUser.publicKeys;

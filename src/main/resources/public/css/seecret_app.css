@@ -436,6 +436,19 @@ h2.timeLine,
 		min-width:1.2em;
 		
 }
+.msgCount {
+}
+.msgCount::after{
+	font-size:0.55em;
+	font-weight:bold;
+	color:#fff;
+	position:relative;
+	top:-6px;
+	left:-18px;
+
+}
+
+
 .signedIcon {
 	min-width:1em;
 	height:1em;

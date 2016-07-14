@@ -63,7 +63,7 @@ var app = {
 	},
     initialize: function() {
 		if(location.hash){
-			history.pushState("", document.title, window.location.pathname + window.location.search);
+			//history.pushState("", document.title, window.location.pathname + window.location.search);
 		}
 		app.unauthenticatedUI();
 		app.initOauth();
@@ -107,15 +107,11 @@ var app = {
 			app.unauthenticatedUI();
 	},
     initOauth: function() {
+		OAuth.initialize(oauthio_key.key);
     	if(app.oauthResult == null) {
-    		OAuth.initialize(oauthio_key.key);	
 			app.loadOauth();
-			app.updateOauthUserInfo();
     	}
-		else {
-			app.loadOauth();
-			app.updateOauthUserInfo();
-		}
+		app.updateOauthUserInfo();
 
     }, 
     saveOauth: function () {
@@ -168,7 +164,30 @@ var app = {
 			if(app.oauthResult != null) {  
 				app.authenticatedUI();
 				app.maxId=null;
-				app.updateHomeTimeline();
+				
+				switch(location.hash){
+					case "#timeline":
+						app.updateHomeTimeline();
+						app.setView(app.TIMELINE_VIEW);
+						break;
+					case  "#privateMessages":
+						app.initializeDirectMessagesView();
+						break;
+					case  "#settings":
+						app.setView(app.SETTINGS_VIEW);
+						break;
+					case "#about":
+						app.setView(app.ABOUT_VIEW);
+						break;
+					case "#hashes":
+						app.setView(app.HASHES_VIEW);
+						break;
+					default: 
+						app.updateHomeTimeline();
+						app.setView(app.TIMELINE_VIEW);
+						break;
+				}
+				
 			} else {
 				app.unauthenticatedUI();
 			}
@@ -1608,6 +1627,7 @@ var app = {
 	authenticatedHeader: function () {
 		//console.log(app.activeUser.user);
 		if(app.activeUser && app.activeUser.user){
+			console.log("app.active user = " + JSON.stringify(app.activeUser.user));
 			app.activeUser.user.profile_image_url = app.activeUser.user.profile_image_url.replace(app.httpsReplaceRegex,"https:");
 			$('#loginContainer').html(Handlebars.getTemplate("authenticated-header-template")(app.activeUser.user));     
 		}

@@ -39,7 +39,9 @@
 		<div id="friendMessageForm_{{id_str}}" style="display:none">
 			<textarea id="directMessage_{{id_str}}" class="dmField"></textarea>
 			<input type=button onClick="app.prepareDirectMessage('{{id_str}}')" value="Send message" class="button" />
+			{{#if sentKey}}
 			<br/>Not sure if {{screen_name}} has been allowed to message you?  <input type=button class="button" onClick="app.invite({{id_str}},true)" value="Allow"/>
+			{{/if}}
 		</div>
 	{{/if}}
 	</div>

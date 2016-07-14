@@ -454,6 +454,9 @@ h2.timeLine,
 	left:-14px;
 
 }
+.msgCount1::after{
+	content: "1";
+}
 .msgCount2::after{
 	content: "2";
 }
@@ -478,8 +481,6 @@ h2.timeLine,
 .msgCount9::after{
 	content: "9+";
 }
-
-
 .signedIcon {
 	min-width:1em;
 	height:1em;

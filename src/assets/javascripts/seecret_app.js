@@ -246,7 +246,6 @@ var app = {
 				if(app.dmPostData.since_id){
 					alert("No new direct messages");
 					var bNewest = app.dmPostData.since_id != null;
-					$('.dmIconNew').hide();
 				}
 				else if(!app.dmPostData.max_id){
 					$("#directMessages").html("You have no direct messages.");

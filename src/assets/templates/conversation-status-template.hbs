@@ -8,7 +8,7 @@
 			<span id="messageCount_{{id_str}}">{{message_count}}</span> messages from <span style="font-weight:bold;">{{screen_name}}</span>, last one {{tweetShortDate most_recent.created_at}}
 				{{#if newMessages}}
 					<!-- <img src="https://cdn.rawgit.com/simpledynamics/seecret_app/e449e723f317fce6866a09c016d36acddaaac9d6/src/main/resources/public/img/new-icon.png" class="dmIconNew" alt="New" title="New" /> -->
-					<i class="fa fa-comments msgCount" aria-hidden="true" style="font-size:1.5em"></i>
+					<i class="fa fa-comments msgCount{{newMessageCount}}" aria-hidden="true" style="font-size:1.5em" id="newMessagesStatus_{{id_str}}"></i>
 					
 				{{/if}}
 			{{#if XunencryptedMessages}}

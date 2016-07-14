@@ -350,7 +350,7 @@ var app = {
 			}
 			for(var f in friendList){
 				friendList[f].newMessages=true;
-				friendList[f].newMessageCount = friendList[f].message_count;
+				friendList[f].newMessageCount = friendList[f].message_count>8?9:friendList[f].message_count;
 			}
 		}
 		app.markMessageableFriends(friendList);
@@ -392,14 +392,6 @@ var app = {
 			}
 			else {
 				console.log("no new friends");
-			}
-			if(bNewest){
-				for(var f in friendList){
-					//set new message indicator.
-					
-					
-				}
-				
 			}
 		}
 	},

@@ -436,16 +436,47 @@ h2.timeLine,
 		min-width:1.2em;
 		
 }
-.msgCount {
-}
-.msgCount::after{
-	font-size:0.55em;
+.msgCount1::after,
+.msgCount2::after,
+.msgCount3::after,
+.msgCount4::after,
+.msgCount5::after,
+.msgCount6::after,
+.msgCount7::after,
+.msgCount8::after,
+.msgCount8::after{
+	content: "1";
+	font-size:0.5em;
 	font-weight:bold;
 	color:#fff;
 	position:relative;
-	top:-6px;
-	left:-18px;
+	top:-5px;
+	left:-14px;
 
+}
+.msgCount2::after{
+	content: "2";
+}
+.msgCount3::after{
+	content: "3";
+}
+.msgCount4::after{
+	content: "4";
+}
+.msgCount5::after{
+	content: "5";
+}
+.msgCount6::after{
+	content: "6";
+}
+.msgCount7::after{
+	content: "7";
+}
+.msgCount8::after{
+	content: "8";
+}
+.msgCount9::after{
+	content: "9+";
 }
 
 

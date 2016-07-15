@@ -195,9 +195,6 @@ var app = {
 		if($("#friendsContainer").html() == "") {
 			app.startDirectMessages();
 		}
-		else {
-			alert("dms already exist");
-		}
 	},
 	getNewestDirectMessages:function() {
 		app.setupDMPostData();

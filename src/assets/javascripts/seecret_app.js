@@ -166,7 +166,7 @@ var app = {
 			}
     },
     setViewFromHash:function(hash){
-			switch(hash){
+		switch(hash){
 			case "#timeline":
 				app.updateHomeTimeline();
 				app.setView(app.TIMELINE_VIEW);
@@ -188,11 +188,15 @@ var app = {
 				app.setView(app.TIMELINE_VIEW);
 				break;
 		}
+		
     },
 	initializeDirectMessagesView:function(){
 		app.setView(app.DIRECT_MESSAGES_VIEW);		
 		if($("#friendsContainer").html() == "") {
 			app.startDirectMessages();
+		}
+		else {
+			alert("dms already exist");
 		}
 	},
 	getNewestDirectMessages:function() {
@@ -1686,7 +1690,6 @@ var app = {
 	},
 	showPrivateKeyManager:function(){
 		app.doScroll = false;
-        //var pkHandler = Handlebars.compile($("#private-key-template").html());
         $('#directMessagesActionsContainer').html(Handlebars.getTemplate("private-key-template")());        
 		$("#directMessagesActionsContainer").show();
 	},	
@@ -2140,7 +2143,6 @@ $( document ).ready(function() {
 		app.updateStatus();
 	});
 	$('#hashesContent').html(Handlebars.getTemplate("hashes-template")(hashes));
-	app.overlay();
 	app.initialize();  
 
 });

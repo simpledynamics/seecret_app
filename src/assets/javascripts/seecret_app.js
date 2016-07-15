@@ -2096,7 +2096,6 @@ $( document ).ready(function() {
 		}
 	})
 	$(window).scroll(function() {
-		alert("window.scroll");
 		if(app.doScroll){
 			var scrollTop = $(window).scrollTop();
 			var winHeight = $(window).height();

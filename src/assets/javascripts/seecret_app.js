@@ -148,11 +148,9 @@ var app = {
 			})
 			.fail(function (err) {
 				alert("There was an error logging you into Twitter.  Please reload the page and try again.");
-				//console.log("could not load oauthResult");
 		    });
 		}
 		else {
-			//console.log("already loaded oauthResult");
 			app.updateOathUserInfoComplete();
 		}
 	},
@@ -202,9 +200,6 @@ var app = {
 			//alert("getting messages since " + app.dmSinceId);
 			app.dmPostData.since_id=app.dmSinceId;
 		}
-		else {
-			//console.log("getting newest but there's no since id?  ");
-		}
 		app.overlay();
 		app.doDMPost(app.dmPostData,app.handleDMResponse);
 	},
@@ -230,7 +225,6 @@ var app = {
         })
         .done(function (response) {
 			app.timer("direct message post");
-			//console.log("Got "+ response.length + " direct messages");
 			if(response.length > 0){
 				if(response.length == app.NUM_DM){
 					$("#getOlderMessagesButton").show();
@@ -267,12 +261,10 @@ var app = {
 		}
 	},
 	getFollowerInfo:function(followerId,callback){
-		//console.log("getting follower info for " + followerId);
 		//Currently no other case for getting follower info in a call, so we assume it's because someone has clicked on the messaage icon from the timeline.
 		//if this gets used more generically the 'show message form' line on 261 below will need to be more intelligent.  ie. not do it in all cases.
 		app.oauthResult.get('1.1/users/show.json?user_id='+followerId)
 		.done(function (response) {
-			//console.log("Got the follower: " + response);
 			callback(response);
 			$("#friendMessageForm_"+response.id_str).show();
 		})
@@ -284,7 +276,6 @@ var app = {
 		var keys = app.getObject("publicKeys-"+app.activeUser.user.id_str);
 		if(keys){
 			follower.publicKey = keys[follower.id_str];
-			//console.log("Did not find the public key for " + follower.screen_name);
 		}
 		var sentkeys = app.getObject("sentPublicKeys-"+app.activeUser.user.id_str);
 		if(sentkeys){
@@ -294,11 +285,6 @@ var app = {
 	},
 	handleDMResponse:function(response){
 		app.timer("handleDMResponse");
-		//console.log("Got " + response.length + " direct messages");
-		for(var r in response){
-			//console.log("response text is " + response[r].text);
-		}
-		//console.log("handling dm response for " + response.length);
 		if(response.length == 1 && response[0].id_str == app.dmMaxId){
 			app.hasFirstDirectMessage = true;
 			app.updatingDirectMessages=false;
@@ -314,7 +300,6 @@ var app = {
 			*/
 			var messages = app.processMessageList(response,"sender","dmMaxId");
 			if(app.timelineContainsKeys(messages)) {
-				//console.log("saving public keys!");
 				app.savePublicKeys(app.getPublicKeyMessagesFromDMList(messages));
 			}
 			
@@ -352,7 +337,6 @@ var app = {
 		app.markMessageableFriends(friendList);
 		app.markFriendsWithSentKeys(friendList);
 		app.markFriendsWithUnencryptedMessages(friendList,messageList);
-		//console.log("Found " + friendList.length + " friends");
 		if($("#friendsContainer").is(":empty") ){
 			$("#friendsContainer").html(Handlebars.getTemplate("conversations-template")(friendList));
 		}
@@ -386,9 +370,6 @@ var app = {
 			if(newFriends.length > 0){
 				$("#friendsContainer").prepend(Handlebars.getTemplate("conversations-template")(newFriends));
 			}
-			else {
-				//console.log("no new friends");
-			}
 		}
 	},
 	updateDirectMessagesUI:function(messages,friendList) {
@@ -400,17 +381,14 @@ var app = {
 	markMessageableFriends:function(friends){
 		var keys = app.getObject("publicKeys-"+app.activeUser.user.id_str);
 		for(var f in friends){
-			//console.log("the public key is " + keys[friends[f].id_str]);
 			friends[f].publicKey = keys[friends[f].id_str];
 		}
 	},
 	markFriendsWithSentKeys:function(friends){
-		//console.log("marking friends with sent keys!");
 		var sentKeys = app.getObject("sentPublicKeys-"+app.activeUser.user.id_str);
 		for(var s in sentKeys){
 			for (var f in friends){
 				if(s == friends[f].id_str){
-					//console.log("found a sent key to " + s);
 					friends[f].sentKey = sentKeys[s];
 				}
 			}
@@ -435,7 +413,6 @@ var app = {
 	renderFriendMessages:function(friendId,timeline){
 		var messages = app.filterMessageListByFriendId(timeline,friendId);
 		if(app.dmPostData.since_id){
-			//console.log("prepending " + messages.length + " new messages from " + friendId);
 			for(var m in messages){
 				messages[m].new = true;
 			}
@@ -451,7 +428,6 @@ var app = {
 			if(!friends[timeline[t].sender.screen_name]) {
 				friends[timeline[t].sender.screen_name] = timeline[t].sender;
 				friends[timeline[t].sender.screen_name].most_recent = timeline[t];
-				//console.log("Most recent message from " + timeline[t].sender.screen_name +  " is " + timeline[t].created_at);
 			}
 			if(!friends[timeline[t].sender.screen_name].message_count) {
 				friends[timeline[t].sender.screen_name].message_count = 0;
@@ -468,13 +444,9 @@ var app = {
 	toggleFriendMessages:function(friendId){
 		var linkText = $("#friendMessagesToggleLink_" + friendId).html();
 		if(linkText != "show conversation"){
-			//console.log("updating conversation link to say 'show conversation'");
 			$("#friendMessagesToggleLink_" + friendId).html("show conversation");
-			//console.log("hiding friendMessagesForm_" + friendId);
 			$("#friendMessageForm_"+friendId).fadeOut();
-			//console.log("hiding friendMessages_" + friendId);
 			$("#friendMessages_" + friendId).fadeOut();
-			
 		}
 		else {
 			$("#friendMessagesToggleLink_" + friendId).html("hide conversation");
@@ -489,7 +461,6 @@ var app = {
 				messages.push(list[l]);
 			}
 		}
-		//console.log("filtered " + list.length + " down to " + messages.length);
 		return messages;
 	},
 	getOlderDirectMessages:function() {
@@ -1146,7 +1117,6 @@ var app = {
 			callback(timeline);
 		})
 		.fail(function(err) {
-			//console.log("failed to get follower info but keep going ");
 			callback(timeline);
 		});
 	},
@@ -1157,7 +1127,6 @@ var app = {
 				continue;
 			}
 			if(timeline[x].seecret_envelope){
-				//console.log("found a seecret enevelop in message " + x);
 				var envelope = timeline[x].seecret_envelope;
 				var seecretMessage = app.seecret_engine.getSeecretFromEnvelope(envelope);
 				var contentType = app.seecret_engine.getContentTypeFromEnvelope(envelope);
@@ -1168,7 +1137,6 @@ var app = {
 						timeline[x].seecret = message;
 					}
 					catch(error){
-						//console.log("error decompressing a seecret message: " + JSON.stringify(error));
 						timeline[x].seecret = "Could not decompress the Seecret";
 						timeline[x].seecret_error = error;
 					}
@@ -1295,23 +1263,18 @@ var app = {
 			return message[senderPropertyRef]?message[senderPropertyRef].id_str:null;
 		}
 		var uniqueSenders = app.getUniqueInstancesFromList(messages,senderFinder);
-		//console.log("unique senders = " + JSON.stringify(uniqueSenders));
 		var messageIndexes = app.getMessageIndexes(messages,uniqueSenders,senderFinder);
-		//console.log("message indexes  = " + JSON.stringify(messageIndexes));
 		var messages = app.dechainifyMessages(messages,messageIndexes,senderPropertyRef);
-		//console.log("dechainified to " + messages.length + " messages");
 		app[maxIdRef] = app.lastProcessedStatusId  = messages[messages.length-1].id_str;
 		//find out if any chained seecrets are started by not finished in this chain, and set max id to that message so next time we get latest we start there...
 		//yes, there is a chance that a seecret is started and finished across more than 200 tweets in a user's timeline... no idea what to do with that.
 		var firstIncompleteStartIndex = 0;
 		for(var u in uniqueSenders){
-			//console.log("finding first incomplete message start for " + u)
 			var bStarted = false;
 			var bEnded = false;
 			var startIndex = 0;
 			for(var m in messages){
 				var id = senderFinder(messages[m]);
-				//console.log("about to check if " + id + " is same as " + u);
 				if(id == u){
 					if(app.seecret_engine.hasSeecretContent(messages[m].text)) {
 						if(app.seecret_engine.isEnvelopeStart(messages[m].text)){
@@ -1337,9 +1300,7 @@ var app = {
 		if(firstIncompleteStart > 0){
 			app[maxIdRef] = messages[firstIncompleteStart].id_str;
 		}
-		//console.log("unhideAndDecompress started with " + messages.length);
 		messages = app.unhideAndDecompressSeecretsInList(messages,true);
-		//console.log("unhideAndDecompress left " + messages.length);
 		//now make sure all profile image refs are https;
 		for(var m in messages){
 			if(messages[m][senderPropertyRef] && messages[m][senderPropertyRef].profile_image_url){
@@ -1489,7 +1450,6 @@ var app = {
 		return dm.sender.id_str;
 	},
 	getUniqueInstancesFromList:function(list,getter){
-		//console.log("getting unique instances");
 		var uniques = {};
 		for(var l in list){
 			var unique = getter(list[l]);
@@ -1623,9 +1583,7 @@ var app = {
 			$("#publicKeysButton").hide();
 	},
 	authenticatedHeader: function () {
-		//console.log(app.activeUser.user);
 		if(app.activeUser && app.activeUser.user){
-			console.log("app.active user = " + JSON.stringify(app.activeUser.user));
 			app.activeUser.user.profile_image_url = app.activeUser.user.profile_image_url.replace(app.httpsReplaceRegex,"https:");
 			$('#loginContainer').html(Handlebars.getTemplate("authenticated-header-template")(app.activeUser.user));     
 		}
@@ -2082,7 +2040,6 @@ var app = {
 	}
 }
 $( document ).ready(function() {
-	//Handlebars.partials = Handlebars.templates;
 	Handlebars.registerPartial("conversation-template",Handlebars.getTemplate("conversation-template"));
 	Handlebars.registerPartial("conversation-status-template",Handlebars.getTemplate("conversation-status-template"));
 	$("body").html(Handlebars.getTemplate("body-template")())

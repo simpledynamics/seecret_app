@@ -1,5 +1,5 @@
 <script type="text/javascript" src="js/covertexts.js" integrity="sha384-uHK-gvpDe5h-ZyAf9xEyH3XjKHAuwMA5YECqFXT_WX9Ijg3345lc2lAdRf29ta1X"></script>
 <script type="text/javascript" src="js/oauthio_key.js" integrity="sha384-Eo3G2dk-u_q9NmwGBfuP3Iib-MYhCmqukiVqbZvGdXxtDsVvtMZa4-ts95GGF_4y"></script>
-<script type="text/javascript" src="js/seecret_app-1.0.min.js" integrity="sha384-uY_WFGUe0-FV8sKLp3wS6UYApIoBVIzYsZDVADm7fV90q7J1XXJqvUqkWIEz2Ltq"></script>
+<script type="text/javascript" src="js/seecret_app-1.0.min.js" integrity="sha384-VK2k-2Ds47yxnAdO7Y49T6vH25kTyXcYla_qdmhgLDpXwoE72SFTaiHOFyvR23wp"></script>
 <script type="text/javascript" src="lib/shoco/shoco_jquery_safe.js" integrity="sha384-1BVDgz3JxFJjBys2Cq3ms31zV2xeDXBQOOGB5HHfvwDn7u7vM59TZFEtj7OpJ4RO"></script>
 <link rel="stylesheet" href="css/seecret_app.css" integrity="sha384-jEs9n7MYCWvqQ5Nk8Y2J2PDrQVRiv6Hk3MavGTneL_5Bul-JApLA9bFWphOVD4Aq"/>

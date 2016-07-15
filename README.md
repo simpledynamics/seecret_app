@@ -38,15 +38,16 @@ We have a [roadmap](https://github.com/simpledynamics/seecret_app/wiki) of featu
  - [Scott McFarlane](https://github.com/keola4)
 
 ## Hashes
-The SHA384 hash for version 1.0 of the Seecret index.html file is located in [hashes.txt](src/main/resources/public/hashes.txt)
+The SHA384 hash for version 1.0 of the Seecret index.html file is 
+ - SHA384(index.html)= base64: pVjN2xIiuqVg621rDX/75P0a9JLMXhzp/dihadmWSl4yzEoENQNOsV58WJsSdBgZ
 
-The hashes are also published at the following locations (sometimes as hidden Seecrets):
+This hash is also published at the following locations:
 - [https://www.seecret.net/mirror.html](http://www.seecret.net/mirror.html)
 - [https://www.twitter.com/seecretapp](https://www.twitter.com/seecretapp)
 - [https://www.facebook.com/Seecret-1780007618900168/info?tab=page_info](https://www.facebook.com/Seecret-1780007618900168/)
 - [https://www.simpledynamics.net/seecret_hashes.html](https://www.simpledynamics.net/seecret_hashes.html)
+-  More to‍‍‌‌​​​‌‍‌‌​‌​​​‍‌‌‌​‌​​‍‌‌‌​‌​​‍‌‌‌​​​​‍‌‌‌​​‌‌‍‌‌‌​‌​‍‌​‌‌‌‌‍‌​‌‌‌‌‍‌‌​​‌‌‌‍‌‌​‌​​‌‍‌‌‌​​‌‌‍‌‌‌​‌​​‍‌​‌‌‌​‍‌‌​​‌‌‌‍‌‌​‌​​‌‍‌‌‌​‌​​‍‌‌​‌​​​‍‌‌‌​‌​‌‍‌‌​​​‌​‍‌​‌‌‌​‍‌‌​​​‌‌‍‌‌​‌‌‌‌‍‌‌​‌‌​‌‍‌​‌‌‌‌‍‌‌​‌‌‌​‍‌‌​​​​‌‍‌‌‌​‌​​‍‌‌​​‌​‌‍‌‌​​‌‌‌‍‌‌‌​​‌​‍‌‌​‌‌‌‌‍‌‌‌​‌‌​‍‌‌​​‌​‌‍‌‌‌​​‌​‍‌​‌‌‌‌‍‌‌​​​‌‍‌‌​‌‌​‍‌‌​​​‌​‍‌‌‌​​​‍‌‌​‌​​‍‌‌​‌‌​‍‌‌​‌‌‌‍‌‌​​​​‍‌‌​​‌​‌‍‌‌​​‌‌​‍‌‌​​​‌‍‌‌​​‌‌​‍‌‌​‌​​‍‌‌​​‌‌‍‌‌​​‌‌​‍‌‌‌​​​‍‌‌​​‌‌​‍‌‌​‌​‌‍‌‌​​‌​​‍‌‌​​​‌​‍‌‌​​​‌‌‍‌‌​​‌​‍‌‌​​​‌‍‌‌‌​​‌‍‌‌​​​‌​‍‌‌​​‌‌‍‌‌​‌‌‌‍‌‌​​‌‌‍‌‌​‌‌​‍‌‌​‌‌‌‍‌‌‌​​​‍‌‌​‌‌‌‍‍‍ come...
 
-hashes are generated with openssl sha1 [filename]
 
 
 ## License 

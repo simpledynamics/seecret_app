@@ -1503,6 +1503,7 @@ var app = {
 			return messages;
 	},
 	updateStatus:function() {
+		app.overlay();
 		var messages = this.prepareUpdateMessage();
 		this.postChain(messages);
 	},

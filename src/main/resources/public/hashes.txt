@@ -2,5 +2,5 @@ SHA1(css/seecret_app.css)= 744e2e0348043835ac73695b372c431b892d3985
 SHA1(index.html)= 4e9579c148430c3501e731a7c616672eb1b83a48
 SHA1(js/covertexts.js)= 0646b3106348e0727a0178c3c346f623eeef7955
 SHA1(js/oauthio_key.js)= a5eaa09b6887bd96d17100f080c87012df61434f
-SHA1(js/seecret_app-1.0.min.js)= b556e7ee8ad7898543f296e740abeeed0413bd2c
+SHA1(js/seecret_app-1.0.min.js)= 8899e7d92ce5c658bbaef482b0ceb578fbbe1687
 SHA1(lib/shoco/shoco_jquery_safe.js)= c2875c8a32e98efaa6a52cb388be7f62ddcd7239

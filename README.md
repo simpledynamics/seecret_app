@@ -39,7 +39,7 @@ We have a [roadmap](https://github.com/simpledynamics/seecret_app/wiki) of featu
 
 ## Hashes
 The SHA384 hash for version 1.0 of the Seecret index.html file is 
- - SHA384(index.html)= base64: pVjN2xIiuqVg621rDX/75P0a9JLMXhzp/dihadmWSl4yzEoENQNOsV58WJsSdBgZ
+ - SHA384(index.html)= base64: ZJLQXO4Bj+jiNPczgxe0V6hzlZz8qNqdyCtH3P/+2XDK89NpdDMxsbridYxl2CF+
 
 This hash is also published at the following locations:
 - [https://www.seecret.net/mirror.html](http://www.seecret.net/mirror.html)

@@ -322,14 +322,14 @@ var app = {
 		if(bNewest) {
 			var screen_names = "New messages from ";
 			var delimiter = "";
-			for(var f in friendList){
+			for(var f=0;f<friendList.length;f++){
 				screen_names += delimiter + friendList[f].screen_name;
 				delimiter = ",";
 			}
 			if(messageList.length > 0){
 				alert(screen_names);
 			}
-			for(var f in friendList){
+			for(var f=0;f<friendList.length;f++){
 				friendList[f].newMessages=true;
 				friendList[f].newMessageCount = friendList[f].message_count>8?9:friendList[f].message_count;
 			}
@@ -343,7 +343,7 @@ var app = {
 		else {
 			//TODO:  update friend list entry with a 'new' indicator
 			var newFriends = [];
-			for(var f in friendList){
+			for(var f=0;f<friendList.length;f++){
 				//friendList[f].newMessages=true;
 				//friendList[f].newMessageCount = friendList[f].message_count;
 				if(document.getElementById("friendDetails_" + friendList[f].id_str) == null) {
@@ -380,14 +380,14 @@ var app = {
 	},
 	markMessageableFriends:function(friends){
 		var keys = app.getObject("publicKeys-"+app.activeUser.user.id_str);
-		for(var f in friends){
+		for(var f=0;f<friends.length;f++){
 			friends[f].publicKey = keys[friends[f].id_str];
 		}
 	},
 	markFriendsWithSentKeys:function(friends){
 		var sentKeys = app.getObject("sentPublicKeys-"+app.activeUser.user.id_str);
 		for(var s in sentKeys){
-			for (var f in friends){
+			for (var f=0;f<friends.length;f++){
 				if(s == friends[f].id_str){
 					friends[f].sentKey = sentKeys[s];
 				}
@@ -395,9 +395,9 @@ var app = {
 		}
 	},
 	markFriendsWithUnencryptedMessages:function(friends,messages){
-		for(var f in friends){
+		for(var f=0;f<friends.length;f++){
 			friends[f].unencryptedMessages = false;
-			for(var m in messages){
+			for(var m=0;m<messages.length;m++){
 				if(messages[m].encrypted && !messages[m].encryptionSuccessful){
 					friends[f].unencryptedMessages=true
 					break;
@@ -406,14 +406,14 @@ var app = {
 		}
 	},
 	renderAllFriendMessages:function(friends,timeline){
-		for(var f in friends){
+		for(var f=0;f<friends.length;f++){
 			app.renderFriendMessages(friends[f].id_str,timeline);
 		}
 	},
 	renderFriendMessages:function(friendId,timeline){
 		var messages = app.filterMessageListByFriendId(timeline,friendId);
 		if(app.dmPostData.since_id){
-			for(var m in messages){
+			for(var m=0;m<messages.length;m++){
 				messages[m].new = true;
 			}
 			$("#friendMessages_" + friendId).prepend(Handlebars.getTemplate("direct-messages-template")(messages));
@@ -424,7 +424,7 @@ var app = {
 	},
 	getFriendsFromMessageList:function(timeline){
 		var friends = {};
-		for(var t in timeline){
+		for(var t=0;t<timeline.length;t++){
 			if(!friends[timeline[t].sender.screen_name]) {
 				friends[timeline[t].sender.screen_name] = timeline[t].sender;
 				friends[timeline[t].sender.screen_name].most_recent = timeline[t];
@@ -435,7 +435,7 @@ var app = {
 			friends[timeline[t].sender.screen_name].message_count++;
 		}
 		var friendList = [];
-		for(f in friends){
+		for(var f in friends){
 			friendList.push(friends[f]);
 		}
 		return friendList;
@@ -456,7 +456,7 @@ var app = {
 	},
 	filterMessageListByFriendId:function(list,friendId){
 		var messages = [];
-		for(var l in list){
+		for(var l=0;l<list.length;l++){
 			if(list[l].sender.id_str== friendId || list[l].sender.id_str == app.activeUser.id_str){
 				messages.push(list[l]);
 			}
@@ -505,7 +505,7 @@ var app = {
 	},
 	getPublicKeyMessagesFromDMList:function(list){
 		var keys = [];
-		for(var i in list){
+		for(var i=0;i<list.length;i++){
 			if(app.isPublicKey(list[i].seecret)){
 				keys.push(list[i]);
 			}
@@ -520,20 +520,20 @@ var app = {
 		var newPublicKeys = {};
 		if(sentPublicKeys == null) sentPublicKeys = {};
 		var outbound = Array();
-		for(var each in keys){
-			if(keys[each].sender.id_str == app.activeUser.user.id){
+		for(var k=0;k<keys.length;k++){
+			if(keys[k].sender.id_str == app.activeUser.user.id){
 				//this is the user's own key in an outbound DM;
 				//should never happen because dms API returns only inbound AFAICT
 				continue;
 			}
 			//last sent key should be found first and the older ones ignored
-			if(!newPublicKeys[keys[each].sender.id_str]){
-				newPublicKeys[keys[each].sender.id_str] =  {
-					key:keys[each].seecret,
-					screen_name:keys[each].sender.screen_name,
-					id_str:keys[each].sender.id_str,
-					profile_image_url:keys[each].sender.profile_image_url,
-					receiveDate:keys[each].created_at
+			if(!newPublicKeys[keys[k].sender.id_str]){
+				newPublicKeys[keys[k].sender.id_str] =  {
+					key:keys[k].seecret,
+					screen_name:keys[k].sender.screen_name,
+					id_str:keys[k].sender.id_str,
+					profile_image_url:keys[k].sender.profile_image_url,
+					receiveDate:keys[k].created_at
 				}
 			}
 		}
@@ -549,7 +549,7 @@ var app = {
 		app.activeUser.publicKeys = publicKeys;
 	},
 	markEncryptedDirectMessages:function(messages){
-		for(var m in messages){
+		for(var m=0;m<messages.length;m++){
 			if(this.isPGPMessage(messages[m].seecret)) {
 				messages[m].encrypted=true;
 				messages[m].decrypted=false;
@@ -571,14 +571,14 @@ var app = {
 			app.saveObject("sentPublicKeys-"+app.activeUser.user.id_str,sentPublicKeys);
 	},
 	decryptDirectMessages:function(messages){
-		app.timer("decryptDirectMessages");
 		var privateKey = openpgp.key.readArmored(app.activeUser.privateKey.armored).keys[0];
 		if(app.decryptPrivateKey(privateKey)) {
+			app.timer("decryptDirectMessages");
 			app.verifyMessagesDecrypted(messages,privateKey);
 		}
 		else {
 			alert("Could not verify your passphrase.  Showing messages undecrypted.")
-			for(var m in messages){
+			for(var m=0;m<messages.length;m++){
 				if(messages[m].encrypted){
 					messages[m].text = messages[m].text + " (could not decrypt)";
 				}
@@ -588,13 +588,14 @@ var app = {
 	},
 	verifyMessagesDecrypted:function(messages,pkey) {
 		var index = null;
-		for(var x in messages)
+		for(var x=0;x<messages.length;x++)
 		{
 			if(messages[x].encrypted && messages[x].decrypted == false){
 				index = x;
 				break;
 			}
 		}
+		
 		var user = app.activeUser.user;
 		if(index != null)
 		{
@@ -603,6 +604,7 @@ var app = {
 				app.verifyMessagesDecrypted(messages,pkey);
 			}
 			else {
+				var timerMessage = "Decrypting message " + index;
 				messages[index].decrypted=true;
 				messages[index].decryptionSuccessful=false;
 				messages[index].originaltext = messages[index].text;
@@ -649,18 +651,18 @@ var app = {
 			}
 		}
 		else{
+			app.timer("decryptDirectMessages");
 			var dmSenders = app.activeUser.dmSenders;
 			if(!dmSenders){
 				dmSenders = {};
 			}
-			for(var each in messages){
-				if(messages[each].encrypted && messages[each].sender.id_str != app.activeUser.id){
-					dmSenders[messages[each].sender.id_str] = true;
+			for(var m=0;m<messages.length;m++){
+				if(messages[m].encrypted && messages[m].sender.id_str != app.activeUser.id){
+					dmSenders[messages[m].sender.id_str] = true;
 				}
 			}
 			app.saveObject("dmSenders-"+app.activeUser.user.id_str,dmSenders);
 			app.refreshActiveUserDMSenders(),
-			app.timer("decryptDirectMessages");
 			app.timer("updateDirectMessagesUI");
 			app.createConversationEntries(messages);
 			app.updateDirectMessagesUI(messages);
@@ -699,10 +701,10 @@ var app = {
 		//taken directly from openpgp test 
 		if (openpgp.util.getWebCryptoAll()) { bits = 2048; } // webkit webcrypto accepts minimum 2048 bit
 		var keyOptions = {
-					numBits:bits,
-					//openpgpjs requires a valid email format for the userid, FOR SOME REASON
-					userIds:[{name:user.name,email:user.screen_name+"@seecretApp.seecret"}],
-					passphrase:phrase
+			numBits:bits,
+			//openpgpjs requires a valid email format for the userid, FOR SOME REASON
+			userIds:[{name:user.name,email:user.screen_name+"@seecretApp.seecret"}],
+			passphrase:phrase
 		}
 		return keyOptions;
 	},
@@ -771,8 +773,8 @@ var app = {
 			{
 				keyCount++;
 				var pkMessages = app.generatePublicKeyMessages(k);
-				for(var pk in pkMessages){
-					outbound.push({receiverId:k,text:pkMessages[pk]});
+				for(var m=0;m<pkMessages.length;m++){
+					outbound.push({receiverId:k,text:pkMessages[m]});
 				}
 			}
 			if(outbound.length > 0) app.sendPublicKeyMessages(outbound,keysToSend);
@@ -827,8 +829,8 @@ var app = {
 	invite:function(receiverId,bSkipWelcome) {
 				var pkMessages = app.generatePublicKeyMessages(receiverId);
 				var messages = Array();
-				for(var pk in pkMessages){
-					messages.push({receiverId:receiverId,text:pkMessages[pk]});
+				for(var m=0;m<pkMessages.length;m++){
+					messages.push({receiverId:receiverId,text:pkMessages[m]});
 				}
 				if(!bSkipWelcome) {
 					messages.push({text:app.joinMessage,receiverId:receiverId});
@@ -908,9 +910,9 @@ var app = {
 					app.seecret_engine.config.RANDOM_COVERTEXTS = false;
 					app.seecret_engine.config.MAX_CHAIN_SEGMENT_LENGTH=140;
 					chain.reverse();
-					for(var each in chain){
-						var msgText = chain[each];
-						chain[each] = {receiverId:receiverId,text:msgText};
+					for(var c=0;c<chain.length;c++){
+						var msgText = chain[c];
+						chain[c] = {receiverId:receiverId,text:msgText};
 					}
 					app.postDirectMessages(chain,function() {} );
 					$("#directMessage").val("");
@@ -1091,7 +1093,7 @@ var app = {
 	addFollowerTagToTweets:function(timeline,callback){
 		//Get the follower information for all tweets from followers
 		var ids = {};
-		for(var r in timeline){
+		for(var r=0;r<timeline.length;r++){
 			ids[timeline[r].user.id_str] = timeline[r].user.id_str;
 		}
 		var followersList = Array();
@@ -1104,14 +1106,14 @@ var app = {
 		app.oauthResult.get('1.1/friendships/lookup.json', fData)
 		.done(function (response) {
 			var followers = {};
-			for(var x in response){
+			for(var x=0;x<response.length;x++){
 				if(response[x].connections.indexOf("followed_by") >= 0) {
 					followers[response[x].id_str] = true;
 				}
 			}
-			for(var t in timeline){
+			for(var t=0;t<timeline.length;t++){
 				if(followers[timeline[t].user.id_str]){
-						timeline[t].follower = true;
+				  timeline[t].follower = true;
 				}
 			}
 			callback(timeline);
@@ -1122,7 +1124,7 @@ var app = {
 	},
 	unhideAndDecompressSeecretsInList:function(timeline,bShowAll){
 		var filteredTimeline = [];
-		for(var x in timeline){
+		for(var x=0;x<timeline.length;x++){
 			if(!timeline[x].seecret_envelope && document.getElementById("showOnlySeecrets").checked){
 				continue;
 			}
@@ -1152,112 +1154,6 @@ var app = {
 		}
 		return filteredTimeline;
 	},
-	unhideAndDecompressTimelineSeecrets:function(timeline,bShowAll){
-		var filteredTimeline = [];
-		for(var x in timeline){
-			if(timeline[x].seecret_envelope){
-				var envelope = timeline[x].seecret_envelope;
-				var seecretMessage = app.seecret_engine.getSeecretFromEnvelope(envelope);
-				var contentType = app.seecret_engine.getContentTypeFromEnvelope(envelope);
-				var message = app.seecret_engine.unhide(seecretMessage,contentType);
-				if(contentType == app.seecret_engine.config.CONTENT_TYPES.NUMBERS_ARRAY){
-					try{
-						message = seecret_compression.decompress(message);
-						timeline[x].seecret = message;
-					}
-					catch(error){
-						console.log("error decompressing a seecret message: " + JSON.stringify(error));
-						timeline[x].seecret = "Could not decompress the Seecret";
-						timeline[x].seecret_error = error;
-					}
-				}
-				else {
-					timeline[x].seecret = message;
-				}
-				filteredTimeline.push(timeline[x]);
-			}
-			else if(bShowAll && !app.seecret_engine.hasSeecretContent(timeline[x].text)){
-				filteredTimeline.push(timeline[x]);
-			}
-		}
-		return filteredTimeline;
-	},
-	getEarliestIncompleteChainStartId:function(timeline,uniqueTweeters){
-		var startIndex = 0;
-		for(var ut in uniqueTweeters){
-			var maxId = app.getFirstIncompleteChainStart(timeline,uniqueTweeters[ut])
-		}
-	},
-	getEarliestIncompleteDMChainStartId:function(timeline,uniqueSenders){
-		var startIndex = 0;
-		for(var ut in uniqueSenders){
-			var maxId = app.getFirstIncompleteDMChainStart(timeline,uniqueSenders[ut])
-		}
-	},
-	getFirstIncompleteChainStart:function(timeline,userId){
-		var bStarted = false;
-		var bEnded = false;
-		var startIndex = 0;
-		for(var t in timeline){
-			if(timeline[t].user.id_str == userId){
-				if(app.seecret_engine.hasSeecretContent(timeline[t].text)) {
-					if(app.seecret_engine.isEnvelopeStart(timeline[t].text)){
-						bStarted = true;
-						startIndex= t;
-					}
-					if(app.seecret_engine.isEnvelopeEnd(timeline[t].text)){
-						bEnded = true;
-						bStarted = false;
-						startIndex = 0;
-					}
-				} 
-			}
-		}
-		return startIndex;
-	},
-	getFirstIncompleteDMChainStart:function(timeline,userId){
-		var bStarted = false;
-		var bEnded = false;
-		var startIndex = 0;
-		for(var t in timeline){
-			if(timeline[t].sender.id_str == userId){
-				if(app.seecret_engine.hasSeecretContent(timeline[t].text)) {
-					if(app.seecret_engine.isEnvelopeStart(timeline[t].text)){
-						bStarted = true;
-						startIndex= t;
-					}
-					if(app.seecret_engine.isEnvelopeEnd(timeline[t].text)){
-						bEnded = true;
-						bStarted = false;
-						startIndex = 0;
-					}
-				} 
-			}
-		}
-		return startIndex;
-	},
-	getFirstIncompleteChainStart:function(chain,matcher){
-		var bStarted = false;
-		var bEnded = false;
-		var startIndex = 0;
-		for(var c in chain){
-			if(matcher(chain[c]) [senderProp].sender.id_str == userId){
-				if(app.seecret_engine.hasSeecretContent(timeline[t].text)) {
-					if(app.seecret_engine.isEnvelopeStart(timeline[t].text)){
-						bStarted = true;
-						startIndex= t;
-					}
-					if(app.seecret_engine.isEnvelopeEnd(timeline[t].text)){
-						bEnded = true;
-						bStarted = false;
-						startIndex = 0;
-					}
-				} 
-			}
-		}
-		return startIndex;
-		
-	},
 	processMessageList:function(messages,senderPropertyRef,maxIdRef){
 		var senderFinder = function(message) {
 			return message[senderPropertyRef]?message[senderPropertyRef].id_str:null;
@@ -1273,7 +1169,7 @@ var app = {
 			var bStarted = false;
 			var bEnded = false;
 			var startIndex = 0;
-			for(var m in messages){
+			for(var m=0;m<messages.length;m++){
 				var id = senderFinder(messages[m]);
 				if(id == u){
 					if(app.seecret_engine.hasSeecretContent(messages[m].text)) {
@@ -1302,7 +1198,7 @@ var app = {
 		}
 		messages = app.unhideAndDecompressSeecretsInList(messages,true);
 		//now make sure all profile image refs are https;
-		for(var m in messages){
+		for(var m=0;m<messages.length;m++){
 			if(messages[m][senderPropertyRef] && messages[m][senderPropertyRef].profile_image_url){
 				messages[m][senderPropertyRef].profile_image_url = messages[m][senderPropertyRef].profile_image_url.replace(app.httpsReplaceRegex,"https:");
 			}
@@ -1451,7 +1347,7 @@ var app = {
 	},
 	getUniqueInstancesFromList:function(list,getter){
 		var uniques = {};
-		for(var l in list){
+		for(var l=0;l<list.length;l++){
 			var unique = getter(list[l]);
 			if(unique){
 				uniques[unique] = unique;
@@ -1710,9 +1606,9 @@ var app = {
 				else {
 					scaffoldLength = 0;
 					var scaffoldsUsed = 0;
-					for(each in scaffolds){
-						if(scaffolds[each].trim().length >= 2){
-							scaffoldLength += scaffolds[each].trim().length;
+					for(s=0;s<scaffolds.length;s++){
+						if(scaffolds[s].trim().length >= 2){
+							scaffoldLength += scaffolds[s].trim().length;
 							scaffoldsUsed++;
 						}
 					}
@@ -1765,7 +1661,7 @@ var app = {
 	removeScaffold:function(index){
 			var scaffolds = app.getScaffolds();
 			var newScaffolds = Array();
-			for(var each in scaffolds){
+			for(var s=0;s<scaffolds.length;s++){
 				if(each != index){
 					newScaffolds.push(scaffolds[each]);
 				}
@@ -1942,7 +1838,6 @@ var app = {
 			alert("Could not decrypt the key with the passphrase you entered.  Please try again");
 		}
 	},
-
 	deleteSavedPassphrase: function(){
 		if(confirm("Are you sure?")) {
 			var user = app.activeUser.user;
@@ -2012,13 +1907,13 @@ var app = {
 	getNameValuePairsFromArgumentList:function(args,pairSplitter,nameValueSplitter){
 		var list = [];
 		var vals = args.split(pairSplitter);
-		for(var v in vals){
+		for(var v=0;v<vals.length;v++){
 			var splits = vals[v].split(nameValueSplitter);
 			list.push(
-				{
-					name:splits[0],
-					value:splits[1]
-				}
+			{
+				name:splits[0],
+				value:splits[1]
+			}
 			);
 		}
 		return list;

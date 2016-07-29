@@ -604,7 +604,6 @@ var app = {
 				app.verifyMessagesDecrypted(messages,pkey);
 			}
 			else {
-				var timerMessage = "Decrypting message " + index;
 				messages[index].decrypted=true;
 				messages[index].decryptionSuccessful=false;
 				messages[index].originaltext = messages[index].text;

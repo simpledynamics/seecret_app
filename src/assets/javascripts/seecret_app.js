@@ -2,6 +2,7 @@
 Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License
 http://creativecommons.org/licenses/by-nc-sa/4.0/
 */
+openpgp.config.debug=true;
 var app = {	
 	TIMELINE_VIEW:"timeline",
 	SETTINGS_VIEW:"settings",
@@ -1902,6 +1903,64 @@ var app = {
 	hideOverlays:function(){
 		$('#overlay').css('display','none');
 		$('#static-overlay').css('display','none');
+	},
+	privateKeyToQRCode:function() {
+		app.qrCodes = app.getStringChunks(app.activeUser.privateKey.armored);
+		console.log("Broke it up into " + app.qrCodes.length + " codes");
+		console.log(JSON.stringify(app.qrCodes));
+		app.qrCodeIndex=0;
+		app.qrCodeContainerId = "qrCodeContainer";
+		app.qrCodeTimerVar = window.setInterval(app.showNextCode, 2000)
+		var data = {};
+		data.segments = [];
+		for(var i=0;i<app.qrCodes.length;i++){
+			data.segments.push({index:i,display:i+1});
+		}
+		$('#qrCodeControls').html(Handlebars.getTemplate("qr-controls-template")(data));
+		
+	},
+	showNextCode:function(){
+		console.log("showing code " + app.qrCodeIndex +  " : " + app.qrCodes[app.qrCodeIndex]);
+		$("#" + app.qrCodeContainerId).empty();
+		app.genCodeDisplay(app.qrCodes[app.qrCodeIndex++]);
+		if(app.qrCodeIndex == app.qrCodes.length){
+			app.qrCodeIndex=0;
+		}
+	},
+	genCodeDisplay:function(text){
+		var qrcode = new QRCode(document.getElementById(app.qrCodeContainerId), {
+		    text: text,
+		    width: 500,
+		    height: 500,
+		    colorDark : "#000000",
+		    colorLight : "#ffffff",
+		    correctLevel : QRCode.CorrectLevel.H
+		});
+	},
+	showCode:function(index) {
+		$("#" + app.qrCodeContainerId).empty();
+		window.clearInterval(app.qrCodeTimerVar);
+		app.genCodeDisplay(app.qrCodes[index]);
+	},
+	stopShowingCodes:function() {
+		window.clearInterval(app.qrCodeTimerVar)
+	},
+	passphraseToQRCode:function() {
+		var chunks = app.getStringChunks(app.activeUser.privateKey.armored);
+		var qrcode = new QRCode(document.getElementById("qrCodeContainer"), {
+		    text: chunks[0],
+		    width: 500,
+		    height: 500,
+		    colorDark : "#000000",
+		    colorLight : "#ffffff",
+		    correctLevel : QRCode.CorrectLevel.H
+		});
+		
+	},
+	getStringChunks:function(str){
+	  console.log("chunkifying " + str);
+	  var chunks = str.match(/[\s\S]{1,500}/g);
+	  return chunks;
 	},
 	getNameValuePairsFromArgumentList:function(args,pairSplitter,nameValueSplitter){
 		var list = [];
